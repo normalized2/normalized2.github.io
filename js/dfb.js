@@ -150,6 +150,8 @@ my.views.set("word", function (w) {
     }
     view.loading(false);
 
+    word = decodeURIComponent(word);
+
     if (word) {
         div.select("#word_view_help").classed("hidden", true);
     } else {
