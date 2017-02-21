@@ -203,9 +203,9 @@ bib.dfr = function (spec) {
 
     // provide url method
     that.url = function (doc) {
-        return "http://www.jstor.org"
-            + "/stable/"
-            + doc.doi;
+        return "http://glav.su/forum/1-misc/682/"
+            + doc.doi + "-message/"
+            + '#message' + doc.doi;
     };
 
     return that;
