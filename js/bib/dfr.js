@@ -190,9 +190,9 @@ bib.dfr = function (spec) {
         }
 
         // JSTOR supplies UTC dates
-        s += " (" + d3.time.format.utc("%B %Y")(doc.date) + "): ";
+        s += " (" + d3.time.format.utc("%Y-%m-%d")(doc.date) + ")";
 
-        s += doc.pagerange + ".";
+        //s += doc.pagerange + ".";
 
         s = s.replace(/\.\./g, ".");
         s = s.replace(/_/g, ",");
