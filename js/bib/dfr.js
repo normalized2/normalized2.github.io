@@ -184,7 +184,7 @@ bib.dfr = function (spec) {
         s = s.replace(/’\./g,".’"); // fix up ’.” situations
 
         s += " <em>" + doc.journal + "</em> ";
-        s += doc.volume;
+        //s += doc.volume;
         if (doc.issue) {
             s += ", no. " + doc.issue;
         }
