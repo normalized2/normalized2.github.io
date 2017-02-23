@@ -294,6 +294,12 @@ a.topic_words span.name {
     font-style: italic;
 }
 
+.topic_authors {
+    /* font-style: italic; */
+    font-size: 0.9em;
+    color: #808080;
+}
+
 /* model_view_conditional */
 
 text.layer_label {

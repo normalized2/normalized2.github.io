@@ -16,8 +16,10 @@ model = function (spec) {
         n_docs,
         has_dt,
         tw,
+        ta,
         n,
         n_top_words,
+        n_top_authors,
         total_tokens,
         topic_total,
         alpha,
@@ -30,6 +32,7 @@ model = function (spec) {
         topic_docs, // most salient _ in _
         topic_docs_conditional,
         topic_words,
+        topic_authors,
         doc_topics,
         word_topics,
         topic_label,
@@ -100,6 +103,27 @@ model = function (spec) {
     };
     that.tw = tw;
 
+    // access top key authors per topic
+    ta = function (t, author) {
+        if (!my.ta) {
+            return undefined;
+        }
+
+        // ta() for the whole list of hashes
+        if (t === undefined) {
+            return my.ta;
+        }
+
+        // tw(t) for a particular topic
+        if (author === undefined) {
+            return my.ta[t];
+        }
+
+        // tw(t, word) for the weight of word in topic t
+        return my.ta[t].get(author);
+    };
+    that.ta = ta;
+
     // number of topics
     n = function () {
         return my.n;
@@ -115,6 +139,16 @@ model = function (spec) {
         return my.tw[0].keys().length;
     };
     that.n_top_words = n_top_words;
+
+    // number of top authors per topic stored in tw
+    n_top_authors = function () {
+        if (!this.ta()) {
+            return undefined;
+        }
+
+        return my.ta[0].keys().length;
+    };
+    that.n_top_authors = n_top_authors;
 
     total_tokens = function (callback) {
         if (!my.total_tokens) {
@@ -326,6 +360,34 @@ model = function (spec) {
     };
     that.topic_words = topic_words;
 
+    // Get n top words for topic t.
+    topic_authors = function (t, n) {
+        var n_authors = n || this.n_top_authors(),
+            authors;
+        if (t === undefined) {
+            return d3.range(this.n()).map(function (topic) {
+                return that.topic_authors(topic, n);
+            });
+        }
+        
+        authors = this.ta(t).entries(); // d3.map method
+        authors.sort(function (w1, w2) {
+            return d3.descending(w1.value, w2.value) ||
+                d3.ascending(w1.key, w2.key); // stabilize sort: alphabetical
+        });
+
+        return utils.shorten(authors, n_authors, function (ws, i) {
+            return ws[i].value;
+        })
+            .map(function (w) {
+                return {
+                    author: w.key,
+                    weight: w.value
+                };
+            });
+    };
+    that.topic_authors = topic_authors;
+
     // Get n top topics for a word.
     word_topics = function (word, n) {
         var t, row, word_wt,
@@ -384,6 +446,14 @@ model = function (spec) {
         my.tw = parsed.tw.map(function (topic) {
             var result = d3.map();
             topic.words.map(function (w, j) {
+                result.set(w, topic.weights[j]);
+            });
+            return result;
+        });
+
+        my.ta = parsed.ta.map(function (topic) {
+            var result = d3.map();
+            topic.authors.map(function (w, j) {
                 result.set(w, topic.weights[j]);
             });
             return result;

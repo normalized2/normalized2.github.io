@@ -456,6 +456,7 @@ model_view_list = function (sort, dir) {
                 key: my.m.meta_condition(my.condition),
                 sums: sums,
                 words: my.m.topic_words(undefined, VIS.overview_words),
+                authors: my.m.topic_authors(undefined, VIS.overview_authors),
                 sort: sort,
                 dir: dir,
                 labels: d3.range(my.m.n()).map(my.m.topic_label),

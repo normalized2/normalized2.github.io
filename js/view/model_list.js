@@ -5,7 +5,8 @@ view.model.list = function (p) {
     var trs, divs, token_max,
         total = d3.sum(p.sums),
         keys, sorter, sort_choice, sort_dir,
-        spec;
+        spec,
+        td;
 
     trs = d3.select("#model_view_list table tbody")
         .selectAll("tr");
@@ -52,8 +53,12 @@ view.model.list = function (p) {
                 });
             });
 
-        trs.append("td").append("a").classed("topic_words", true)
+        td = trs.append("td");
+
+        td.append("a").classed("topic_words", true)
             .attr("href", view.topic.link);
+
+        td.append("div").classed("topic_authors", true);
 
         token_max = d3.max(p.sums);
         view.append_weight_tds(trs, function (t) {
@@ -73,6 +78,16 @@ view.model.list = function (p) {
         .text(function (t) {
             return p.words[t].reduce(function (acc, x) {
                 return acc + " " + x.word;
+            }, "");
+        });
+
+
+    // since the number of topic words can be changed, we need to
+    // rewrite the topic words column
+    trs.selectAll("td div.topic_authors")
+        .text(function (t) {
+            return p.authors[t].reduce(function (acc, x) {
+                return acc + " " + x.author;
             }, "");
         });
 

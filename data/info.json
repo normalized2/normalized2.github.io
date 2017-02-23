@@ -1,20 +1,13 @@
 {
     "VIS": {
+        "topic_view": {
+            "docs": 30
+        },
         "bib_sort": {
             "major": "year",
             "minor": "alpha"
         },
-        "condition": {
-            "type": "time",
-            "spec": {
-                "unit": "year",
-                "n": 1
-            }
-        },
         "overview_words": 20,
-        "topic_view": {
-            "docs": 30
-        },
         "model_view": {
             "plot": {
                 "words": 7,
@@ -26,7 +19,14 @@
             "conditional": {
                 "words": 7
             }
-
+        },
+        "overview_authors": 12,
+        "condition": {
+            "type": "time",
+            "spec": {
+                "unit": "year",
+                "n": 1
+            }
         }
     },
     "meta_info": "This site is the working demo for <a href=\"http://agoldst.github.io/dfr-browser\">dfr-browser</a>, a browsing interface for topic models of journal articles or other text.",

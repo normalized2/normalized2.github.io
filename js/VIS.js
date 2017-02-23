@@ -35,6 +35,7 @@ var VIS = {
         }
     },
     overview_words: 15,     // may need adjustment
+    overview_authors: 15,     // may need adjustment
     model_view: {
         plot: {
             w: 500,            // px: the minimum svg width
