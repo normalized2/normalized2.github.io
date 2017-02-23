@@ -46,7 +46,7 @@ metadata.dfr = function (spec) {
                 doi: d[0].trim(), // id
                 title: d[1].trim(),
                 authors: d[2].trim(),
-                journal: d[3].trim(),
+                content: d[3].trim(),
                 volume: d[4].trim(),
                 issue: d[5].trim(),
                 date: new Date(d[6].trim()), // pubdate (UTC)

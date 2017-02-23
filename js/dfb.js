@@ -261,10 +261,14 @@ my.views.set("doc", function (d) {
 
         view.calculating("#doc_view", false);
 
+        var meta_doc = my.m.meta(doc);
+
         view.doc({
             topics: topics,
-            citation: my.bib.citation(my.m.meta(doc)),
-            url: my.bib.url(my.m.meta(doc)),
+            citation: my.bib.citation(meta_doc),
+            title: meta_doc.title,
+            content: meta_doc.content,
+            url: my.bib.url(meta_doc),
             total_tokens: d3.sum(topics, function (t) { return t.weight; }),
             words: topics.map(function (t) {
                 return my.m.topic_words(t.topic, VIS.overview_words);

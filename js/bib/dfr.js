@@ -171,7 +171,7 @@ bib.dfr = function (spec) {
             title;
 
         // don't duplicate trailing period on middle initial etc.
-        s = s.replace(/\.?$/, ". ");
+        //s = s.replace(/\.?$/, ". ");
         // double quotation marks in title to single
         // based on https://gist.github.com/drdrang/705071
         title = doc.title.replace(/“/g,'‘')
@@ -183,7 +183,7 @@ bib.dfr = function (spec) {
         s += '“' + title + '.”';
         s = s.replace(/’\./g,".’"); // fix up ’.” situations
 
-        s += " <em>" + doc.journal + "</em> ";
+        //s += " <em>" + doc.journal + "</em> ";
         //s += doc.volume;
         if (doc.issue) {
             s += ", no. " + doc.issue;
@@ -195,7 +195,7 @@ bib.dfr = function (spec) {
         //s += doc.pagerange + ".";
 
         s = s.replace(/\.\./g, ".");
-        s = s.replace(/_/g, ",");
+        //s = s.replace(/_/g, ",");
         s = s.replace(/\t/g, "");
 
         return s;

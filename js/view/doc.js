@@ -12,6 +12,9 @@ view.doc = function (p) {
     div.select("h2#doc_header")
         .html(p.citation);
 
+    div.select("div#doc_content")
+        .html(p.content);
+
     div.select("#doc_remark .token_count")
         .text(p.total_tokens);
 
