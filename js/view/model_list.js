@@ -6,7 +6,8 @@ view.model.list = function (p) {
         total = d3.sum(p.sums),
         keys, sorter, sort_choice, sort_dir,
         spec,
-        td;
+        td,
+        i;
 
     trs = d3.select("#model_view_list table tbody")
         .selectAll("tr");
@@ -69,6 +70,8 @@ view.model.list = function (p) {
                 return VIS.percent_format(p.sums[t] / total);
             });
 
+        td = trs.append("td").append('div').classed("topic_images", true);
+
         VIS.ready.model_list = true;
     } // if (!VIS.ready.model_list)
 
@@ -83,13 +86,24 @@ view.model.list = function (p) {
 
 
     // since the number of topic words can be changed, we need to
-    // rewrite the topic words column
+    // rewrite the topic authors column
     trs.selectAll("td div.topic_authors")
         .text(function (t) {
             return p.authors[t].reduce(function (acc, x) {
                 return acc + " " + x.author;
             }, "");
         });
+
+    // since the number of topic words can be changed, we need to
+    // rewrite the topic images column
+    // http://knowledgestockpile.blogspot.ru/2012/01/understanding-selectall-data-enter.html
+    // https://bost.ocks.org/mike/selection/
+    /* trs.selectAll("td div.topic_images")
+        .data(function(t) {
+            return p.images[t];
+        })
+        .append('img');
+    */
 
     // sorting
 

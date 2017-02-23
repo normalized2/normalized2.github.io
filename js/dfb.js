@@ -40,7 +40,8 @@ var dfb = function (spec) {
 my.views.set("topic", function (t_user, y) {
     var words,
         t = +t_user - 1, // t_user is 1-based topic index, t is 0-based
-        view_top_docs;
+        view_top_docs,
+        images;
 
     if (!my.m.meta() || !my.m.has_dt() || !my.m.tw()) {
         // not ready yet; show loading message
@@ -80,6 +81,11 @@ my.views.set("topic", function (t_user, y) {
 
     // topic word subview
     view.topic.words(words);
+
+
+    images = utils.shorten(my.m.topic_images(t), VIS.topic_view.images);
+    view.topic.images(images);
+    
 
     // topic conditional barplot subview
 
@@ -456,7 +462,8 @@ model_view_list = function (sort, dir) {
                 key: my.m.meta_condition(my.condition),
                 sums: sums,
                 words: my.m.topic_words(undefined, VIS.overview_words),
-                authors: my.m.topic_authors(undefined, VIS.overview_authors),
+                authors: my.m.topic_authors(undefined, VIS.overview_authors), // TODO: chage VIS.topic_view.list.authors and so on
+                images: my.m.topic_images(undefined, VIS.overview_images),
                 sort: sort,
                 dir: dir,
                 labels: d3.range(my.m.n()).map(my.m.topic_label),

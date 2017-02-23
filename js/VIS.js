@@ -36,6 +36,7 @@ var VIS = {
     },
     overview_words: 15,     // may need adjustment
     overview_authors: 15,     // may need adjustment
+    overview_images: 5,     // may need adjustment
     model_view: {
         plot: {
             w: 500,            // px: the minimum svg width
@@ -92,11 +93,13 @@ var VIS = {
                         w: 0.25
                     }
                 }
-            }
+            },
+            images: 5
         }
     },
     topic_view: {
         words: 50,
+        images: 20,
         docs: 20,
         w: 400, // minimum in px
         aspect: 3,

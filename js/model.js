@@ -17,9 +17,11 @@ model = function (spec) {
         has_dt,
         tw,
         ta,
+        ti,
         n,
         n_top_words,
         n_top_authors,
+        n_top_images,
         total_tokens,
         topic_total,
         alpha,
@@ -33,6 +35,7 @@ model = function (spec) {
         topic_docs_conditional,
         topic_words,
         topic_authors,
+        topic_images,
         doc_topics,
         word_topics,
         topic_label,
@@ -124,6 +127,29 @@ model = function (spec) {
     };
     that.ta = ta;
 
+
+    // access top key images per topic
+    ti = function (t, image) {
+        if (!my.ti) {
+            return undefined;
+        }
+
+        // ti() for the whole list of hashes
+        if (t === undefined) {
+            return my.ti;
+        }
+
+        // tw(t) for a particular topic
+        if (image === undefined) {
+            return my.ti[t];
+        }
+
+        // tw(t, word) for the weight of word in topic t
+        return my.ti[t].get(image);
+    };
+    that.ti = ti;
+
+
     // number of topics
     n = function () {
         return my.n;
@@ -149,6 +175,16 @@ model = function (spec) {
         return my.ta[0].keys().length;
     };
     that.n_top_authors = n_top_authors;
+
+    // number of top images per topic stored in tw
+    n_top_images = function () {
+        if (!this.ti()) {
+            return undefined;
+        }
+
+        return my.ti[0].keys().length;
+    };
+    that.n_top_images = n_top_images;
 
     total_tokens = function (callback) {
         if (!my.total_tokens) {
@@ -388,6 +424,34 @@ model = function (spec) {
     };
     that.topic_authors = topic_authors;
 
+    // Get n top images for topic t.
+    topic_images = function (t, n) {
+        var n_images = n || this.n_top_images(),
+            images;
+        if (t === undefined) {
+            return d3.range(this.n()).map(function (topic) {
+                return that.topic_images(topic, n);
+            });
+        }
+        
+        images = this.ti(t).entries(); // d3.map method
+        images.sort(function (w1, w2) {
+            return d3.descending(w1.value, w2.value) ||
+                d3.ascending(w1.key, w2.key); // stabilize sort: alphabetical
+        });
+
+        return utils.shorten(images, n_images, function (ws, i) {
+            return ws[i].value;
+        })
+            .map(function (w) {
+                return {
+                    image: w.key,
+                    weight: w.value
+                };
+            });
+    };
+    that.topic_images = topic_images;
+
     // Get n top topics for a word.
     word_topics = function (word, n) {
         var t, row, word_wt,
@@ -454,6 +518,14 @@ model = function (spec) {
         my.ta = parsed.ta.map(function (topic) {
             var result = d3.map();
             topic.authors.map(function (w, j) {
+                result.set(w, topic.weights[j]);
+            });
+            return result;
+        });
+
+        my.ti = parsed.ti.map(function (topic) {
+            var result = d3.map();
+            topic.images.map(function (w, j) {
                 result.set(w, topic.weights[j]);
             });
             return result;
