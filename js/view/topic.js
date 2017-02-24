@@ -74,7 +74,12 @@ view.topic.images = function (images) {
     // clear rows
     trs_w.selectAll("td").remove();
 
-    trs_w.append("td").append("img")
+    trs_w.append("td").append('a')
+        .attr('target', '_blank')
+        .attr('href', function (w) {
+            return w.image;
+        })
+        .append("img")
         .attr("src", function (w) {
             return w.image;
         })
