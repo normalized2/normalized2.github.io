@@ -278,6 +278,7 @@ my.views.set("doc", function (d) {
             title: meta_doc.title,
             content: meta_doc.content,
             url: my.bib.url(meta_doc),
+            parentId: meta_doc.parentId,
             total_tokens: d3.sum(topics, function (t) { return t.weight; }),
             words: topics.map(function (t) {
                 return my.m.topic_words(t.topic, VIS.overview_words);

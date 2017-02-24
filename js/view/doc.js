@@ -12,6 +12,15 @@ view.doc = function (p) {
     div.select("h2#doc_header")
         .html(p.citation);
 
+    if (p.parentId!=="-1") {
+        div.select("div#doc_parent")
+            .html("<a style='color: blue;' href='#/doc/" + p.parentId + "'>Parent</a> </br></br>");
+    }
+    else {
+        div.select("div#doc_parent")
+            .html('');
+    }
+
     div.select("div#doc_content")
         .html(p.content);
 
