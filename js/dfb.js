@@ -41,7 +41,8 @@ my.views.set("topic", function (t_user, y) {
     var words,
         t = +t_user - 1, // t_user is 1-based topic index, t is 0-based
         view_top_docs,
-        images;
+        images,
+        authors;
 
     if (!my.m.meta() || !my.m.has_dt() || !my.m.tw()) {
         // not ready yet; show loading message
@@ -86,6 +87,8 @@ my.views.set("topic", function (t_user, y) {
     images = utils.shorten(my.m.topic_images(t), VIS.topic_view.images);
     view.topic.images(images);
     
+    authors = utils.shorten(my.m.topic_authors(t), VIS.topic_view.authors);
+    view.topic.authors(authors);
 
     // topic conditional barplot subview
 

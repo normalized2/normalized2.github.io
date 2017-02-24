@@ -110,9 +110,10 @@
           <li id="nav_model_grid" class="active">
             <a href="#/model/grid">Grid</a>
           </li>
-          <li id="nav_model_scaled">
+          <!--<li id="nav_model_scaled">
             <a href="#/model/scaled">Scaled</a>
           </li>
+          -->
           <li id="nav_model_list">
             <a href="#/model/list">List</a>
           </li>
@@ -193,7 +194,46 @@
   <div id="about_view" class="hidden">
     <div id="meta_info"></div>
     <div id="about_browser">
+
+    <h2>Автоматическое тематическое моделирование</h2>
+    <p>Форум <a class="external" href="https://glav.su/">glav.su</a>,
+        раздел "<a class="external" href="https://glav.su/forum/1-misc/682/">Были ли американцы на Луне?"</a></p>
+
+
+      <h3>Интерфейс построен на базе. </h3>
+      (HTML, JS)
+      
       <p>Model-browser interface by <a class="external" href="http://andrewgoldstone.com">Andrew Goldstone</a>; source available on <a class="external" href="http://agoldst.github.io/dfr-browser/">github</a>. Made using <a class="external" href="http://d3js.org">d3.js</a> and <a class="external" href="http://getbootstrap.com/">Bootstrap</a>. Zip support using <a class="external" href="http://stuk.github.io/jszip/">JSZip</a>.</p>
+
+
+    <h3>Введение</h3>
+    
+    <!-- <p>Константин Вячеславович Воронцов.  Воронцов (старший научный сотрудник Вычислительного центра РАН. Заместитель директора по науке ЗАО "Форексис". Заместитель заведующего кафедрой «Интеллектуальные системы» ФУПМ  МФТИ. Доцент кафедры "Математические методы прогнозирования" ВМиК МГУ. Эксперт компании "Яндекс")</p> -->
+    <ul>
+    <li>
+        <a class="external" href="https://www.youtube.com/watch?v=Jtl6qR35KI4">https://www.youtube.com/watch? v=Jtl6qR35KI4</a>
+    </li>
+    <li>
+        <a class="external" href="https://habrahabr.ru/company/yandex/blog/313340/">https://habrahabr.ru/company/yandex/blog/313340/</a>
+    </li>
+    <li>
+        <a class="external" href="http://www.machinelearning.ru/wiki/index.php?title=Тематическое_моделирование">http://www.machinelearning.ru/wiki/index.php?title=Тематическое_моделирование</a>
+    </li>
+    </ul>
+
+    <h3>Автоматические процессы</h3>
+    <ul>
+        <li>Загрузка html</li>
+        <li>Парсинг (дата, автор, треды, кому ответ, цитирование, скрытые) в БД</li>
+        <li>Выцепление изображения ссылки, фильтрация от смайлов.</li>
+        <li>Лемматизация (приведение слов к основной форме)</li>
+        <li>Удаление стоп-слов ("а" "но" "в" "что" "как" "какой" и т.д.)</li>
+        <li>Запуск обучения без учителя. BigArtm (или без изображений и авторов упращенную MALLET)<br/>
+            BigArtm специальным образом <a class="external" href="https://ru.wikipedia.org/wiki/Кластерный_анализ">кластернизует</a> похожие документы по словам (вес 1), авторам (0.7), изображениям или ссылкам (вес 0.4) и получает вероятностые матрицы отношений.
+        </li>
+        <li>Преобразование результатов в JSON для</li>
+    </ul>
+
     </div>
   </div>
 
@@ -214,8 +254,20 @@
         </div>
       </div>
       <div class="row">
+        <div id="topic_authors" class="col-md-1">
+          <!-- <h3 class="h-small">Top authors</h3> -->
+          <table class="table table-condensed" id="topic_authors">
+            <thead>
+              <tr>
+                <th> </th>
+              </tr>
+            </thead>
+            <tbody>
+            </tbody>
+          </table>
+        </div>
         <div id="topic_images" class="col-md-1">
-          <h3 class="h-small">Top images</h3>
+          <!-- <h3 class="h-small">Top images</h3> -->
           <table class="table table-condensed" id="topic_images">
             <thead>
               <tr>
@@ -227,7 +279,7 @@
           </table>
         </div>
         <div id="topic_words" class="col-md-2">
-          <h3 class="h-small">Top words</h3>
+          <!-- <h3 class="h-small">Top words</h3> -->
           <table class="table table-condensed" id="topic_words">
             <thead>
               <tr>
@@ -239,12 +291,13 @@
             </tbody>
           </table>
         </div>
-        <div class="col-md-9">
+        <div class="col-md-8">
           <div id="topic_conditional">
-            <h3 class="h-small">Conditional proportion of words in topic</h3>
+            <!-- <h3 class="h-small">Conditional proportion of words in topic</h3>
             <p class="pull-left help">
               Click a bar to limit to the documents it represents
             </p>
+            -->
             <div class="pull-right">
               <button class="btn btn-default disabled" type="button"
                 id="topic_condition_clear">clear selected</button>

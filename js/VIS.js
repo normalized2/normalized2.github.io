@@ -100,6 +100,7 @@ var VIS = {
     topic_view: {
         words: 50,
         images: 20,
+        authors: 20,
         docs: 20,
         w: 400, // minimum in px
         aspect: 3,

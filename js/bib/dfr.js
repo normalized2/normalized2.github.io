@@ -145,7 +145,8 @@ bib.dfr = function (spec) {
             result = lead_trail;
             lead_trail = "";
         }
-        result += ", " + lead.join(" ") + lead_trail;
+        //result += ", " + lead.join(" ") + lead_trail;
+        result += " " + lead.join(" ") + lead_trail;
         if (n_auth > 1) {
             if (n_auth >= my.et_al) {
                 result += ", ";
@@ -167,7 +168,7 @@ bib.dfr = function (spec) {
 
     // override inherited citation
     that.citation = function (doc) {
-        var s = doc_author(doc.authors),
+        var s = "<b>" + doc_author(doc.authors) + "</b>",
             title;
 
         // don't duplicate trailing period on middle initial etc.
@@ -180,7 +181,7 @@ bib.dfr = function (spec) {
             .replace(/"/g,'’') // which leaves closing "
             .replace(/'/g,'’')
             .replace(/ <br><\/br>/g,'. ');
-        s += '“' + title + '.”';
+        s += '' + title + '...';
         s = s.replace(/’\./g,".’"); // fix up ’.” situations
 
         //s += " <em>" + doc.journal + "</em> ";
@@ -190,7 +191,8 @@ bib.dfr = function (spec) {
         }
 
         // JSTOR supplies UTC dates
-        s += " (" + d3.time.format.utc("%Y-%m-%d")(doc.date) + ")";
+        //s += " (" + d3.time.format.utc("%Y-%m-%d")(doc.date) + ")";
+        s += " <span style='color: #909090'>" + d3.time.format.utc("%Y-%m")(doc.date) + "</span>";
 
         //s += doc.pagerange + ".";
 

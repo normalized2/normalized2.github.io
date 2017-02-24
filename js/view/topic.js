@@ -88,6 +88,34 @@ view.topic.images = function (images) {
     //view.dirty("topic/words", false);
 };
 
+view.topic.authors = function (authors) {
+    var trs_w;
+
+    if (view.updating() && !view.dirty("topic/words")) {
+        return;
+    }
+
+    trs_w = d3.select("table#topic_authors tbody")
+        .selectAll("tr")
+        .data(authors);
+
+    trs_w.enter().append("tr");
+    trs_w.exit().remove();
+
+    //trs_w.on("click", function (w) {
+    //    view.dfb().set_view("/word/" + w.word);
+    //});
+
+    // clear rows
+    trs_w.selectAll("td").remove();
+
+      trs_w.append("td").append("a")
+        //.attr("href", function (w) {
+        //    return "#/author/" + w.author;
+        //})
+        .text(function (w) { return w.author; });
+    //view.dirty("topic/words", false);
+};
 
 view.topic.docs = function (p) {
     var header_text, trs_d,
