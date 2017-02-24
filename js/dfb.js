@@ -275,6 +275,8 @@ my.views.set("doc", function (d) {
         view.doc({
             topics: topics,
             citation: my.bib.citation(meta_doc),
+            author: meta_doc.authors,
+            date: meta_doc.date,
             title: meta_doc.title,
             content: meta_doc.content,
             url: my.bib.url(meta_doc),

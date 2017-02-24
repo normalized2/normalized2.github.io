@@ -5,12 +5,14 @@ view.doc = function (p) {
     var div = d3.select("div#doc_view"),
         total_tokens = p.total_tokens,
         topics = p.topics,
-        trs, as_t;
+        trs, as_t, s;
 
     d3.select("#doc_view_main").classed("hidden", false);
 
+    s = "<b>" + p.author + "</b>";
+    s += " <span style='color: #909090; font-size:0.8em;'>" + d3.time.format.utc("%Y-%m-%d %H:%M")(p.date) + "</span>";
     div.select("h2#doc_header")
-        .html(p.citation);
+        .html(s);
 
     if (p.parentId!=="-1") {
         div.select("div#doc_parent")
