@@ -12,7 +12,9 @@ var VIS = {
         meta: "data/meta.csv.zip",  // remove .zip to use uncompressed data
         dt: "data/dt.json.zip",     // (name the actual file accordingly)
         tw: "data/tw.json",
-        topic_scaled: "data/topic_scaled.csv"
+        topic_scaled: "data/topic_scaled.csv",
+        meta_images: "data/meta_images.csv.zip"
+        //meta_images: "data/meta.csv.zip"
     },
     aliases: {                  // simple aliasing in URLs:
         yearly: "conditional"   // #/model/yearly/... -> #/model/conditional/...
@@ -23,6 +25,13 @@ var VIS = {
         spec: {
             extra_fields: [ ],// (dfr type only) names for extra columns
             date_field: "date"// (base type only) name of date field
+        }
+    },
+    metadata_images: {
+        type: "images",        // use "base" if meta.csv has a header
+        spec: {
+            extra_fields: [ ],// (dfr type only) names for extra columns
+            //date_field: "date"// (base type only) name of date field
         }
     },
     condition: {            // metadata variable to condition topics on

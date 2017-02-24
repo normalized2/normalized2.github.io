@@ -39,9 +39,6 @@ metadata.dfr = function (spec) {
             // assume these columns:
             // 0  1     2      3       4      5     6       7
             // id,title,author,journal,volume,issue,pubdate,pagerange
-
-            try {
-
             result = {
                 doi: d[0].trim(), // id
                 title: d[1].trim(),
@@ -54,12 +51,7 @@ metadata.dfr = function (spec) {
                     .replace(/^p?p\. /, "")
                     .replace(/-/g, "–")
             };
-            }  catch (err)  {
-                alert(err);
-                alert(d);
-                alert(s);
-            }
-            
+
             // now add extra columns
             d.slice(8, d.length).forEach(function (x, i) {
                 result[my.extra_fields[i] || "X" + String(i)] = x.trim();

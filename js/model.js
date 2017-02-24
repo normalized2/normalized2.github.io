@@ -26,6 +26,7 @@ model = function (spec) {
         topic_total,
         alpha,
         meta,
+        meta_images,
         meta_condition,
         vocab,
         topic_scaled,
@@ -42,6 +43,7 @@ model = function (spec) {
         set_dt, // methods for loading model data from strings 
         set_tw,
         set_meta,
+        set_meta_images,
         doc_category,
         set_topic_scaled;
 
@@ -229,6 +231,16 @@ model = function (spec) {
         return my.meta.doc(d);
     };
     that.meta = meta;
+
+    // metadata table
+    meta_images = function (d) {
+        if (!my.meta_images) {
+            return undefined;
+        }
+
+        return my.meta_images.doc(d);
+    };
+    that.meta_images = meta_images;
 
     // expose metadata's conditional key/invert functions
     meta_condition = function (key) {
@@ -444,8 +456,12 @@ model = function (spec) {
             return ws[i].value;
         })
             .map(function (w) {
+                var image = that.meta_images(w.key);
                 return {
-                    image: w.key,
+                    id: w.key,
+                    imgid: image.imgdid,
+                    url: image.url,
+                    doc_ids: image.doc_ids,
                     weight: w.value
                 };
             });
@@ -562,6 +578,16 @@ model = function (spec) {
         meta.conditionals().forEach(doc_category);
     };
     that.set_meta = set_meta;
+
+
+    set_meta_images = function (meta) {
+        my.meta_images = meta;
+
+        // cache metadata variable information for each doc
+        //meta.conditionals().forEach(doc_category);
+    };
+    that.set_meta_images = set_meta_images;
+
 
     doc_category = function (v, f) {
         var doc_keys;

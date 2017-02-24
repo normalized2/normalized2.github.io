@@ -83,8 +83,9 @@ my.views.set("topic", function (t_user, y) {
     // topic word subview
     view.topic.words(words);
 
-
+//    var meta_doc = my.m.meta(doc);
     images = utils.shorten(my.m.topic_images(t), VIS.topic_view.images);
+
     view.topic.images(images);
     
     authors = utils.shorten(my.m.topic_authors(t), VIS.topic_view.authors);
@@ -302,6 +303,94 @@ my.views.set("doc", function (d) {
 
     // TODO nearby documents list
 });
+
+my.views.set("image", function (d) {
+    var div = d3.select("div#image_view"),
+        image = +d;
+
+     if (!my.m.meta() || !my.m.has_dt() || !my.m.tw()) {
+        view.loading(true);
+        return true;
+    }
+
+    view.loading(false);
+    //if (!isFinite(image) || image < 0 || image >= my.m.n_images()) {
+    //if (!isFinite(image) || image < 0) {
+        {
+        var meta_image = my.m.meta_images(image);
+        view.image({
+            url: meta_image.url,
+            doc_ids: meta_image.doc_ids
+        });
+    }
+
+
+/*
+    if (!isFinite(image) || image < 0 || imageid >= my.m.n_images()) {
+        d3.select("#image_view_help").classed("hidden", false);
+
+        // if image is un- or misspecified and there is no last image, bail
+        if (VIS.last.image === undefined) {
+            d3.select("#image_view_main").classed("hidden", true);
+            return true;
+        }
+
+        // otherwise, fall back to last image if none entered
+        image = VIS.last.image;
+        div.select("a#last_image")
+            .attr("href", "#/image/" + image)
+            .text(document.URL.replace(/#.*$/, "") + "#/image/" + image);
+        div.select("#last_image_help").classed("hidden", false);
+    } else {
+        d3.select("#image_view_help").classed("hidden", true);
+        VIS.last.image = image;
+    }
+    d3.select("#image_view_main").classed("hidden", false);
+
+    view.calculating("#image_view", true);
+*/
+        /*
+    my.m.image_topics(image, my.m.n(), function (ts) {
+        var topics = ts.filter(function (t) {
+            return !VIS.topic_hidden[t.topic] || VIS.show_hidden_topics;
+        });
+
+        view.calculating("#image_view", false);
+
+        var meta_doc = my.m.meta(image);
+        var parent_doc = '-1';
+        if (meta_doc.parentId!=="-1"){
+            parent_doc = my.m.meta(meta_doc.parentId);
+        }
+
+        view.doc({
+            topics: topics,
+            citation: my.bib.citation(meta_doc),
+            author: meta_doc.authors,
+            date: meta_doc.date,
+            title: meta_doc.title,
+            content: meta_doc.content,
+            url: my.bib.url(meta_doc),
+            parentId: meta_doc.parentId,
+            parent_doc: parent_doc,
+            total_tokens: d3.sum(topics, function (t) { return t.weight; }),
+            words: topics.map(function (t) {
+                return my.m.topic_words(t.topic, VIS.overview_words);
+            }),
+            labels: topics.map(function (t) {
+                return my.m.topic_label(t.topic);
+            })
+        });
+
+        //hide_topics();
+    });
+        */
+
+    return true;
+
+    // TODO nearby documents/images? list
+});
+
 
 my.views.set("bib", function (maj, min, dir) {
     var sorting = {
@@ -791,6 +880,16 @@ load = function () {
             }
         }
 
+        if (my.metadata_images === undefined) {
+            if (VIS.metadata_images.type === "images") {
+                my.metadata_images = metadata.images(VIS.metadata_images.spec);
+            } else {
+                // default to DfR subclass if no other specified
+                my.metadata_images = metadata.images();
+                view.warning("Unknown metadata.type; defaulting to dfr.");
+            }
+        }
+
         if (my.bib === undefined) {
             // VIS.bib gives bib options like the Anon. string
             my.bib = bib.dfr(VIS.bib);
@@ -818,6 +917,18 @@ load = function () {
                 refresh();
             } else {
                 view.error("Unable to load metadata from " + VIS.files.meta);
+            }
+        });
+        // now launch remaining data loading; ask for a refresh when done
+        load_data(VIS.files.meta_images, function (error, meta_s) {
+            if (typeof meta_s === 'string') {
+                // and get the metadata object ready
+                my.metadata_images.from_string(meta_s);
+                // pass to object (also stores conditional keys)
+                my.m.set_meta_images(my.metadata_images);
+                refresh();
+            } else {
+                view.error("Unable to load metadata from " + VIS.files.meta_images);
             }
         });
         load_data(VIS.files.dt, function (error, dt_s) {

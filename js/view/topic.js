@@ -75,13 +75,12 @@ view.topic.images = function (images) {
     trs_w.selectAll("td").remove();
 
     trs_w.append("td").append('a')
-        .attr('target', '_blank')
         .attr('href', function (w) {
-            return w.image;
+            return '#/image/' + w.id;
         })
         .append("img")
         .attr("src", function (w) {
-            return w.image;
+            return w.url;
         })
         .attr('width', 64)
         .attr('height', 64);
