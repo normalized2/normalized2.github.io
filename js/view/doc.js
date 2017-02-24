@@ -15,12 +15,19 @@ view.doc = function (p) {
         .html(s);
 
     if (p.parentId!=="-1") {
-        div.select("div#doc_parent")
-            .html("<a style='color: blue;' href='#/doc/" + p.parentId + "'>Parent</a> </br></br>");
+        div.select("div#doc_parent").classed('hidden', false);
+
+        s = p.parent_doc.authors + " ";
+        s += d3.time.format.utc("%Y-%m-%d %H:%M")(p.parent_doc.date);
+        div.select("a#doc_parent_link")
+            .attr("href", "#/doc/" + p.parentId)
+            .text(s);
+
+        div.select("div#doc_parent_content")
+            .html(p.parent_doc.content);
     }
     else {
-        div.select("div#doc_parent")
-            .html('');
+        div.select("div#doc_parent").classed('hidden', true);
     }
 
     div.select("div#doc_content")

@@ -528,6 +528,23 @@ th#doc_view_weight {
     width: 40%;
 }
 
+div.cBlockQuote {
+    background-color:#ddd;
+/*    background:#ddd url(/themes/glav/images/bg_quote16.gif) no-repeat 5px 3px; */
+    background:#ddd;
+    border-left:2px solid #666;
+    display:block;
+    padding:5px 10px 5px 30px;
+}
+div.cBlockQuoteHeader{
+    color:#666;
+    font-weight:bold;
+    margin-bottom:5px;
+}
+
+div.cBlockQuoteContent{
+}
+
 /* remaining 10% goes to last two columns ad libitum */
 
 /* bib_view */

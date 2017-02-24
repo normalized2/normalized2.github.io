@@ -271,6 +271,10 @@ my.views.set("doc", function (d) {
         view.calculating("#doc_view", false);
 
         var meta_doc = my.m.meta(doc);
+        var parent_doc = '-1';
+        if (meta_doc.parentId!=="-1"){
+            parent_doc = my.m.meta(meta_doc.parentId);
+        }
 
         view.doc({
             topics: topics,
@@ -281,6 +285,7 @@ my.views.set("doc", function (d) {
             content: meta_doc.content,
             url: my.bib.url(meta_doc),
             parentId: meta_doc.parentId,
+            parent_doc: parent_doc,
             total_tokens: d3.sum(topics, function (t) { return t.weight; }),
             words: topics.map(function (t) {
                 return my.m.topic_words(t.topic, VIS.overview_words);
