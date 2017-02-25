@@ -66,6 +66,8 @@ my.views.set("topic", function (t_user, y) {
         label: my.m.topic_label(t)
     });
 
+    view.topic.next_prev(t);
+
     // reveal the view div
     d3.select("#topic_view_help").classed("hidden", true);
     d3.select("#topic_view_main").classed("hidden", false);

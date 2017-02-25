@@ -18,6 +18,19 @@ view.topic.remark = function (p) {
                 + " of corpus");
 };
 
+view.topic.next_prev = function (n) {
+    d3.select("#topic_view_next")
+        .on("click", function (w) {
+            d3.event.preventDefault();
+            view.dfb().set_view("/topic/" + (n + 2));
+    });
+    d3.select("#topic_view_prev")
+        .on("click", function (w) {
+            d3.event.preventDefault();
+            view.dfb().set_view("/topic/" + n);
+    });
+};
+
 view.topic.words = function (words) {
     var trs_w;
 
