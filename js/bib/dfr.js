@@ -186,9 +186,9 @@ bib.dfr = function (spec) {
 
         //s += " <em>" + doc.journal + "</em> ";
         //s += doc.volume;
-        if (doc.issue) {
-            s += ", no. " + doc.issue;
-        }
+        //if (doc.issue) {
+        //    s += ", no. " + doc.issue;
+        //}
 
         // JSTOR supplies UTC dates
         //s += " (" + d3.time.format.utc("%Y-%m-%d")(doc.date) + ")";

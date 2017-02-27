@@ -98,3 +98,43 @@ view.doc = function (p) {
         });
 };
 
+view.doc.images = function(p) {
+    var img_ids = p.img_ids.split(' '),
+        images = p.images,
+        tr;
+
+    tr = d3.select("table#doc_images tbody")
+        .select("tr")
+        .selectAll("td")
+        .data(images);
+
+    tr.enter().append("td")
+        .attr('style', 'padding: 2px;');
+    tr.exit().remove();
+
+    //trs.on("click", function (image) {
+    //    view.dfb().set_view("/image/" + image.id);
+    //});
+
+    // clear rows
+    tr.selectAll("a").remove();
+
+    tr.append("a")
+        /* .html(function (image) {
+            var s = '';
+            //s += " <p style='color: #909090'>" + d3.time.format.utc("%Y-%m-%d %H:%M")(doc.date) + "</p>";
+            //s += "<b>" + doc.authors + "</b> ";
+            s += image.id;
+            return s;
+        })*/
+        .on("click", function (image) {
+            view.dfb().set_view("/image/" + image.id);
+        })
+        .append("img")
+        .attr("src", function (image) {
+            return image.url;
+        })
+        .attr('width', 128);
+        //.attr('height', 64)
+
+};

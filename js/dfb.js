@@ -298,6 +298,31 @@ my.views.set("doc", function (d) {
             })
         });
 
+
+        var img_ids = meta_doc.img_ids;
+        var a_img_ids = utils.shorten(img_ids.split(' '), 100);
+        //a_img_ids = a_img_ids.map(function(img_id) {
+        //    return parseInt(img_id, 10);
+        //});
+        //a_img_ids.sort();
+
+        var images = a_img_ids.map(function(img_id) {
+            var image = my.m.meta_images(img_id);
+            if (image !== undefined) {
+                image.id = img_id;
+            }
+            return image;
+        });
+
+        images = images.filter(function(image) {
+            return image !== undefined;
+        });
+
+        view.doc.images({
+            img_ids: img_ids,
+            images: images
+        });
+
         hide_topics();
     });
 
@@ -327,7 +352,7 @@ my.views.set("image", function (d) {
 
         view.image.next_prev(image);
 
-        var doc_ids = meta_image.doc_ids + " 99999999";
+        var doc_ids = meta_image.doc_ids;
         var a_doc_ids = utils.shorten(doc_ids.split(' '), 100);
         a_doc_ids = a_doc_ids.map(function(doc_id) {
             return parseInt(doc_id, 10);
