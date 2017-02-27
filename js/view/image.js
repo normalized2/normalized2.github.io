@@ -62,8 +62,9 @@ view.image.docs = function (p) {
          //    return "#/doc/" + w.author;
         //})
         .html(function (doc) {
-            var s;
-            s = "<b>" + doc.authors + "</b> ";
+            var s = '';
+            s += " <p style='color: #909090'>" + d3.time.format.utc("%Y-%m-%d %H:%M")(doc.date) + "</p>";
+            s += "<b>" + doc.authors + "</b> ";
             s += doc.title;
             return s;
         });
