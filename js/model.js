@@ -14,6 +14,7 @@ model = function (spec) {
         that = { }, // resultant object
         info, // accessors and pseudo-accessors
         n_docs,
+        n_images,
         has_dt,
         tw,
         ta,
@@ -80,6 +81,17 @@ model = function (spec) {
         return result; // undefined if my.meta is missing
     };
     that.n_docs = n_docs;
+
+    n_images = function () {
+        var result;
+        if (my.n_images !== undefined) {
+            result = my.n_images;
+        } else if (my.meta_images) {
+            result = my.meta_images.n_docs();
+        }
+        return result; // undefined if my.meta is missing
+    };
+    that.n_images = n_images;
 
     // has dt been loaded?
     has_dt = function () {

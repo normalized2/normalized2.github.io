@@ -316,77 +316,37 @@ my.views.set("image", function (d) {
     }
 
     view.loading(false);
-    //if (!isFinite(image) || image < 0 || image >= my.m.n_images()) {
-    //if (!isFinite(image) || image < 0) {
-        {
+    if (!isFinite(image) || image < 0  || image >= my.m.n_images()) {
+
+    }
+    else {
         var meta_image = my.m.meta_images(image);
         view.image({
-            url: meta_image.url,
-            doc_ids: meta_image.doc_ids
+            url: meta_image.url
         });
+
+        view.image.next_prev(image);
+
+        var doc_ids = meta_image.doc_ids + " 99999999";
+        var a_doc_ids = utils.shorten(doc_ids.split(' '), 100);
+        var docs = a_doc_ids.map(function(doc_id) {
+            var doc = my.m.meta(doc_id);
+            if (doc !== undefined) {
+                doc.id = doc_id;
+            }
+            return doc;
+        });
+
+        docs = docs.filter(function(doc) {
+            return doc !== undefined;
+        });
+
+        view.image.docs({
+            doc_ids: meta_image.doc_ids,
+            docs: docs
+        });
+
     }
-
-
-/*
-    if (!isFinite(image) || image < 0 || imageid >= my.m.n_images()) {
-        d3.select("#image_view_help").classed("hidden", false);
-
-        // if image is un- or misspecified and there is no last image, bail
-        if (VIS.last.image === undefined) {
-            d3.select("#image_view_main").classed("hidden", true);
-            return true;
-        }
-
-        // otherwise, fall back to last image if none entered
-        image = VIS.last.image;
-        div.select("a#last_image")
-            .attr("href", "#/image/" + image)
-            .text(document.URL.replace(/#.*$/, "") + "#/image/" + image);
-        div.select("#last_image_help").classed("hidden", false);
-    } else {
-        d3.select("#image_view_help").classed("hidden", true);
-        VIS.last.image = image;
-    }
-    d3.select("#image_view_main").classed("hidden", false);
-
-    view.calculating("#image_view", true);
-*/
-        /*
-    my.m.image_topics(image, my.m.n(), function (ts) {
-        var topics = ts.filter(function (t) {
-            return !VIS.topic_hidden[t.topic] || VIS.show_hidden_topics;
-        });
-
-        view.calculating("#image_view", false);
-
-        var meta_doc = my.m.meta(image);
-        var parent_doc = '-1';
-        if (meta_doc.parentId!=="-1"){
-            parent_doc = my.m.meta(meta_doc.parentId);
-        }
-
-        view.doc({
-            topics: topics,
-            citation: my.bib.citation(meta_doc),
-            author: meta_doc.authors,
-            date: meta_doc.date,
-            title: meta_doc.title,
-            content: meta_doc.content,
-            url: my.bib.url(meta_doc),
-            parentId: meta_doc.parentId,
-            parent_doc: parent_doc,
-            total_tokens: d3.sum(topics, function (t) { return t.weight; }),
-            words: topics.map(function (t) {
-                return my.m.topic_words(t.topic, VIS.overview_words);
-            }),
-            labels: topics.map(function (t) {
-                return my.m.topic_label(t.topic);
-            })
-        });
-
-        //hide_topics();
-    });
-        */
 
     return true;
 

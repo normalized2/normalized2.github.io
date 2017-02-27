@@ -7,25 +7,51 @@ view.image = function (p) {
         total_tokens = p.total_tokens,
         topics = p.topics,
         */
-        trs, s;
+        trs;
 
 
     d3.select("#doc_view_main").classed("hidden", false);
 
     div.select('img#image_src')
-        .attr('src', p.url);
+        .attr('src', '');
 
-    var doc_ids = p.doc_ids.split(' ');
+    div.select('a#image_url')
+        .text(p.url);
+
+    div.select('img#image_src')
+        .attr('src', p.url);
+};
+
+view.image.next_prev = function (n) {
+    d3.select("#image_view_next")
+        .on("click", function (w) {
+            d3.event.preventDefault();
+            view.dfb().set_view("/image/" + (n + 1));
+    });
+    d3.select("#image_view_prev")
+        .on("click", function (w) {
+            d3.event.preventDefault();
+            view.dfb().set_view("/image/" + (n - 1));
+    });
+};
+
+view.image.docs = function (p) {
+    // image_docs the list of docs (me3ssages) where image is used.
+    var doc_ids = p.doc_ids.split(' '),
+        docs = p.docs,
+        trs;
+
+    //alert(Object.keys(docs[0]));
 
     trs = d3.select("table#image_docs tbody")
         .selectAll("tr")
-        .data(doc_ids);
+        .data(docs);
 
     trs.enter().append("tr");
     trs.exit().remove();
 
-    trs.on("click", function (w) {
-        view.dfb().set_view("/doc/" + w);
+    trs.on("click", function (doc) {
+        view.dfb().set_view("/doc/" + doc.id);
     });
 
     // clear rows
@@ -35,9 +61,10 @@ view.image = function (p) {
         //.attr("href", function (w) {
          //    return "#/doc/" + w.author;
         //})
-        .text(function (w) { return w;});
-
-    //image_docs
-
+        .html(function (doc) {
+            var s;
+            s = "<b>" + doc.authors + "</b> ";
+            s += doc.title;
+            return s;
+        });
 };
-

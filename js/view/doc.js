@@ -9,7 +9,7 @@ view.doc = function (p) {
 
     d3.select("#doc_view_main").classed("hidden", false);
 
-    s = "<b>" + p.author + "</b>";
+    s = "Сообщение <b>" + p.author + "</b>";
     s += " <span style='color: #909090; font-size:0.8em;'>" + d3.time.format.utc("%Y-%m-%d %H:%M")(p.date) + "</span>";
     div.select("h2#doc_header")
         .html(s);
@@ -25,9 +25,16 @@ view.doc = function (p) {
 
         div.select("div#doc_parent_content")
             .html(p.parent_doc.content);
+
+        s = "<b>" + p.author + "</b>";
+        s += " <span style='color: #909090; font-size:0.8em;'>" + d3.time.format.utc("%Y-%m-%d %H:%M")(p.date) + "</span>";
+        div.select("h3#doc_author")
+            .html(s);
+        div.select("h3#doc_author").classed('hidden', false);
     }
     else {
         div.select("div#doc_parent").classed('hidden', true);
+        div.select("h3#doc_author").classed('hidden', true);
     }
 
     div.select("div#doc_content")
