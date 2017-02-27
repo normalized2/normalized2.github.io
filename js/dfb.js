@@ -329,6 +329,11 @@ my.views.set("image", function (d) {
 
         var doc_ids = meta_image.doc_ids + " 99999999";
         var a_doc_ids = utils.shorten(doc_ids.split(' '), 100);
+        a_doc_ids = a_doc_ids.map(function(doc_id) {
+            return parseInt(doc_id, 10);
+        });
+        a_doc_ids.sort();
+
         var docs = a_doc_ids.map(function(doc_id) {
             var doc = my.m.meta(doc_id);
             if (doc !== undefined) {
