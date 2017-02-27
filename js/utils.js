@@ -160,5 +160,13 @@ var utils = (function () {
 
     that.bisect_left = that.bisector_left();
 
+    function sortNumber(a, b) {
+        return a - b;
+    }
+
+    that.sortNumbers = function(arr) {
+        return arr.sort(sortNumber);
+    };
+
     return that;
 }());

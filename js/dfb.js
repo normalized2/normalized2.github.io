@@ -357,7 +357,7 @@ my.views.set("image", function (d) {
         a_doc_ids = a_doc_ids.map(function(doc_id) {
             return parseInt(doc_id, 10);
         });
-        a_doc_ids.sort();
+        a_doc_ids = utils.sortNumbers(a_doc_ids);
 
         var docs = a_doc_ids.map(function(doc_id) {
             var doc = my.m.meta(doc_id);
