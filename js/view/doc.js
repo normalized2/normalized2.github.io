@@ -130,6 +130,9 @@ view.doc.images = function(p) {
         .on("click", function (image) {
             view.dfb().set_view("/image/" + image.id);
         })
+        .attr('href', function (image) {
+            return '#/image/' +  image.id;
+        })
         .append("img")
         .attr("src", function (image) {
             return image.url;
@@ -170,6 +173,9 @@ view.doc.childs = function(p) {
                 s += image.id;
                 return s;
             })*/
+            .attr('href', function (doc) {
+                return "#/doc/" + doc.id;
+            })
             .text( function (doc) {
                 return doc.authors;
             });
