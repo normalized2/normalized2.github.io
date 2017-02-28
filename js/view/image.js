@@ -27,12 +27,12 @@ view.image.next_prev = function (n) {
         .on("click", function (w) {
             d3.event.preventDefault();
             view.dfb().set_view("/image/" + (n + 1));
-    });
+        });
     d3.select("#image_view_prev")
         .on("click", function (w) {
             d3.event.preventDefault();
             view.dfb().set_view("/image/" + (n - 1));
-    });
+        });
 };
 
 view.image.docs = function (p) {

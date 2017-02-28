@@ -323,6 +323,33 @@ my.views.set("doc", function (d) {
             images: images
         });
 
+
+        var childs = meta_doc.childs;
+
+        if (childs !== '') {
+            childs = utils.shorten(childs.split(' '), 100);
+        } else {
+            childs = [];
+        }
+        childs = childs.map(function(doc_id) {
+            return parseInt(doc_id, 10);
+        });
+        childs = utils.sortNumbers(childs);
+        var docs = childs.map(function(doc_id) {
+            var doc = my.m.meta(doc_id);
+            if (doc !== undefined) {
+                doc.id = doc_id;
+            }
+            return doc;
+        });
+        childs = childs.filter(function(doc) {
+            return doc !== undefined;
+        });
+        view.doc.childs({
+            doc_ids: meta_doc.childs,
+            docs: docs
+        });
+
         hide_topics();
     });
 

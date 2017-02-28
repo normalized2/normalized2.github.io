@@ -138,3 +138,43 @@ view.doc.images = function(p) {
         //.attr('height', 64)
 
 };
+
+view.doc.childs = function(p) {
+    var doc_ids = p.doc_ids.split(' '),
+        docs = p.docs,
+        trs, div;
+
+    div = d3.select("div#doc_view_childs");
+
+    if (docs.length !== 0) {
+        div.classed('hidden', false);
+        trs = d3.select("table#doc_childs tbody")
+            .selectAll("tr")
+            .data(docs);
+
+        trs.enter().append("tr");
+        trs.exit().remove();
+
+        trs.on("click", function (doc) {
+                view.dfb().set_view("/doc/" + doc.id);
+            });
+
+        // clear rows
+        trs.selectAll("td").remove();
+
+        trs.append("td").append("a")
+            /* .html(function (image) {
+                var s = '';
+                //s += " <p style='color: #909090'>" + d3.time.format.utc("%Y-%m-%d %H:%M")(doc.date) + "</p>";
+                //s += "<b>" + doc.authors + "</b> ";
+                s += image.id;
+                return s;
+            })*/
+            .text( function (doc) {
+                return doc.authors;
+            });
+    } else {
+        div.classed('hidden', true);
+    }
+
+};

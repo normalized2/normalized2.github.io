@@ -39,7 +39,7 @@ metadata.dfr = function (spec) {
             // assume these columns:
             // 0  1     2      3       4      5     6       7
             // id,title,author,journal,volume,issue,pubdate,pagerange
-            // mid, title, author, content, parent_id
+            // mid, title, author, content, parant_id, img_ids, dts, childs
             result = {
                 doi: d[0].trim(), // id
                 title: d[1].trim(),
@@ -48,9 +48,7 @@ metadata.dfr = function (spec) {
                 parentId: d[4].trim(),
                 img_ids: d[5].trim(),
                 date: new Date(d[6].trim()), // pubdate (UTC)
-                pagerange: d[7].trim()
-                    .replace(/^p?p\. /, "")
-                    .replace(/-/g, "–")
+                childs: d[7].trim()
             };
 
             // now add extra columns
