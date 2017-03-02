@@ -590,23 +590,23 @@ model = function (spec) {
 
         // cache metadata variable information for each doc
         meta.conditionals().forEach(doc_category);
+        doc_category('author', function (doc) {return doc['authors'];});
     };
     that.set_meta = set_meta;
 
 
     set_meta_images = function (meta) {
         my.meta_images = meta;
-
-        // cache metadata variable information for each doc
-        //meta.conditionals().forEach(doc_category);
     };
     that.set_meta_images = set_meta_images;
 
 
     doc_category = function (v, f) {
+        //  v = date,   f= function (doc) {return formatter(doc[p.field]); }
         var doc_keys;
         // calculate and store document keys
-        doc_keys = my.meta.doc().map(f);
+        doc_keys = my.meta.doc().map(f);           // doc_keys = [2009, 2009, ....] length is ~37729
+
 
         my.worker.callback("set_doc_categories/" + v, function (result) {
             if (!my.ready.doc_categories) {

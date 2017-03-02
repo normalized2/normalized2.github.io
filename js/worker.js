@@ -222,19 +222,42 @@ topic_docs_conditional = function (t, v, key, n, selectedAuthors) {
         bisect,
         insert,
         i,
-        result = [];
+        result = [],
+        dictAuthors = { },
+        filter,
+        doc;
 
-    console.log('selectedAuthors:' + selectedAuthors);
+    selectedAuthors = selectedAuthors.split(',');
+    for (i=0; i < selectedAuthors.length; i++) {
+        if (selectedAuthors[i] !== '') {
+            dictAuthors[selectedAuthors[i]] = 1;
+        }
+    }
+
+    //  doc_categories === Array['date', 'author']
+
+    filter = function (v, key, doc, dictAuthors) {
+        var res;
+        res = (v === undefined);  // then: unconditional top docs
+        if (!res) {
+            res = (my.doc_categories[v][doc] === key);
+        }
+        if (res && (Object.keys(dictAuthors).length !== 0)) {
+            res = (my.doc_categories['author'][doc] in dictAuthors);
+            //res = true;
+        }
+        return res;
+    };
 
     // column slice
     // TODO speed bottleneck: all that row-summing gets slooow
     // because row-slicing is slow on the col-compressed matrix
     for (p = p0; p < p1; p += 1) {
-        if (v === undefined // then: unconditional top docs
-                || my.doc_categories[v][my.dt.i[p]] === key) {
+        doc = my.dt.i[p];
+        if (filter(v, key, doc, dictAuthors)) {
             docs.push({
-                doc: my.dt.i[p],
-                frac: my.dt.x[p] / my.dt.row_sum(my.dt.i[p]),
+                doc: doc,
+                frac: my.dt.x[p] / my.dt.row_sum(doc),
                 weight: my.dt.x[p]
             });
         }

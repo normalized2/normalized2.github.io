@@ -41,8 +41,6 @@ view.image.docs = function (p) {
         docs = p.docs,
         trs;
 
-    //alert(Object.keys(docs[0]));
-
     trs = d3.select("table#image_docs tbody")
         .selectAll("tr")
         .data(docs);
