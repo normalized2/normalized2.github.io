@@ -22,12 +22,12 @@ view.topic.next_prev = function (n) {
     d3.select("#topic_view_next")
         .on("click", function (w) {
             d3.event.preventDefault();
-            view.dfb().set_view("/topic/" + (n + 2));
+            view.dfb().set_view("/topic/" + (n + 2) + search_params.getUrl());
     });
     d3.select("#topic_view_prev")
         .on("click", function (w) {
             d3.event.preventDefault();
-            view.dfb().set_view("/topic/" + n);
+            view.dfb().set_view("/topic/" + n + search_params.getUrl());
     });
 };
 
@@ -105,11 +105,15 @@ view.topic.images = function (images) {
     //view.dirty("topic/words", false);
 };
 
-view.topic.authors = function (authors) {
-    var trs_w;
+view.topic.authors = function (authors, t, selectedAuthors) {
+    var trs_w, checkbox, dictAuthors = {}, i;
 
     if (view.updating() && !view.dirty("topic/words")) {
         return;
+    }
+
+    for (i=0; i < selectedAuthors.length; i++) {
+        dictAuthors[selectedAuthors[i]] = 1;
     }
 
     trs_w = d3.select("table#topic_authors tbody")
@@ -126,10 +130,29 @@ view.topic.authors = function (authors) {
     // clear rows
     trs_w.selectAll("td").remove();
 
-      trs_w.append("td").append("a")
-        //.attr("href", function (w) {
-        //    return "#/author/" + w.author;
-        //})
+    checkbox = trs_w.append("td").append("input");
+    
+    checkbox.attr('type', 'checkbox')
+        //.attr('name', 'author')
+        .attr('name',  'author')
+        .attr('value', function (author) { return author.author; })
+        .attr('checked', function (author) {
+            if (author.author in dictAuthors) {
+                return true;
+            } else {
+                return undefined;
+            }
+        })
+        .on("change", function (author) {
+            search_params.set_author(author.author, this.checked);
+            //view.updating(true);
+            view.dfb().set_view(
+                //view.topic.hash(param.t) + "/" + d.key
+                view.topic.hash(t) + search_params.getUrl()
+            );
+        });
+
+    trs_w.append("td").append("a")
         .text(function (w) { return w.author; });
     //view.dirty("topic/words", false);
 };
@@ -152,7 +175,7 @@ view.topic.docs = function (p) {
                 d3.select(".selected_condition")
                     .classed("selected_condition", false);
                 view.updating(true);
-                view.dfb().set_view(view.topic.hash(p.t));
+                view.dfb().set_view(view.topic.hash(p.t) + search_params.getUrl());
             })
             .classed("hidden", false);
 
@@ -461,7 +484,7 @@ view.topic.conditional_barplot = function (param) {
 
         // interactivity for the bars
 
-        // tooltip text
+        // tooltip text for selected topic-year
         tip_text = function (d) { return param.key.display(d.key); };
 
         // now set mouse event handlers
@@ -487,7 +510,7 @@ view.topic.conditional_barplot = function (param) {
                         .classed("selected_condition", false);
                     view.tooltip().text(tip_text(d));
                     view.updating(true);
-                    view.dfb().set_view(view.topic.hash(param.t));
+                    view.dfb().set_view(view.topic.hash(param.t) + search_params.getUrl());
                 } else {
                     // TODO selection of multiple conditions
                     // should use a brush http://bl.ocks.org/mbostock/6232537
@@ -498,7 +521,7 @@ view.topic.conditional_barplot = function (param) {
                     view.tooltip().text(tip_text(d));
                     view.updating(true);
                     view.dfb().set_view(
-                        view.topic.hash(param.t) + "/" + d.key
+                        view.topic.hash(param.t) + "/" + d.key + search_params.getUrl()
                     );
                 }
             });
@@ -560,3 +583,43 @@ view.topic.hash = function (t) {
     return "/topic/" + String(t + 1);
 };
 
+
+//  Here search params
+// TODO  must be refactored to Worker
+
+var SearchParams = function () {
+    var that = { },
+        hAuthors = { },
+        set_author,
+        getUrl;
+    
+
+    set_author = function (author, set_remove) {
+        if (set_remove) {
+            if (!(author in hAuthors)) {
+                hAuthors[author] = 1;
+            } else {
+                hAuthors[author] = 1;
+            }
+        } else {
+            if (author in hAuthors) {
+                delete hAuthors[author];
+            }
+        }
+    };
+    that.set_author = set_author;
+
+    getUrl = function () {
+        var a = Object.keys(hAuthors);
+        if (a.length > 0) {
+            return "?authors=" + Object.keys(hAuthors).join(",");
+        } else {
+            return '';
+        }
+    };
+    that.getUrl = getUrl;
+    
+    return that;
+};
+
+var search_params = SearchParams();

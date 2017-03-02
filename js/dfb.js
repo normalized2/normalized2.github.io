@@ -37,7 +37,7 @@ var dfb = function (spec) {
 // Principal view-generating functions
 // -----------------------------------
 
-my.views.set("topic", function (t_user, y) {
+my.views.set("topic", function (t_user, year, searchParams) {
     var words,
         t = +t_user - 1, // t_user is 1-based topic index, t is 0-based
         view_top_docs,
@@ -91,7 +91,13 @@ my.views.set("topic", function (t_user, y) {
     view.topic.images(images);
     
     authors = utils.shorten(my.m.topic_authors(t), VIS.topic_view.authors);
-    view.topic.authors(authors);
+
+    var selectedAuthors = [];
+    if (searchParams['authors'] !== undefined) {
+        selectedAuthors = searchParams['authors'].split(',');
+    }
+
+    view.topic.authors(authors, t, selectedAuthors);
 
     // topic conditional barplot subview
 
@@ -108,7 +114,7 @@ my.views.set("topic", function (t_user, y) {
     my.m.topic_conditional(t, my.condition, function (data) {
         view.topic.conditional({
             t: t,
-            condition: data.has(y) ? y : undefined, // validate condition y
+            condition: data.has(year) ? year : undefined, // validate condition year
             type: VIS.condition.type,
             condition_name: my.condition_name,
             data: data,
@@ -128,7 +134,7 @@ my.views.set("topic", function (t_user, y) {
             citations: docs.map(function (d) {
                 return my.bib.citation(my.m.meta(d.doc));
             }),
-            condition: y,
+            condition: year,
             type: VIS.condition.type,
             condition_name: my.condition_name,
             key: my.m.meta_condition(my.condition)
@@ -136,13 +142,16 @@ my.views.set("topic", function (t_user, y) {
     };
 
     // if no condition given, show unconditional top docs
-    if (y === undefined) {
-        my.m.topic_docs(t, VIS.topic_view.docs, view_top_docs);
+    if (year === undefined) {
+        my.m.topic_docs(t, VIS.topic_view.docs,
+            selectedAuthors.join(','),
+            view_top_docs);
     } else {
-        // otherwise, ask for list conditional on y
+        // otherwise, ask for list conditional on year
         // N.B. an invalid condition will yield no docs
         // (and a message will show to that effect)
-        my.m.topic_docs_conditional(t, my.condition, y, VIS.topic_view.docs,
+        my.m.topic_docs_conditional(t, my.condition, year, VIS.topic_view.docs,
+            selectedAuthors.join(','),
             view_top_docs);
     }
 
@@ -663,11 +672,59 @@ model_view_conditional = function (type) {
     return true;
 };
 
+/*
+function GetURLParameter(sParam)
+{
+    var sPageURL = window.location.search.substring(1);
+    var sURLVariables = sPageURL.split('&');
+    for (var i = 0; i < sURLVariables.length; i++)
+    {
+        var sParameterName = sURLVariables[i].split('=');
+        if (sParameterName[0] == sParam)
+
+        {
+            return sParameterName[1];
+        }
+    }
+
+var urlParams;
+(window.onpopstate = function () {
+    var match,
+        pl     = /\+/g,  // Regex for replacing addition symbol with a space
+        search = /([^&=]+)=?([^&]*)/g,
+        decode = function (s) { return decodeURIComponent(s.replace(pl, " ")); },
+        query  = window.location.search.substring(1);
+
+    urlParams = {};
+    while (match = search.exec(query))
+       urlParams[decode(match[1])] = decode(match[2]);
+})();
+*/
+var parseParams = function(sQuery) {
+    var match,
+        pl     = /\+/g,  // Regex for replacing addition symbol with a space
+        search = /([^&=]+)=?([^&]*)/g,
+        decode = function (s) { return decodeURIComponent(s.replace(pl, " ")); },
+        params = {};
+
+    while (match = search.exec(sQuery)) {
+       params[decode(match[1])] = decode(match[2]);
+       }
+    return params;
+};
+
+
 refresh = function () {
     var hash = window.location.hash,
-        view_parsed, v_chosen, param,
+        query,  //  != window.location.search.substring(1) as after #
+        view_parsed, v_chosen, param, param_view,
         success = false,
         j;
+
+    // split from query
+    var hash_query = hash.split('?');
+    hash = hash_query[0];
+    query = hash_query[1];
 
     if (my.aliases) {
         my.aliases.forEach(function (pat, repl) {
@@ -688,8 +745,18 @@ refresh = function () {
     v_chosen = view_parsed[1];
 
     param = view_parsed.slice(2, view_parsed.length);
+    param_view = param.slice();
+    
     if (my.views.has(v_chosen)) {
-        success = my.views.get(v_chosen).apply(that, param);
+        if (v_chosen === 'topic') {
+            if (param_view.length === 1) {
+                param_view.push(undefined);
+                param_view.push(parseParams(query));
+            } else {
+                param_view.push(parseParams(query));
+            }
+        }
+        success = my.views.get(v_chosen).apply(that, param_view);
     }
 
     if (success) {

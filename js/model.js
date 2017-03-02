@@ -350,29 +350,31 @@ model = function (spec) {
     // Get n top documents for topic t. Uses a naive document ranking,
     // by the proportion of words assigned to t, which does *not*
     // necessarily give the docs where t is most salient
-    topic_docs = function (t, n, callback) {
+    topic_docs = function (t, n, selectedAuthors, callback) {
         // brute force solution for top n docs within a category:
         // rank all of them, then take the top n
 
-        my.worker.callback("topic_docs/" + t + "/" + n, callback);
+        my.worker.callback("topic_docs/" + t + "/" + n + "/" + selectedAuthors, callback);
         my.worker.postMessage({
             what: "topic_docs",
             t: t,
+            selectedAuthors: selectedAuthors,
             n: n
         });
     };
     that.topic_docs = topic_docs;
 
     // Like topic docs, but restrict to docs with v == key
-    topic_docs_conditional = function (t, v, key, n, callback) {
+    topic_docs_conditional = function (t, v, key, n, selectedAuthors, callback) {
         my.worker.callback(
-                ["topic_docs_conditional", t, v, key, n].join("/"),
+                ["topic_docs_conditional", t, v, key, n, selectedAuthors].join("/"),
                 callback);
         my.worker.postMessage({
             what: "topic_docs_conditional",
             t: t,
             v: v,
             key: key,
+            selectedAuthors: selectedAuthors,
             n: n
         });
     };

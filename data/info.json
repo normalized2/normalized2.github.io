@@ -2,7 +2,8 @@
     "VIS": {
         "topic_view": {
             "images": 40,
-            "docs": 50
+            "docs": 50,
+            "authors": 30
         },
         "bib_sort": {
             "major": "year",

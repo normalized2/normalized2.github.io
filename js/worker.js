@@ -125,8 +125,8 @@ total_tokens = function () {
     return result;
 };
 
-topic_docs = function (t, n) {
-    return topic_docs_conditional(t, undefined, undefined, n);
+topic_docs = function (t, n, selectedAuthors) {
+    return topic_docs_conditional(t, undefined, undefined, n, selectedAuthors);
 };
 
 
@@ -214,7 +214,7 @@ conditional_total = function (v, key) {
         : my.conditional_total[v];
 };
 
-topic_docs_conditional = function (t, v, key, n) {
+topic_docs_conditional = function (t, v, key, n, selectedAuthors) {
     var p0 = my.dt.p[t],
         p1 = my.dt.p[t + 1],
         p,
@@ -223,6 +223,8 @@ topic_docs_conditional = function (t, v, key, n) {
         insert,
         i,
         result = [];
+
+    console.log('selectedAuthors:' + selectedAuthors);
 
     // column slice
     // TODO speed bottleneck: all that row-summing gets slooow
@@ -300,8 +302,8 @@ onmessage = function (e) {
         });
     } else if (e.data.what === "topic_docs") {
         postMessage({
-            what: "topic_docs/" + e.data.t + "/" + e.data.n,
-            result: topic_docs(e.data.t, e.data.n)
+            what: "topic_docs/" + e.data.t + "/" + e.data.n + "/" + e.data.selectedAuthors,
+            result: topic_docs(e.data.t, e.data.n, e.data.selectedAuthors)
         });
     } else if (e.data.what === "doc_topics") {
         postMessage({
@@ -328,9 +330,9 @@ onmessage = function (e) {
     } else if (e.data.what === "topic_docs_conditional") {
         postMessage({
             what: "topic_docs_conditional/" + e.data.t + "/" + e.data.v + "/"
-                + e.data.key + "/" + e.data.n,
+                + e.data.key + "/" + e.data.n + "/" + e.data.selectedAuthors,
             result: topic_docs_conditional(e.data.t, e.data.v,
-                    e.data.key, e.data.n)
+                    e.data.key, e.data.n, e.data.selectedAuthors)
         });
     } else {
         postMessage({ what: "error" });
