@@ -752,6 +752,7 @@ refresh = function () {
             if (param_view.length === 1) {
                 param_view.push(undefined);
                 param_view.push(parseParams(query));
+                search_params.set_authors(parseParams(query));
             } else {
                 param_view.push(parseParams(query));
             }

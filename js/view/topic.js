@@ -590,9 +590,10 @@ view.topic.hash = function (t) {
 var SearchParams = function () {
     var that = { },
         hAuthors = { },
-        set_author,
+        set_author, // set (or delete) author
+        set_authors, // clear, and set authors (from url)
         getUrl;
-    
+
 
     set_author = function (author, set_remove) {
         if (set_remove) {
@@ -608,6 +609,16 @@ var SearchParams = function () {
         }
     };
     that.set_author = set_author;
+
+    set_authors = function(params) {
+        hAuthors = { };
+        var keys;
+        if ('authors' in params) {
+            keys = params['authors'].split(',');
+            keys.forEach(function (item) {hAuthors[item] = 1;});
+        }
+    };
+    that.set_authors = set_authors;
 
     getUrl = function () {
         var a = Object.keys(hAuthors);
