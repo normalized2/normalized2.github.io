@@ -1,0 +1,4 @@
+!*.zip
+*.bak
+meta.csv
+meta_images.csv
