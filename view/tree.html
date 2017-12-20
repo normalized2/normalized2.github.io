@@ -54,6 +54,16 @@ d3.json("tree.json", function(error, flare) {
   root = d3.hierarchy(flare);
   root.x0 = 0;
   root.y0 = 0;
+
+  function collapse(d) {
+    if (d.children) {
+      d._children = d.children;
+      d._children.forEach(collapse);
+      d.children = null;
+    }
+  }
+
+  root.children.forEach(collapse);
   update(root);
 });
 
