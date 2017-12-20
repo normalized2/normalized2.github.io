@@ -248,6 +248,8 @@ function click(d) {
 function go_topic_href(d) {
   if (d.data && !d.data.is_category && d.data.href) {
     window.open(d.data.href, '_blank');
+  } else {
+    click(d);
   }
 }
 
