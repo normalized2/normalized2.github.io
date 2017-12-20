@@ -16,7 +16,8 @@
 
 .node text {
   font: 10px sans-serif;
-  pointer-events: none;
+  /*pointer-events: none; */
+  cursor: pointer;
 }
 
 .link {
@@ -163,11 +164,14 @@ function update(source) {
       .attr("height", barHeight)
       .attr("width", barWidth)
       .style("fill", color)
+      .style("cursor", cursor)
       .on("click", click);
 
   nodeEnter.append("text")
       .attr("dy", 3.5)
       .attr("dx", 5.5)
+      .style("cursor", 'pointer')
+      .on("click", go_topic_href)
       .text(function(d) { return d.data.name; });
 
   // Transition nodes to their new position.
@@ -181,6 +185,7 @@ function update(source) {
       .attr("transform", function(d) { return "translate(" + d.y + "," + d.x + ")"; })
       .style("opacity", 1)
     .select("rect")
+      .style("cursor", cursor)
       .style("fill", color);
 
   // Transition exiting nodes to the parent's new position.
@@ -236,11 +241,23 @@ function click(d) {
     d._children = null;
   }
   update(d);
+  return true;
+}
+
+function go_topic_href(d) {
+  if (d.data && !d.data.is_category && d.data.href) {
+    window.open(d.data.href, '_blank');
+  }
 }
 
 function color(d) {
   return d._children ? "#3182bd" : d.children ? "#c6dbef" : "#fd8d3c";
 }
+
+function cursor(d) {
+  return d._children ? "pointer" : d.children ? "pointer" : "auto";
+}
+
 
 function parseParams(sQuery) {
     var match,
