@@ -171,6 +171,7 @@ function update(source) {
       .attr("dy", 3.5)
       .attr("dx", 5.5)
       .style("cursor", 'pointer')
+      .style("text-decoration", strike)
       .on("click", go_topic_href)
       .text(function(d) { return d.data.name; });
 
@@ -257,6 +258,11 @@ function color(d) {
 function cursor(d) {
   return d._children ? "pointer" : d.children ? "pointer" : "auto";
 }
+
+function strike(d) {
+  return d.data.is_blocked ? "line-through" : "";
+}
+
 
 
 function parseParams(sQuery) {
