@@ -55,12 +55,71 @@ d3.json("tree.json", function(error, flare) {
   root.x0 = 0;
   root.y0 = 0;
 
+  var hash, query, hash_query, params;
+  hash = window.location.hash;
+  hash_query = hash.split('?');
+  hash = hash_query[0];
+  query = hash_query[1];
+  hash = hash.split('#').join('');
+  hash = decodeURIComponent(hash)
+
+  params = parseParams(query)
+
+  console.log(params);
+
+  function mark_uncollapsed(d, tag) {
+    if (tag === undefined) {
+        return;
+    }
+    function contains(d, tag) {
+        // leaf has tag
+        if (d.data && d.data['name'] === tag) {
+            d.uncollapsed = true;
+            return true;
+        }
+        // leaf has tag
+        if (d.name === tag) {
+            d.uncollapsed = true;
+            return true;
+        }
+        if (d.children) {
+            var j, childs = d.children;
+            var c2;
+            for (j = 0; j < childs.length; j += 1) {
+                child = childs[j];
+                c2 = contains(child, tag);
+                if (c2 === true) {
+                    d.uncollapsed = true;
+                    return true;
+                };
+            }
+        }
+        return false;
+    }
+    var c3;
+    c3 = contains(d, tag);
+    if (c3) {
+        d.uncollapsed = true;
+    };
+  }
+
   function collapse(d) {
     if (d.children) {
-      d._children = d.children;
-      d._children.forEach(collapse);
-      d.children = null;
+      if (!d.uncollapsed) {
+          // collapse
+          d._children = d.children;
+          d._children.forEach(collapse);
+          d.children = null;
+      } else {
+          // collapse childs
+          d.children.forEach(collapse);
+      }
     }
+  }
+
+  var i;
+  for (i = 0; i < root.children.length; i += 1) {
+    mark_uncollapsed(root.children[i], params['select'])
   }
 
   root.children.forEach(collapse);
@@ -182,6 +241,23 @@ function click(d) {
 function color(d) {
   return d._children ? "#3182bd" : d.children ? "#c6dbef" : "#fd8d3c";
 }
+
+function parseParams(sQuery) {
+    var match,
+        pl     = /\+/g,  // Regex for replacing addition symbol with a space
+        search = /([^&=]+)=?([^&]*)/g,
+        decode = function (s) {
+            return decodeURIComponent(s.replace(pl, " "));
+            },
+        params = {};
+
+    if (sQuery === undefined) {return params;}
+
+    while ((match = search.exec(sQuery)) !== null) {
+        params[decode(match[1])] = decode(match[2]);
+       }
+    return params;
+};
 
 </script>
 

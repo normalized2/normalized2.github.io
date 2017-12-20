@@ -93,7 +93,7 @@ my.views.set("topic", function (t_user, year, searchParams) {
     images = utils.shorten(my.m.topic_images(t), VIS.topic_view.images);
 
     view.topic.images(images);
-    
+
     authors = utils.shorten(my.m.topic_authors(t), VIS.topic_view.authors);
 
     var selectedAuthors = [];
@@ -707,7 +707,7 @@ refresh = function () {
 
     param = view_parsed.slice(2, view_parsed.length);
     param_view = param.slice();
-    
+
     if (my.views.has(v_chosen)) {
         if (v_chosen === 'topic') {
             params_parsed = utils.parseParams(query);
