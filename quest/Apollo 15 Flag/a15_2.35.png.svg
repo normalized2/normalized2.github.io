@@ -1,0 +1,39 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg width="576px" height="324px"
+     viewBox="0 0 576 324"
+     version="1.1"
+     xmlns="http://www.w3.org/2000/svg" xmlns:xlink= "http://www.w3.org/1999/xlink">
+
+  <style>
+    /* <![CDATA[ */
+    circle {
+      fill: none;
+      stroke: red;
+      stroke-width: 1px;
+    }
+    /* ]]> */
+  </style>
+
+  <rect x="1" y="1" width="575" height="323" fill="none" stroke="#ff0000"/>
+  <image xlink:href="a15_2.35.png" x="0" y="0" width="576px" height="324px"/>
+
+  
+<circle cx="262.260449676" cy="36.3663799608" r="5" />
+<text x="262.260449676" y="66.3663799608" >0</text>
+
+
+<circle cx="262.321364349" cy="142.628282802" r="5" />
+<text x="262.321364349" y="172.628282802" >1</text>
+
+
+<circle cx="395.652001751" cy="35.5305557428" r="5" />
+<text x="395.652001751" y="65.5305557428" >2</text>
+
+
+<circle cx="396.710427041" cy="161.30979327" r="5" />
+<text x="396.710427041" y="191.30979327" >3</text>
+
+
+</svg>

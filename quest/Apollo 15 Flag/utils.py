@@ -10,6 +10,7 @@ import re
 import pandas as pd
 from collections import OrderedDict
 import json
+from subprocess import call
 
 from IPython.core.display import display, HTML, SVG
 
@@ -61,7 +62,7 @@ def D(i1, i2, df):
     return np.linalg.norm(p1 - p2)
 
 
-def get_labled_svg(fn, df, scale):
+def get_labled_svg(fn, df, scale, save=False):
 
     points_templ = []
     for i, row in df.iterrows():
@@ -71,9 +72,18 @@ def get_labled_svg(fn, df, scale):
                                                c_scaled[0], c_scaled[1] + 30,
                                                i
                                               ))
-    #return points_templ
     svg = svg_template.format("\n".join(points_templ))
+
+    fn_svg = fn + ".svg"
+    with open(fn_svg, "w") as f:
+        f.write(svg)
+
+    fn_render = fn + ".png"
+
+    call(["rsvg", fn_svg, fn_render])
+
     return svg
+
 
 svg_template = """<?xml version="1.0" standalone="no"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
