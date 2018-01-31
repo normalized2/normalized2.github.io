@@ -1,0 +1,198 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Apollo Lunar Photo of the Sun</title>
+	<script src="jquery.min.js" type="text/javascript"></script>
+    <script src="highcharts.js" type="text/javascript"></script>
+    <script src="exporting.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+// Общие функции/алиасы
+var sqr = function(a){ return Math.pow(a, 2); },
+    sqrt = function(a){ return Math.sqrt(a); },
+    rad = function(alfa){ return alfa / 180 * Math.PI; }, // Градусы в радианы
+    deg = function(alfa){ return alfa / Math.PI * 180; }, // Радианы в градусы
+    sin = function(alfa){ return Math.sin(alfa); },
+    cos = function(alfa){ return Math.cos(alfa); },
+    tan = function(alfa){ return Math.tan(alfa); },
+    asin = function(k){ return Math.asin(k); },
+    acos = function(k){ return Math.acos(k); },
+    atan = function(k){ return Math.atan(k); },
+    aodigdfg;
+// Константы
+var Nrp = 1.52, // Показатель преломления Reseau Plate
+    Hrp = 4, // Толщина Reseau Plate, мм
+    Xmax = 25, // Диапазон расчёта вдоль кадра (половина ширины кадра, мм)
+    Xstep = 0.01, // Шаг расчёта вдоль кадра, мм
+    Sunwidth = 0.5, // Диаметр солнечного диска на плёнке, мм
+    Sunstep = 0.01, // Шаг расчёта вдоль диаметра солнечного диска, мм
+    sigma = 0.1, // СКО пятна засветки на плёнке от единичного луча (и в силу того, что расчёт по углам ведётся дискретно, позволяет представить луч некоторым "пучком" ), мм
+    Fistep = 0.01, // Шаг расчёта по углу лучей от точек Солнца, градусы
+    PI = Math.PI,
+// Вычисляемые величины
+    R0 = function(){ return sqr((Nrp-1)/(Nrp+1)); }, // Коэффициент отражения от границы стекло-воздух при угле падения 0°
+    Fifr = function(){ return asin( 1/Nrp ); }, // Угол полного внутреннего отражения
+// Функции
+    Apr = function(fi, _Fifr){ // Угол преломления на границе стекло-воздух
+        if( fi >= _Fifr ){ // Полное вн. отражение
+            return PI/2;
+        }else{
+            return asin( Nrp * sin(fi) );
+        }
+    },
+    Rfn = function(fi, _Fifr){ // Коэфф. отражения на границе стекло-воздух от угла падения
+        return 0.5*( sqr( sin(fi - Apr(fi, _Fifr)) )/sqr( sin(fi + Apr(fi, _Fifr)) ) + 
+                     sqr( tan(fi - Apr(fi, _Fifr)) )/sqr( tan(fi + Apr(fi, _Fifr)) ) );
+    },
+    Nz = function(x, sigma, mu, K){ // Распределение засветки вдоль x от луча c интенсивностью K, падающего в mu. sigma - СКО пятна.
+        return K * ( Math.exp( - sqr(x - mu)/(2*sqr(sigma)) ) );
+    },
+    asdjksdf;
+// Расчёт
+var Xs, Ex, Emax;
+function doCalc(){
+    var x, Sx, K, Kp, xL, xLi, tm, Rfi, sRfi, Pfi, Xsi;
+    var _Fistep = rad(Fistep),
+        _Fifr = Fifr();
+    Xs = []; Emax = 0;
+    tm = (new Date()).getTime();
+    for(var x = 0; x < Xmax; x += Xstep ){ // Цикл вдоль координаты x
+        x = +x.toFixed(10);
+        Xsi = { 'x': x, 'E': 0 };
+        for( fi = 0; fi < _Fifr; fi += Fistep ){ // Цикл по лучам
+            // Запоминаем коэффициенты для нового угла, чтобы не считать во внутренних циклах
+            Rfi = Rfn(fi, _Fifr); // Коэфф. отражения 
+            sRfi = sqr(Rfi); // Квадрат коэфф. отражения 
+            Pfi = Rfi*(1 - Rfi); // Коэфф. пропускания с учётом отражения
+            // Первое переотражение
+            Kp = Pfi; // Прошедший луч
+            K = sRfi; // Отражённый луч
+            xL = 2 * Hrp * tan(fi); // Точка попадания луча на плёнку после переотражения
+            // Цикл по переотражениям луча, пока он: а) ещё достаточно интенсивный и б) не убежал далеко за текущую координату x
+            while( Kp > 0.000001 && (xL - 3*sigma - 0.5*Sunwidth) < x ){ 
+                if( (xL + 3*sigma + 0.5*Sunwidth) > x ){
+                    for(xLi = xL - 0.5*Sunwidth; xLi <= xL + 0.5*Sunwidth; xLi += Sunstep){ // Цикл по точкам вдоль диаметра Солнца
+                        // Если текущая координата в пределах ±3σ от данной точки попадания луча, добавляем его интенсивность к текущей точке
+                        if( (xLi - 3*sigma) < x && (xLi + 3*sigma) > x ){ 
+                            Xsi['E'] += Nz(x, sigma, xLi, Kp);
+                        }
+                    }
+                }
+                // Делаем следующее переотражение
+                Kp = K * Pfi; // Прошедший луч
+                K = K * sRfi; // Отражённый луч
+                xL += 2 * Hrp * tan(fi); // Точка следующего попадания луча на плёнку
+            }
+        }
+        if( Xsi['E'] > Emax ) Emax = Xsi['E']; // Запоминаем максимальная значение для нормировки
+        Xs.push(Xsi);
+    }
+    tm = (new Date()).getTime() - tm;
+    console.log(tm);
+    $("#calcTime").html('Время расчёта: ' + tm + ' мс');
+}
+function drawChart(){
+    Ex = [];
+    for(var i = 0; i < Xs.length; i++ ){
+        Ex.push([Xs[i]['x'], Xs[i]['E']/Emax]);
+    }
+    Highcharts.chart('container', {
+        chart: {
+            type: 'spline'
+        },
+        title: {
+            text: 'Интенсивность светового потока вдоль радиуса'
+        },
+        xAxis: {
+            tickInterval: 2,
+            tickWidth: 0,
+            gridLineWidth: 1,
+            title: {
+                enabled: true,
+                text: 'x, мм'
+            },
+            maxPadding: 0.05,
+            showLastLabel: true
+        },
+        yAxis: {
+            title: {
+                text: 'I, норм'
+            },
+//            type: 'logarithmic',
+            lineWidth: 1
+        },
+        legend: {
+            enabled: false
+        },
+        plotOptions: {
+            spline: {
+                marker: {
+                    enable: false
+                }
+            }
+        },
+        series: [{
+            name: 'Ex',
+            data: Ex
+        }]
+    });
+}
+$(document).ready(function(){
+    $(".inp_param").each(function(idx, inp){
+        $(inp).val( eval($(inp).attr('param_name')) );
+        $(inp).attr( 'def', $(inp).val() );
+    });
+    $("#reset").click(function(){
+        $(".inp_param").each(function(idx, inp){
+            $(inp).val( $(inp).attr('def') );
+            eval( $(inp).attr('param_name') + '=' + $(inp).val() );
+        });
+    });
+    $("#docalc").click(function(){
+        doCalc();
+        drawChart();
+    });
+    $(".inp_param").change(function(){
+        eval( $(this).attr('param_name') + '=' + $(this).val() );
+    });
+    
+});
+</script>
+</head>
+<body>
+<div style="max-width: 900px; margin: 0 auto;">
+<h2>Модель образования колец на фотографиях Солнца в миссиях Аполлон.</h2>
+Параметры модели<br />
+Показатель преломления Reseau Plate:<br />
+<input id="inp_Nrp" param_name="Nrp" def="" type="text" class="inp_param" />
+<br />
+Толщина Reseau Plate, мм:<br />
+<input id="inp_Hrp" param_name="Hrp" def="" type="text" class="inp_param" />
+<br />
+Диапазон расчёта вдоль кадра (половина ширины кадра), мм:<br />
+<input id="inp_Xmax" param_name="Xmax" def="" type="text" class="inp_param" />
+<br />
+Шаг расчёта вдоль кадра, мм:<br />
+<input id="inp_Xstep" param_name="Xstep" def="" type="text" class="inp_param" />
+<br />
+Диаметр солнечного диска на плёнке, мм:<br />
+<input id="inp_Sunwidth" param_name="Sunwidth" def="" type="text" class="inp_param" />
+<br />
+Шаг расчёта вдоль диаметра солнечного диска, мм:<br />
+<input id="inp_Sunstep" param_name="Sunstep" def="" type="text" class="inp_param" />
+<br />
+СКО пятна засветки на плёнке от единичного луча, мм:<br />
+<input id="inp_sigma" param_name="sigma" def="" type="text" class="inp_param" />
+<br />
+Шаг расчёта по углу лучей от отражения Солнца от плёнки, градусы:<br />
+<input id="inp_Fistep" param_name="Fistep" def="" type="text" class="inp_param" />
+<br /><br />
+<input type="button" id="reset" value="Сброс" />&nbsp;&nbsp;<input type="button" id="docalc" value="Расчёт" />
+<br />
+<div id="container" style="min-width: 310px; height: 400px; max-width: 600px;"></div>
+<br />
+<span id="calcTime"></span>
+</div>
+</body>
+</html>
