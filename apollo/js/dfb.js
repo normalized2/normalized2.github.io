@@ -42,16 +42,25 @@ var dfb = function (spec) {
 my.views.set("doc", function (d) {
     var div = d3.select("div#doc_view"),
         doc = +d,
-        row;
+        rows,
+        all_doc;
 
     if (!my.m.meta() ) {
         view.loading(true);
         return true;
     }
 
-    row = my.m.meta(d['image']);
 
-    d3.select("p#doc_title").text(row.title);
+    //alert(Object.keys(my.m.doc_category));
+
+    all_doc = my.m.meta(undefined);
+
+    rows = all_doc.filter(function(r) { return r.doi  == d['image'];});
+
+    console.log("rows:");
+    console.log(rows);
+
+    d3.select("p#doc_title").text(rows[0].title);
 
 
     view.loading(false);
@@ -342,8 +351,6 @@ load = function () {
             }
         }
 
-
-
         // now we can install the main event listeners
         // TODO can we do this even earlier?
         setup_listeners();
@@ -353,6 +360,7 @@ load = function () {
             if (typeof meta_s === 'string') {
                 // and get the metadata object ready
                 my.metadata.from_string(meta_s);
+
                 my.condition = VIS.condition.spec.field;
                 my.condition_name = VIS.condition.name || my.condition;
 
@@ -361,6 +369,7 @@ load = function () {
                     metadata.key[VIS.condition.type],
                     VIS.condition.spec
                 );
+
                 // pass to object (also stores conditional keys)
                 my.m.set_meta(my.metadata);
                 refresh();
@@ -368,7 +377,8 @@ load = function () {
                 view.error("Unable to load metadata from " + VIS.files.meta);
             }
         });
-        
+
+
         refresh();
     });
 };
