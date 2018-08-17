@@ -44,12 +44,12 @@ my.views.set("doc", function (d) {
         doc = +d,
         rows,
         all_doc,
-        df_alsj, df_flickr,
+        df_alsj, df_flickr, df_common,
         rows,
         row,
         p, t;
 
-    if (!my.m.meta_flickr() || !my.m.meta_alsj()) {
+    if (!my.m.meta_flickr() || !my.m.meta_alsj() || !my.m.meta_common() ) {
         view.loading(true);
         return true;
     }
@@ -62,6 +62,18 @@ my.views.set("doc", function (d) {
     //console.log("rows:");
     //console.log(rows);
     //d3.select("p#doc_title").text(rows[0].title);
+
+    df_common = my.m.meta_common(undefined);
+    rows = df_common.filter(function(r) { return r.number  == d['image'];});
+    row = rows[0];
+
+    p = d3.select("p#image_next");
+    p.classed("hidden", false)
+    p.text(row.next);
+
+    p = d3.select("p#image_prev");
+    p.classed("hidden", false)
+    p.text(row.prev);
 
 
     df_alsj = my.m.meta_alsj(undefined);
@@ -402,6 +414,16 @@ load = function () {
             }
         }
 
+        if (my.metadata_common === undefined) {
+            if (VIS.metadata_common.type === "common") {
+                my.metadata_common = metadata.common(VIS.metadata_common.spec);
+            } else {
+                // default to DfR subclass if no other specified
+                my.metadata_common = metadata.common();
+                view.warning("Unknown metadata.type; defaulting to common.");
+            }
+        }
+
         // now we can install the main event listeners
         // TODO can we do this even earlier?
         setup_listeners();
@@ -431,6 +453,19 @@ load = function () {
                 view.error("Unable to load metadata from " + VIS.files.meta_images);
             }
         });
+
+        load_data(VIS.files.meta_common, function (error, meta_s) {
+            if (typeof meta_s === 'string') {
+                // and get the metadata object ready
+                my.metadata_common.from_string(meta_s);
+                // pass to object (also stores conditional keys)
+                my.m.set_meta_common(my.metadata_common);
+                refresh();
+            } else {
+                view.error("Unable to load metadata from " + VIS.files.meta_images);
+            }
+        });
+
 
         refresh();
     });

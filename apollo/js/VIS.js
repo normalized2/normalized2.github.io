@@ -11,6 +11,7 @@ var VIS = {
         info: "data/info.json",
         meta_flickr: "data/flickr_images_aligned.csv.zip",  // remove .zip to use uncompressed data
         meta_alsj: "data/alsj_images_aligned.csv.zip",  // remove .zip to use uncompressed data
+        meta_common: "data/common_images.csv.zip",  // remove .zip to use uncompressed data
     },
     aliases: {                  // simple aliasing in URLs:
         yearly: "conditional"   // #/model/yearly/... -> #/model/conditional/...
@@ -26,6 +27,13 @@ var VIS = {
     },
     metadata_alsj: {
         type: "alsj",        // use "base" if meta.csv has a header
+        spec: {
+            extra_fields: [ ],// (dfr type only) names for extra columns
+            //date_field: "date"// (base type only) name of date field
+        }
+    },
+    metadata_common: {
+        type: "common",        // use "base" if meta.csv has a header
         spec: {
             extra_fields: [ ],// (dfr type only) names for extra columns
             //date_field: "date"// (base type only) name of date field
