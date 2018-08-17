@@ -67,49 +67,87 @@ my.views.set("doc", function (d) {
     rows = df_common.filter(function(r) { return r.number  == d['image'];});
     row = rows[0];
 
-    p = d3.select("p#image_next");
-    p.classed("hidden", false)
-    p.text(row.next);
+    var number_next, number_prev, a;
 
-    p = d3.select("p#image_prev");
-    p.classed("hidden", false)
-    p.text(row.prev);
+    number_next = row.next.split(',');
+    console.log(number_next);
+    if (number_next.length !=0) {
+        p = d3.select("p#image_next");
+        p.classed("hidden", false)
+        //p.text(row.next);
+        number_next = number_next[0];
+        console.log(number_next);
+        a = d3.select("#image_view_next");
+        a.on("click", function (w) {
+                d3.event.preventDefault();
+                view.dfb().set_view("/doc?image=" + number_next);
+            });
+        a.text(number_next);
+    } else {
+        p = d3.select("p#image_next");
+        p.classed("hidden", true)
+    }
+
+    number_prev = row.prev.split(',');
+    if (number_prev.length !=0) {
+        p = d3.select("p#image_prev");
+        p.classed("hidden", false)
+        //p.text(row.next);
+        number_prev = number_prev[number_prev.length - 1];
+        a = d3.select("#image_view_prev");
+        
+        a.on("click", function (w) {
+                d3.event.preventDefault();
+                view.dfb().set_view("/doc?image=" + number_prev);
+            });
+        
+        a.text(number_prev);
+    } else {
+        p = d3.select("p#image_prev");
+        p.classed("hidden", true)
+    }
+
 
 
     df_alsj = my.m.meta_alsj(undefined);
 
     rows = df_alsj.filter(function(r) { return r.number  == d['image'];});
+    if (rows.length != 0) {
+        row = rows[0];
 
-    row = rows[0];
+        d3.select("p#image_AS_title").text(row.title);
 
-    d3.select("p#image_AS_title").text(row.title);
+        p = d3.select("p#image_time");
+        p.classed("hidden", false);
+        p.text(row.time);
 
-    p = d3.select("p#image_time");
-    p.classed("hidden", false);
-    p.text(row.time);
+        t = "https://www.hq.nasa.gov/alsj/a{mission}/AS{mission}-{magazine}-{number}.jpg";
+        t = t.split('{mission}').join(row.mission)
+        t = t.split('{magazine}').join(row.magazine)
+        t = t.split('{number}').join(row.number)
 
-    t = "https://www.hq.nasa.gov/alsj/a{mission}/AS{mission}-{magazine}-{number}.jpg";
-    t = t.split('{mission}').join(row.mission)
-    t = t.split('{magazine}').join(row.magazine)
-    t = t.split('{number}').join(row.number)
+        //p = d3.select("img#image_thumb");
+        //p.classed("hidden", false);
+        //p.attr('src', t);
 
-    //p = d3.select("img#image_thumb");
-    //p.classed("hidden", false);
-    //p.attr('src', t);
+        p = d3.select("p#image_desc_html");
+        p.classed("hidden", false);
+        t = row.desc_html;
+        t = t.replace(/\\r\\n/g, '\n<br />');
+        p.html(t);
 
-    p = d3.select("p#image_desc_html");
-    p.classed("hidden", false);
-    t = row.desc_html;
-    t = t.replace(/\\r\\n/g, '\n<br />');
-    p.html(t);
-
+    } else {
+        d3.select("p#image_AS_title").text('');
+        p = d3.select("p#image_desc_html");
+        p.classed("hidden", true);
+    }
 
     df_flickr = my.m.meta_flickr(undefined);
     rows = df_flickr.filter(function(r) { return r.number  == d['image'];});
     row = rows[0];
 
     var flickr_url = utils.get_flickr_url(row, 'c');
-    d3.select("p#image_flickr_url").text(flickr_url);
+    //d3.select("p#image_flickr_url").text(flickr_url);
 
     p = d3.select("img#image_thumb");
     p.classed("hidden", false);
