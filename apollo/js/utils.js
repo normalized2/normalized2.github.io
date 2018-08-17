@@ -251,6 +251,7 @@ var utils = (function () {
         res = url_templ;
         res = res.split('{server}').join(row.server);
         res = res.split('{secret}').join(row.secret);
+        res = res.split('{id}').join(row.id);
         res = res.split('{size}').join(size);
 
         return res;

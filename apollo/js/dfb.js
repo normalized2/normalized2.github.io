@@ -44,12 +44,12 @@ my.views.set("doc", function (d) {
         doc = +d,
         rows,
         all_doc,
-        df_alsj,
-        rows_alsj,
+        df_alsj, df_flickr,
+        rows,
         row,
         p, t;
 
-    if (!my.m.meta() ) {
+    if (!my.m.meta_flickr() || !my.m.meta_alsj()) {
         view.loading(true);
         return true;
     }
@@ -57,7 +57,7 @@ my.views.set("doc", function (d) {
 
     //alert(Object.keys(my.m.doc_category));
 
-    all_doc = my.m.meta(undefined);
+    //all_doc = my.m.meta(undefined);
     //rows = all_doc.filter(function(r) { return r.doi  == d['image'];});
     //console.log("rows:");
     //console.log(rows);
@@ -66,9 +66,9 @@ my.views.set("doc", function (d) {
 
     df_alsj = my.m.meta_alsj(undefined);
 
-    rows_alsj = df_alsj.filter(function(r) { return r.number  == d['image'];});
+    rows = df_alsj.filter(function(r) { return r.number  == d['image'];});
 
-    row = rows_alsj[0];
+    row = rows[0];
 
     d3.select("p#image_AS_title").text(row.title);
 
@@ -80,18 +80,29 @@ my.views.set("doc", function (d) {
     t = t.split('{mission}').join(row.mission)
     t = t.split('{magazine}').join(row.magazine)
     t = t.split('{number}').join(row.number)
-    p = d3.select("img#image_thumb");
-    p.classed("hidden", false);
-    p.attr('src', t);
+
+    //p = d3.select("img#image_thumb");
+    //p.classed("hidden", false);
+    //p.attr('src', t);
 
     p = d3.select("p#image_desc_html");
     p.classed("hidden", false);
     t = row.desc_html;
-    t = t.replace("b'", '');
-    t = t.replace('b"', '');
-    t = t.replace(/\\'/g, "'");
     t = t.replace(/\\r\\n/g, '\n<br />');
     p.html(t);
+
+
+    df_flickr = my.m.meta_flickr(undefined);
+    rows = df_flickr.filter(function(r) { return r.number  == d['image'];});
+    row = rows[0];
+
+    var flickr_url = utils.get_flickr_url(row, 'c');
+    d3.select("p#image_flickr_url").text(flickr_url);
+
+    p = d3.select("img#image_thumb");
+    p.classed("hidden", false);
+    p.attr('src', flickr_url);
+
 
     view.loading(false);
     return true;
@@ -369,15 +380,15 @@ load = function () {
         // this does mean, however, that such custom objects can only look in
         // at VIS parameters by directly accessing the global
 
-        if (my.metadata === undefined) {
-            if (VIS.metadata.type === "base") {
-                my.metadata = metadata(VIS.metadata.spec);
-            } else if (VIS.metadata.type === "dfr") {
-                my.metadata = metadata.dfr(VIS.metadata.spec);
+        if (my.metadata_flickr === undefined) {
+            if (VIS.metadata_flickr.type === "base") {
+                my.metadata_flickr = metadata(VIS.metadata_flickr.spec);
+            } else if (VIS.metadata_flickr.type === "flickr") {
+                my.metadata_flickr = metadata.flickr(VIS.metadata_flickr.spec);
             } else {
                 // default to DfR subclass if no other specified
-                my.metadata = metadata.dfr();
-                view.warning("Unknown metadata.type; defaulting to dfr.");
+                my.metadata_flickr = metadata.flickr();
+                view.warning("Unknown metadata.type; defaulting to flickr.");
             }
         }
 
@@ -396,25 +407,16 @@ load = function () {
         setup_listeners();
 
         // now launch remaining data loading; ask for a refresh when done
-        load_data(VIS.files.meta, function (error, meta_s) {
+        load_data(VIS.files.meta_flickr, function (error, meta_s) {
             if (typeof meta_s === 'string') {
                 // and get the metadata object ready
-                my.metadata.from_string(meta_s);
-
-                my.condition = VIS.condition.spec.field;
-                my.condition_name = VIS.condition.name || my.condition;
-
-                my.metadata.condition(
-                    my.condition,
-                    metadata.key[VIS.condition.type],
-                    VIS.condition.spec
-                );
+                my.metadata_flickr.from_string(meta_s);
 
                 // pass to object (also stores conditional keys)
-                my.m.set_meta(my.metadata);
+                my.m.set_meta_flickr(my.metadata_flickr);
                 refresh();
             } else {
-                view.error("Unable to load metadata from " + VIS.files.meta);
+                view.error("Unable to load metadata from " + VIS.files.meta_flickr);
             }
         });
 

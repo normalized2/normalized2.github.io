@@ -28,6 +28,7 @@ model = function (spec) {
         alpha,
         meta,
         meta_alsj,
+        meta_flickr,
         meta_condition,
         vocab,
         topic_scaled,
@@ -45,6 +46,7 @@ model = function (spec) {
         set_tw,
         set_meta,
         set_meta_alsj,
+        set_meta_flickr,
         doc_category,
         set_topic_scaled;
 
@@ -253,6 +255,17 @@ model = function (spec) {
         return my.meta_alsj.doc(d);
     };
     that.meta_alsj = meta_alsj;
+
+    // metadata table
+    meta_flickr = function (d) {
+        if (!my.meta_flickr) {
+            return undefined;
+        }
+
+        return my.meta_flickr.doc(d);
+    };
+    that.meta_flickr = meta_flickr;
+
 
     // expose metadata's conditional key/invert functions
     meta_condition = function (key) {
@@ -625,6 +638,13 @@ model = function (spec) {
         my.meta_alsj = meta;
     };
     that.set_meta_alsj = set_meta_alsj;
+
+    set_meta_flickr = function (meta) {
+        my.meta_flickr = meta;
+    };
+    that.set_meta_flickr = set_meta_flickr;
+
+
 
     doc_category = function (v, f) {
         //  v = date,   f= function (doc) {return formatter(doc[p.field]); }

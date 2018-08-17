@@ -27,7 +27,7 @@
                 "images": 7
             }
         },
-        "url_pattern": "http://glav.su/forum/1-misc/682/$mid$-message/#message$mid$",
+        "url_pattern": "http://$mid$-message/#message$mid$",
         "overview_authors": 12,
         "condition": {
             "type": "time",

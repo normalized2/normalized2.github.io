@@ -1,7 +1,7 @@
 /*global d3, metadata */
 "use strict";
 
-// ---- metadata specification: DfR ----
+// ---- metadata specification: alsj ----
 
 metadata.alsj = function (spec) {
     var my = spec || { },
