@@ -46,7 +46,8 @@ my.views.set("doc", function (d) {
         all_doc,
         df_alsj,
         rows_alsj,
-        p;
+        row,
+        p, t;
 
     if (!my.m.meta() ) {
         view.loading(true);
@@ -67,12 +68,30 @@ my.views.set("doc", function (d) {
 
     rows_alsj = df_alsj.filter(function(r) { return r.number  == d['image'];});
 
-    d3.select("p#image_AS_title").text(rows_alsj[0].title);
+    row = rows_alsj[0];
 
-    p = d3.select("p#image_time")
+    d3.select("p#image_AS_title").text(row.title);
+
+    p = d3.select("p#image_time");
     p.classed("hidden", false);
+    p.text(row.time);
 
-    p.text(rows_alsj[0].time)
+    t = "https://www.hq.nasa.gov/alsj/a{mission}/AS{mission}-{magazine}-{number}.jpg";
+    t = t.split('{mission}').join(row.mission)
+    t = t.split('{magazine}').join(row.magazine)
+    t = t.split('{number}').join(row.number)
+    p = d3.select("img#image_thumb");
+    p.classed("hidden", false);
+    p.attr('src', t);
+
+    p = d3.select("p#image_desc_html");
+    p.classed("hidden", false);
+    t = row.desc_html;
+    t = t.replace("b'", '');
+    t = t.replace('b"', '');
+    t = t.replace(/\\'/g, "'");
+    t = t.replace(/\\r\\n/g, '\n<br />');
+    p.html(t);
 
     view.loading(false);
     return true;

@@ -225,6 +225,39 @@ var utils = (function () {
     };
     that.isSuperset = isSuperset;
 
+    var availables_sizes = {
+    undefined: 'link on page',
+    'sq': 'Square 75 (75 x 75)',
+    'q': 'Square 150 (150 x 150)',
+    't': 'Thumbnail (100 x 99)',
+    's': 'Small 240 (240 x 239)',
+    'n': 'Small 320 (320 x 318)',
+    'm': 'Medium 500 (500 x 497)',
+    'z': 'Medium 640 (640 x 636)',
+    'c': 'Medium 800 (800 x 795)',
+    'l': 'Large 1024 (1024 x 1018)',
+    'h': 'Large 1600 (1600 x 1590)',
+    'k': 'Large 2048 (2048 x 2036)',
+    'o': 'Original (4175 x 4150)',
+    };
+
+
+    that.availables_sizes = availables_sizes;
+
+    var get_flickr_url = function (row, size) {
+        var url_templ, res;
+        url_templ = "https://c1.staticflickr.com/1/{server}/{id}_{secret}_{size}.jpg";
+
+        res = url_templ;
+        res = res.split('{server}').join(row.server);
+        res = res.split('{secret}').join(row.secret);
+        res = res.split('{size}').join(size);
+
+        return res;
+    };
+
+    that.get_flickr_url = get_flickr_url;
+
 
     return that;
 }());
