@@ -43,7 +43,10 @@ my.views.set("doc", function (d) {
     var div = d3.select("div#doc_view"),
         doc = +d,
         rows,
-        all_doc;
+        all_doc,
+        df_alsj,
+        rows_alsj,
+        p;
 
     if (!my.m.meta() ) {
         view.loading(true);
@@ -54,14 +57,22 @@ my.views.set("doc", function (d) {
     //alert(Object.keys(my.m.doc_category));
 
     all_doc = my.m.meta(undefined);
+    //rows = all_doc.filter(function(r) { return r.doi  == d['image'];});
+    //console.log("rows:");
+    //console.log(rows);
+    //d3.select("p#doc_title").text(rows[0].title);
 
-    rows = all_doc.filter(function(r) { return r.doi  == d['image'];});
 
-    console.log("rows:");
-    console.log(rows);
+    df_alsj = my.m.meta_alsj(undefined);
 
-    d3.select("p#doc_title").text(rows[0].title);
+    rows_alsj = df_alsj.filter(function(r) { return r.number  == d['image'];});
 
+    d3.select("p#image_AS_title").text(rows_alsj[0].title);
+
+    p = d3.select("p#image_time")
+    p.classed("hidden", false);
+
+    p.text(rows_alsj[0].time)
 
     view.loading(false);
     return true;
@@ -351,6 +362,16 @@ load = function () {
             }
         }
 
+        if (my.metadata_alsj === undefined) {
+            if (VIS.metadata_alsj.type === "alsj") {
+                my.metadata_alsj = metadata.alsj(VIS.metadata_alsj.spec);
+            } else {
+                // default to DfR subclass if no other specified
+                my.metadata_alsj = metadata.alsj();
+                view.warning("Unknown metadata.type; defaulting to alsj.");
+            }
+        }
+
         // now we can install the main event listeners
         // TODO can we do this even earlier?
         setup_listeners();
@@ -378,6 +399,17 @@ load = function () {
             }
         });
 
+        load_data(VIS.files.meta_alsj, function (error, meta_s) {
+            if (typeof meta_s === 'string') {
+                // and get the metadata object ready
+                my.metadata_alsj.from_string(meta_s);
+                // pass to object (also stores conditional keys)
+                my.m.set_meta_alsj(my.metadata_alsj);
+                refresh();
+            } else {
+                view.error("Unable to load metadata from " + VIS.files.meta_images);
+            }
+        });
 
         refresh();
     });

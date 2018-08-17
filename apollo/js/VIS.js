@@ -10,6 +10,7 @@ var VIS = {
     files: { // what data files to request
         info: "data/info.json",
         meta: "data/meta.csv.zip",  // remove .zip to use uncompressed data
+        meta_alsj: "data/alsj_images_aligned.csv.zip",  // remove .zip to use uncompressed data
     },
     aliases: {                  // simple aliasing in URLs:
         yearly: "conditional"   // #/model/yearly/... -> #/model/conditional/...
@@ -23,8 +24,8 @@ var VIS = {
             date_field: "date"// (base type only) name of date field
         }
     },
-    metadata_images: {
-        type: "images",        // use "base" if meta.csv has a header
+    metadata_alsj: {
+        type: "alsj",        // use "base" if meta.csv has a header
         spec: {
             extra_fields: [ ],// (dfr type only) names for extra columns
             //date_field: "date"// (base type only) name of date field

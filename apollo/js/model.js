@@ -27,7 +27,7 @@ model = function (spec) {
         topic_total,
         alpha,
         meta,
-        meta_images,
+        meta_alsj,
         meta_condition,
         vocab,
         topic_scaled,
@@ -44,7 +44,7 @@ model = function (spec) {
         set_dt, // methods for loading model data from strings
         set_tw,
         set_meta,
-        set_meta_images,
+        set_meta_alsj,
         doc_category,
         set_topic_scaled;
 
@@ -245,14 +245,14 @@ model = function (spec) {
     that.meta = meta;
 
     // metadata table
-    meta_images = function (d) {
-        if (!my.meta_images) {
+    meta_alsj = function (d) {
+        if (!my.meta_alsj) {
             return undefined;
         }
 
-        return my.meta_images.doc(d);
+        return my.meta_alsj.doc(d);
     };
-    that.meta_images = meta_images;
+    that.meta_alsj = meta_alsj;
 
     // expose metadata's conditional key/invert functions
     meta_condition = function (key) {
@@ -621,11 +621,10 @@ model = function (spec) {
     that.set_meta = set_meta;
 
 
-    set_meta_images = function (meta) {
-        my.meta_images = meta;
+    set_meta_alsj = function (meta) {
+        my.meta_alsj = meta;
     };
-    that.set_meta_images = set_meta_images;
-
+    that.set_meta_alsj = set_meta_alsj;
 
     doc_category = function (v, f) {
         //  v = date,   f= function (doc) {return formatter(doc[p.field]); }
