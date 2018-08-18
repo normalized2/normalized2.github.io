@@ -44,7 +44,7 @@ my.views.set("doc", function (d) {
         doc = +d,
         rows,
         all_doc,
-        df_alsj, df_flickr, df_common,
+        df_alsj, df_flickr, df_lpi, df_common,
         rows,
         row, row_common,
         img_url='',
@@ -163,6 +163,53 @@ my.views.set("doc", function (d) {
         p = d3.select("img#image_thumb");
         p.classed("hidden", false);
         p.attr('src', '');
+    }
+
+    df_lpi = my.m.meta_lpi(undefined);
+    rows = df_lpi.filter(function(r) { return r.number  == d['image'];});
+    row = rows[0];
+    if (rows.length != 0) {
+        var trs;
+        var names = 'Description,Feature(s),Camera Altitude,Camera Azimuth,Camera Tilt,Film Color,Film Type,Film Width,Index Map,Latitude / Longitude,Lens Focal Length,Magazine,Magazine Letter,Mission,Mission Activity,Notes,Quality,Revolution,Sun Elevation'.split(',');
+        var k, key;
+        var keys_values = [];
+
+        for (k in names) {
+            key = names[k];
+            if (row[key]) {
+                keys_values[keys_values.length] = [key, row[key]];
+            }
+        }
+        console.log(keys_values.length);
+
+        trs = d3.select("table#image_properties tbody")
+            .selectAll("tr")
+            .data(keys_values);
+
+        trs.enter().append("tr");
+        trs.exit().remove();
+
+        /*
+        trs.on("click", function (doc) {
+            view.dfb().set_view("/doc/" + doc.id);
+        });
+        */
+
+        // clear rows
+        trs.selectAll("td").remove();
+
+        trs.append("td")
+            .attr('class', 'img_prop')
+            //.attr("href", function (w) {
+             //    return "#/doc/" + w.author;
+            //})
+            .html(function (doc) {
+                var s = '';
+                s = doc[0] + ': &nbsp;'+ doc[1];
+                return s;
+            });
+
+    } else {
     }
 
     p = d3.select("a#image_url");
@@ -470,6 +517,16 @@ load = function () {
             }
         }
 
+        if (my.metadata_lpi === undefined) {
+            if (VIS.metadata_lpi.type === "lpi") {
+                my.metadata_lpi = metadata.lpi(VIS.metadata_lpi.spec);
+            } else {
+                // default to DfR subclass if no other specified
+                my.metadata_lpi = metadata.lpi();
+                view.warning("Unknown metadata.type; defaulting to lpi.");
+            }
+        }
+
         if (my.metadata_common === undefined) {
             if (VIS.metadata_common.type === "common") {
                 my.metadata_common = metadata.common(VIS.metadata_common.spec);
@@ -509,6 +566,19 @@ load = function () {
                 view.error("Unable to load metadata from " + VIS.files.meta_images);
             }
         });
+
+        load_data(VIS.files.meta_lpi, function (error, meta_s) {
+            if (typeof meta_s === 'string') {
+                // and get the metadata object ready
+                my.metadata_lpi.from_string(meta_s);
+                // pass to object (also stores conditional keys)
+                my.m.set_meta_lpi(my.metadata_lpi);
+                refresh();
+            } else {
+                view.error("Unable to load metadata from " + VIS.files.meta_images);
+            }
+        });
+
 
         load_data(VIS.files.meta_common, function (error, meta_s) {
             if (typeof meta_s === 'string') {

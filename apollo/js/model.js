@@ -29,6 +29,7 @@ model = function (spec) {
         meta,
         meta_alsj,
         meta_flickr,
+        meta_lpi,
         meta_common,
         meta_condition,
         vocab,
@@ -48,6 +49,7 @@ model = function (spec) {
         set_meta,
         set_meta_alsj,
         set_meta_flickr,
+        set_meta_lpi,
         set_meta_common,
         doc_category,
         set_topic_scaled;
@@ -268,6 +270,16 @@ model = function (spec) {
     };
     that.meta_flickr = meta_flickr;
 
+
+    // metadata table
+    meta_lpi = function (d) {
+        if (!my.meta_lpi) {
+            return undefined;
+        }
+
+        return my.meta_lpi.doc(d);
+    };
+    that.meta_lpi = meta_lpi;
 
     // metadata table
     meta_common = function (d) {
@@ -655,6 +667,11 @@ model = function (spec) {
         my.meta_flickr = meta;
     };
     that.set_meta_flickr = set_meta_flickr;
+
+    set_meta_lpi = function (meta) {
+        my.meta_lpi = meta;
+    };
+    that.set_meta_lpi = set_meta_lpi;
 
     set_meta_common = function (meta) {
         my.meta_common = meta;

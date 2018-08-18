@@ -694,3 +694,9 @@ div.cBlockQuoteContent{
     padding-top: 5ex;
     font-style: italic;
 }
+
+
+
+td.img_prop {
+    padding-top: 1px;
+}
