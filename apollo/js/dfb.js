@@ -259,7 +259,7 @@ my.views.set("doc", function (d) {
     links_desc['tothemoon'] = utils.format(t, row_common);
 
 
-    t = "https://spaceflight.nasa.gov/gallery/images/apollo/apollo{mission}/html/as{mission}-{magazine}-{number}.html";
+    t = "https://spaceflight.nasa.gov/gallery/images/apollo/apollo{mission}/html/as{mission}_{magazine}_{number}.html";
     links_desc['spaceflight'] = utils.format(t, row_common);
 
 
