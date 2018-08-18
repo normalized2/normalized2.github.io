@@ -33,52 +33,79 @@
 
 <div id="main_container" class="container">
 
-  <div id="error" class="hidden">
+  <div id="error" class="hidden">,,,
     </div>
 
   <div id="doc_view" class="hidden">
-    <div id="doc_view_help">
 
-      <p id="image_AS_title">ASXX-XX-XXXX</p>
+      <div class="row">
 
-      <table>
-        <tr>
-          <td>
-            <p id="image_prev" class='hidden'>
-                <a href='#' id='image_view_prev'>&lt;&lt; previous</a>
-            </p>
-          </td>
-          <td style="width: 10px;">&nbsp;</td>
-          <td>
-            <img id="image_thumb" class='hidden' src='' />
-            <br /><a id="image_url" href='' target="_blank"></a>
-          </td>
-          <td style="width: 10px;">&nbsp;</td>
-          <td>
-              <p id="image_next" class='hidden'>
-                <a href='#' id='image_view_next'>next &gt;&gt;</a>
-              </p>
-          </td>
-        </tr>
-       </table>
-      <br />
-      <br />
-      <p id="image_desc_html" ></p>
+        <div class="col-lg-9">
+              <table>
+                <tr>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td><p id="image_AS_title">ASXX-XX-XXXX</p></td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                </tr>
+                <tr>
+                  <td id='td_image_view_prev'>
+                    <p id="image_prev" class='hidden'>
+                        <a href='#' id='image_view_prev'>&lt;&lt; previous</a>
+                    </p>
+                  </td>
+                  <td style="width: 10px;">&nbsp;</td>
+                  <td>
+                    <img id="image_thumb" class='hidden' src='' />
+                    <br /><a id="image_url" href='' target="_blank"></a>
+                  </td>
+                  <td style="width: 10px;">&nbsp;</td>
+                  <td id='td_image_view_next'>
+                      <p id="image_next" class='hidden'>
+                        <a href='#' id='image_view_next'>next &gt;&gt;</a>
+                      </p>
+                  </td>
+                </tr>
+               </table>
+        </div>
+        <div class="col-lg-3">
+              <table class="" id="links_desc">
+                 <thead>
+                  <tr>
+                    <th>Links</th>
+                  </tr>
+                </thead>
+                <tbody>
+                </tbody>
+              </table>
+              <br />
+              <table class="" id="links_img_urls">
+                <tbody>
+                </tbody>
+              </table>
 
-      <p id="image_time" class='hidden'>111:22:33</p>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-lg-5">
+              <br />
+              <p id="image_desc_html" ></p>
 
-      <table class="" id="image_properties">
-        <!-- <thead>
-          <tr>
-            <th id="topic_docs_doc">xxx</th>
-          </tr>
-        </thead> -->
-        <tbody>
-        </tbody>
-      </table>
+              <p id="image_time" class='hidden'>111:22:33</p>
 
+              <table class="" id="image_properties">
+                <!-- <thead>
+                  <tr>
+                    <th id="topic_docs_doc">xxx</th>
+                  </tr>
+                </thead> -->
+                <tbody>
+                </tbody>
+              </table>
 
-    </div>
+        </div>
+      </div>
   </div>
 
 
@@ -88,7 +115,11 @@
           class="img-responsive"
           src="img/loading.gif" /></a>
 
-<a href="#/doc?image=5009">5009</a> <a href="#/doc?image=5123">5123</a> <a href="#/doc?image=7084">7084</a> <a href="#/doc?image=7388">7388</a>
+<a href="#/doc?image=5009">5009</a> <a href="#/doc?image=5123">5123</a> <a href="#/doc?image=7084">7084</a> <a href="#/doc?image=7091">7091</a> <a href="#/doc?image=7388">7388</a>
+<a href="#/doc?image=7597">7597</a>
+<a href="#/doc?image=7597">6715</a>
+<a href="#/doc?image=20384">20384</a>
+
 
 <script type="text/javascript" src="lib/jquery-1.11.0.min.js"></script>
 <script type="text/javascript" src="lib/bootstrap.min.js"></script>

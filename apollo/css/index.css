@@ -700,3 +700,7 @@ div.cBlockQuoteContent{
 td.img_prop {
     padding-top: 1px;
 }
+
+td.links {
+    padding-top: 10px;
+}

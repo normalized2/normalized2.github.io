@@ -246,9 +246,17 @@ var utils = (function () {
 
     var get_flickr_url = function (row, size) {
         var url_templ, res;
-        url_templ = "https://c1.staticflickr.com/1/{server}/{id}_{secret}_{size}.jpg";
+
+        if (!size) {
+            url_templ = "https://www.flickr.com/photos/projectapolloarchive/{id}/in/album-{album_id}/"
+        } else if (size == 'o') {
+            url_templ = "https://c1.staticflickr.com/1/{server}/{id}_{originalsecret}_{size}.jpg"
+        } else {
+            url_templ = "https://c1.staticflickr.com/1/{server}/{id}_{secret}_{size}.jpg";
+        }
 
         res = url_templ;
+        res = res.split('{album_id}').join(row.album_id);
         res = res.split('{server}').join(row.server);
         res = res.split('{secret}').join(row.secret);
         res = res.split('{id}').join(row.id);
@@ -259,6 +267,23 @@ var utils = (function () {
 
     that.get_flickr_url = get_flickr_url;
 
+    var format = function(t, row) {
+        t = t.split('{mission}').join(row.mission);
+        t = t.split('{magazine}').join(row.magazine);
+        t = t.split('{number}').join(row.number);
+        if (row.time) {
+            t = t.split('{time}').join(row.time);
+        }
+        if (row.id) {
+            t = t.split('{id}').join(row.id);
+        }
+        if (row.album_id) {
+            t = t.split('{album_id}').join(row.album_id);
+        }
+
+        return t;
+    }
+    that.format = format;
 
     return that;
 }());
