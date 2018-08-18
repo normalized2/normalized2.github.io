@@ -13,7 +13,8 @@
 </head>
 
 <body>
-<div class="navbar navbar-inverse navbar-default">
+
+<!-- <div class="navbar navbar-inverse navbar-default hidden">
   <div class="container">
     <div class="navbar-header">
       <a class="navbar-brand model_title" href="#"></a>
@@ -24,12 +25,13 @@
           class="img-responsive"
           src="img/loading.gif" /></a></li>
       </ul>
-    </div><!--/.navbar-collapse -->
+    </div>
   </div>
 </div>
+-->
+
 
 <div id="main_container" class="container">
-
 
   <div id="error" class="hidden">
     </div>
@@ -60,9 +62,9 @@
        </table>
       <br />
       <br />
-      <p id="image_desc_html" >desc</p>
+      <p id="image_desc_html" ></p>
 
-      <p id="image_flickr_url" >desc</p>
+      <a id="image_url" href='' target="_blank"></a>
 
       <p id="image_time" class='hidden'>111:22:33</p>
 
@@ -71,6 +73,12 @@
 
 
 </div> <!-- /container -->
+
+<a><img id="working_icon" alt="Working..."
+          class="img-responsive"
+          src="img/loading.gif" /></a>
+
+<a href="#/doc?image=5123">5123</a>
 
 <script type="text/javascript" src="lib/jquery-1.11.0.min.js"></script>
 <script type="text/javascript" src="lib/bootstrap.min.js"></script>

@@ -46,7 +46,8 @@ my.views.set("doc", function (d) {
         all_doc,
         df_alsj, df_flickr, df_common,
         rows,
-        row,
+        row, row_common,
+        img_url='',
         p, t;
 
     if (!my.m.meta_flickr() || !my.m.meta_alsj() || !my.m.meta_common() ) {
@@ -65,18 +66,16 @@ my.views.set("doc", function (d) {
 
     df_common = my.m.meta_common(undefined);
     rows = df_common.filter(function(r) { return r.number  == d['image'];});
-    row = rows[0];
+    row_common = rows[0];
 
     var number_next, number_prev, a;
 
-    number_next = row.next.split(',');
-    console.log(number_next);
+    number_next = row_common.next.split(',');
     if (number_next.length !=0) {
         p = d3.select("p#image_next");
         p.classed("hidden", false)
         //p.text(row.next);
         number_next = number_next[0];
-        console.log(number_next);
         a = d3.select("#image_view_next");
         a.on("click", function (w) {
                 d3.event.preventDefault();
@@ -88,14 +87,13 @@ my.views.set("doc", function (d) {
         p.classed("hidden", true)
     }
 
-    number_prev = row.prev.split(',');
+    number_prev = row_common.prev.split(',');
     if (number_prev.length !=0) {
         p = d3.select("p#image_prev");
         p.classed("hidden", false)
         //p.text(row.next);
         number_prev = number_prev[number_prev.length - 1];
         a = d3.select("#image_view_prev");
-        
         a.on("click", function (w) {
                 d3.event.preventDefault();
                 view.dfb().set_view("/doc?image=" + number_prev);
@@ -107,7 +105,13 @@ my.views.set("doc", function (d) {
         p.classed("hidden", true)
     }
 
-
+    if (row_common.lpi) {
+        t = "https://www.lpi.usra.edu/resources/apollo/images/browse/AS{mission}/{magazine}/{number}.jpg";
+        t = t.split('{mission}').join(row_common.mission);
+        t = t.split('{magazine}').join(row_common.magazine);
+        t = t.split('{number}').join(row_common.number);
+        img_url = t;
+    }
 
     df_alsj = my.m.meta_alsj(undefined);
 
@@ -122,9 +126,10 @@ my.views.set("doc", function (d) {
         p.text(row.time);
 
         t = "https://www.hq.nasa.gov/alsj/a{mission}/AS{mission}-{magazine}-{number}.jpg";
-        t = t.split('{mission}').join(row.mission)
-        t = t.split('{magazine}').join(row.magazine)
-        t = t.split('{number}').join(row.number)
+        t = t.split('{mission}').join(row.mission);
+        t = t.split('{magazine}').join(row.magazine);
+        t = t.split('{number}').join(row.number);
+        img_url = t;
 
         //p = d3.select("img#image_thumb");
         //p.classed("hidden", false);
@@ -140,24 +145,37 @@ my.views.set("doc", function (d) {
         d3.select("p#image_AS_title").text('');
         p = d3.select("p#image_desc_html");
         p.classed("hidden", true);
+        p = d3.select("p#image_time");
+        p.classed("hidden", true);
+
     }
 
     df_flickr = my.m.meta_flickr(undefined);
     rows = df_flickr.filter(function(r) { return r.number  == d['image'];});
     row = rows[0];
 
-    var flickr_url = utils.get_flickr_url(row, 'c');
-    //d3.select("p#image_flickr_url").text(flickr_url);
+    if (rows.length != 0) {
+        var flickr_url = utils.get_flickr_url(row, 'c');
+        img_url = flickr_url;
+    } else {
+        d3.select("p#image_flickr_url").text('');
+
+        p = d3.select("img#image_thumb");
+        p.classed("hidden", false);
+        p.attr('src', '');
+    }
+
+    p = d3.select("a#image_url");
+    p.text(img_url);
+    p.attr('href', img_url);
 
     p = d3.select("img#image_thumb");
     p.classed("hidden", false);
-    p.attr('src', flickr_url);
-
+    p.attr('src', img_url);
 
     view.loading(false);
     return true;
 
-    // TODO nearby documents list
 });
 
 
