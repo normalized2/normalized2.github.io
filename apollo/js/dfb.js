@@ -39,6 +39,24 @@ var dfb = function (spec) {
 
 
 
+my.views.set("search", function (d) {
+
+    if (!my.m.meta_flickr() || !my.m.meta_alsj() || !my.m.meta_lpi() || !my.m.meta_common() || !my.m.meta_magazines) {
+        view.loading(true);
+        return true;
+    }
+
+    //
+
+    d3.select("input#input_q")
+        .attr('value', d['q']);
+
+    view.loading(false);
+    return true;
+
+});
+
+
 my.views.set("doc", function (d) {
     var div = d3.select("div#doc_view"),
         doc = +d,
@@ -238,7 +256,16 @@ my.views.set("doc", function (d) {
             //})
             .html(function (doc) {
                 var s = '';
-                s = doc[0] + ': &nbsp;'+ doc[1];
+                if ((doc[0] == 'Feature(s)') || (doc[0] == 'Description')) {
+                    s = doc[0] + ': &nbsp;';
+                    var a = doc[1].split(/,|;/), ba;
+                    a = a.map(function (item) {return $.trim(item)});
+                    a = a.map(function (item) {return '<a href="#/search?q='+ encodeURIComponent(item) +'">' + item + '</a>'});
+                    s += a.join(', ');
+                } else {
+                    s = doc[0] + ': &nbsp;'+ doc[1];
+                }
+
                 return s;
             });
 
@@ -473,6 +500,19 @@ refresh = function () {
                 param_view.push(params_parsed);
             }
         }
+
+        if (v_chosen === 'search') {
+            params_parsed = utils.parseParams(query);
+            if (param_view.length === 1) {
+                param_view.push(undefined);
+                param_view.push(params_parsed);
+                search_params.set_authors(params_parsed);  // TODO ???
+                search_params.set_words(params_parsed);
+            } else {
+                param_view.push(params_parsed);
+            }
+        }
+
 
         success = my.views.get(v_chosen).apply(that, param_view);
     }
