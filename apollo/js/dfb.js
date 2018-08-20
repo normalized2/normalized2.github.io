@@ -52,7 +52,7 @@ my.views.set("doc", function (d) {
         links_img_urls = {},
         p, t, k;
 
-    if (!my.m.meta_flickr() || !my.m.meta_alsj() || !my.m.meta_common() || !my.m.meta_magazines) {
+    if (!my.m.meta_flickr() || !my.m.meta_alsj() || !my.m.meta_lpi() || !my.m.meta_common() || !my.m.meta_magazines) {
         view.loading(true);
         return true;
     }
