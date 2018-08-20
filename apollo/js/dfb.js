@@ -61,6 +61,8 @@ my.views.set("search", function (d) {
         return res;
         });
 
+    rows = rows.slice(0, 200);
+
     var numbers = rows.map(function (row) {
         return row.number;
         });
@@ -81,7 +83,6 @@ my.views.set("search", function (d) {
         images[images.length] = r;
     });
 
-    //images = images.slice(0, 200);
 
 
     var divs;
