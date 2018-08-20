@@ -52,7 +52,7 @@ my.views.set("doc", function (d) {
         links_img_urls = {},
         p, t, k;
 
-    if (!my.m.meta_flickr() || !my.m.meta_alsj() || !my.m.meta_common() ) {
+    if (!my.m.meta_flickr() || !my.m.meta_alsj() || !my.m.meta_common() || !my.m.meta_magazines) {
         view.loading(true);
         return true;
     }
@@ -284,7 +284,7 @@ my.views.set("doc", function (d) {
     }
 
     t = "https://eol.jsc.nasa.gov/SearchPhotos/photo.pl?mission=AS{mission}&roll={magazine}&frame={number}";
-    links_desc['EOL.JSC'] = utils.format(t, row_common);
+    links_desc['eol.jsc'] = utils.format(t, row_common);
 
     if (row_common.mission == 17) {
         links_desc['See also apollo17.org'] = 'http://apollo17.org/';
@@ -323,6 +323,80 @@ my.views.set("doc", function (d) {
             .attr('target', '_blank')
             .attr('href', function (doc) {return doc[1];})
             .text(function (doc) {return doc[0];});
+
+
+    // magazines list
+    var mission_list = [ 4,  6,  7,  8,  9, 10, 11, 12, 13, 14, 15, 16, 17];
+    var df_magazines;
+    var missions_data = []
+
+    df_magazines = my.m.meta_magazines(undefined);
+
+    for (var i=0; i<mission_list.length; i++) {
+        rows = df_magazines.filter(function(r) { return r.mission  == mission_list[i];});
+        row = rows[0]
+        missions_data[missions_data.length] = {
+            mission: row.mission,
+            number: row.number_min,
+            selected: row.mission == row_common.mission
+        }
+    }
+
+    trs = d3.select("table#missions_list tbody")
+        .selectAll("tr")
+        .data(missions_data);
+
+    trs.enter().append("tr");
+    trs.exit().remove();
+
+    // clear rows
+    trs.selectAll("td").remove();
+
+    trs.append("td")
+        .append('a')
+            .attr('href', function (doc) {return '#/doc?image='+ doc.number;})
+            .classed("selected", function (doc) {return doc.selected})
+            .text(function (doc) {return 'Apollo ' + doc.mission;})
+            .on('click', function (doc) {
+                view.dfb().set_view("/doc?image=" + doc.number);
+                d3.event.stopPropagation();
+                return undefined;
+            });
+
+
+    var magazine_data = [];
+    rows = df_magazines.filter(function(r) { return r.mission  == row_common.mission;});
+
+    for (var i=0; i<rows.length; i++) {
+        row = rows[i];
+        magazine_data[magazine_data.length] = {
+                magazine: row.magazine,
+                number: row.number_min,
+                selected: row.magazine == row_common.magazine
+            }
+    }
+
+    trs = d3.select("table#magazines_list tbody")
+        .selectAll("tr")
+        .data(magazine_data);
+
+    trs.enter().append("tr");
+    trs.exit().remove();
+
+    // clear rows
+    trs.selectAll("td").remove();
+
+    trs.append("td")
+        .append('a')
+            .attr('href', function (doc) {return '#/doc?image='+ doc.number;})
+            .classed("selected", function (doc) {return doc.selected})
+            .text(function (doc) {return 'Mag ' + doc.magazine;})
+            .on('click', function (doc) {
+                view.dfb().set_view("/doc?image=" + doc.number);
+                d3.event.stopPropagation();
+                return undefined;
+            });
+
 
     view.loading(false);
     return true;
@@ -641,6 +715,16 @@ load = function () {
             }
         }
 
+        if (my.metadata_magazines === undefined) {
+            if (VIS.metadata_magazines.type === "magazines") {
+                my.metadata_magazines = metadata.magazines(VIS.metadata_magazines.spec);
+            } else {
+                // default to DfR subclass if no other specified
+                my.metadata_magazines = metadata.magazines();
+                view.warning("Unknown metadata.type; defaulting to magazines.");
+            }
+        }
+
         // now we can install the main event listeners
         // TODO can we do this even earlier?
         setup_listeners();
@@ -667,7 +751,7 @@ load = function () {
                 my.m.set_meta_alsj(my.metadata_alsj);
                 refresh();
             } else {
-                view.error("Unable to load metadata from " + VIS.files.meta_images);
+                view.error("Unable to load metadata from " + VIS.files.meta_alsj);
             }
         });
 
@@ -679,7 +763,7 @@ load = function () {
                 my.m.set_meta_lpi(my.metadata_lpi);
                 refresh();
             } else {
-                view.error("Unable to load metadata from " + VIS.files.meta_images);
+                view.error("Unable to load metadata from " + VIS.files.meta_lpi);
             }
         });
 
@@ -692,7 +776,19 @@ load = function () {
                 my.m.set_meta_common(my.metadata_common);
                 refresh();
             } else {
-                view.error("Unable to load metadata from " + VIS.files.meta_images);
+                view.error("Unable to load metadata from " + VIS.files.meta_common);
+            }
+        });
+
+        load_data(VIS.files.meta_magazines, function (error, meta_s) {
+            if (typeof meta_s === 'string') {
+                // and get the metadata object ready
+                my.metadata_magazines.from_string(meta_s);
+                // pass to object (also stores conditional keys)
+                my.m.set_meta_magazines(my.metadata_magazines);
+                refresh();
+            } else {
+                view.error("Unable to load metadata from " + VIS.files.meta_magazines);
             }
         });
 

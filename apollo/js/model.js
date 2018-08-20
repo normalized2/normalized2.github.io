@@ -31,6 +31,7 @@ model = function (spec) {
         meta_flickr,
         meta_lpi,
         meta_common,
+        meta_magazines,
         meta_condition,
         vocab,
         topic_scaled,
@@ -51,6 +52,7 @@ model = function (spec) {
         set_meta_flickr,
         set_meta_lpi,
         set_meta_common,
+        set_meta_magazines,
         doc_category,
         set_topic_scaled;
 
@@ -290,6 +292,17 @@ model = function (spec) {
         return my.meta_common.doc(d);
     };
     that.meta_common = meta_common;
+
+    // metadata table
+    meta_magazines = function (d) {
+        if (!my.meta_magazines) {
+            return undefined;
+        }
+
+        return my.meta_magazines.doc(d);
+    };
+    that.meta_magazines = meta_magazines;
+
 
     // expose metadata's conditional key/invert functions
     meta_condition = function (key) {
@@ -677,6 +690,12 @@ model = function (spec) {
         my.meta_common = meta;
     };
     that.set_meta_common = set_meta_common;
+
+    set_meta_magazines = function (meta) {
+        my.meta_magazines = meta;
+    };
+    that.set_meta_magazines = set_meta_magazines;
+
 
     doc_category = function (v, f) {
         //  v = date,   f= function (doc) {return formatter(doc[p.field]); }

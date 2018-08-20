@@ -46,6 +46,12 @@ a.external:visited {
     color: #000066;
 }
 
+a.selected  {
+    text-decoration: none;
+    background-color: #cccccc;
+}
+
+
 label span.special_issue_example {
     color: #000066;
 }

@@ -1,9 +1,9 @@
 /*global d3, metadata */
 "use strict";
 
-// ---- metadata specification: common ----
+// ---- metadata specification: magazines ----
 
-metadata.common = function (spec) {
+metadata.magazines = function (spec) {
     var my = spec || { },
         that,
         from_string;
@@ -24,7 +24,8 @@ metadata.common = function (spec) {
         s = meta_s.replace(/^\n*/, "")
             .replace(/\n*$/, "\n");
 
-        headers = 'title,mission,magazine,magazine_letter,number,alsj,flickr,lpi,next,prev,spaceflight,spaceflight_page,tothemoon'.split(',');
+        headers = 'magazine,mission,number_min,number_max'.split(',');
+
 
         // assume that there is no column header
         my.docs = d3.csv.parseRows(s, function (d, j) {

@@ -13,6 +13,7 @@ var VIS = {
         meta_alsj: "data/alsj_images_aligned.csv.zip",  // remove .zip to use uncompressed data
         meta_lpi: "data/lpi_images_aligned.csv.zip",  // remove .zip to use uncompressed data
         meta_common: "data/common_images.csv.zip",  // remove .zip to use uncompressed data
+        meta_magazines: "data/magazines.csv.zip",  // remove .zip to use uncompressed data
     },
     aliases: {                  // simple aliasing in URLs:
         yearly: "conditional"   // #/model/yearly/... -> #/model/conditional/...
@@ -47,6 +48,14 @@ var VIS = {
             //date_field: "date"// (base type only) name of date field
         }
     },
+    metadata_magazines: {
+        type: "magazines",        // use "base" if meta.csv has a header
+        spec: {
+            extra_fields: [ ],// (dfr type only) names for extra columns
+            //date_field: "date"// (base type only) name of date field
+        }
+    },
+
     condition: {            // metadata variable to condition topics on
         type: "time",       // alternatives: "category" and "continuous"
         spec: {
