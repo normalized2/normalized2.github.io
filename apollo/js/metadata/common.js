@@ -24,7 +24,7 @@ metadata.common = function (spec) {
         s = meta_s.replace(/^\n*/, "")
             .replace(/\n*$/, "\n");
 
-        headers = 'mission,magazine,magazine_letter,number,alsj,flickr,lpi,next,prev'.split(',');
+        headers = 'mission,magazine,magazine_letter,number,alsj,flickr,lpi,next,prev,spaceflight,spaceflight_page,tothemoon'.split(',');
 
         // assume that there is no column header
         my.docs = d3.csv.parseRows(s, function (d, j) {

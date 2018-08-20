@@ -117,9 +117,16 @@ my.views.set("doc", function (d) {
 
     d3.select("p#image_AS_title").text(utils.format("AS{mission}-{magazine}-{number}", row_common));
 
-    if (row_common.lpi) {
+    if (row_common.lpi==1) {
+
+        var dict = {
+            mission: utils.fill_left(row_common.mission, 2),
+            magazine: utils.fill_left(row_common.magazine, 2),
+            number: utils.fill_left(row_common.number, 3),
+        }
+
         t = "https://www.lpi.usra.edu/resources/apollo/images/browse/AS{mission}/{magazine}/{number}.jpg";
-        t = utils.format(t, row_common);
+        t = utils.format(t, dict);
         img_url = t
     }
 
@@ -252,16 +259,32 @@ my.views.set("doc", function (d) {
     }
 
 
+    if (row_common.tothemoon==1) {
+        // http://tothemoon.ser.asu.edu/gallery/apollo/AS4_Hasselblad%20(70%20mm)/list#AS4-1-40
+        // http://tothemoon.ser.asu.edu/gallery/apollo/AS04_Hasselblad%20(70%20mm)/list#AS04-01-0020
+        // TODO:  4 --> 04
+        t = "http://tothemoon.ser.asu.edu/gallery/apollo/AS{mission}_Hasselblad%20(70%20mm)/list#AS{mission}-{magazine}-{number}";
+        var dict = {
+            mission: utils.fill_left(row_common.mission, 2),
+            magazine: utils.fill_left(row_common.magazine, 2),
+            number: utils.fill_left(row_common.number, 4),
+        }
+        links_desc['tothemoon'] = utils.format(t, dict);
+
+        if (img_url == '') {
+            t = 'http://tothemoon.ser.asu.edu/data_a70/AS{mission}/extra/AS{mission}-{magazine}-{number}.browse.png'
+            img_url = utils.format(t, dict);
+        }
+    }
+
+
+    if (row_common.spaceflight==1) {
+        t = "https://spaceflight.nasa.gov/gallery/images/apollo/{spaceflight_page}";
+        links_desc['spaceflight'] = utils.format(t, row_common);
+    }
+
     t = "https://eol.jsc.nasa.gov/SearchPhotos/photo.pl?mission=AS{mission}&roll={magazine}&frame={number}";
     links_desc['EOL.JSC'] = utils.format(t, row_common);
-
-    t = "http://tothemoon.ser.asu.edu/gallery/apollo/AS{mission}_Hasselblad%20(70%20mm)/list#AS{mission}-{magazine}-{number}";
-    links_desc['tothemoon'] = utils.format(t, row_common);
-
-
-    t = "https://spaceflight.nasa.gov/gallery/images/apollo/apollo{mission}/html/as{mission}_{magazine}_{number}.html";
-    links_desc['spaceflight'] = utils.format(t, row_common);
-
 
     if (row_common.mission == 17) {
         links_desc['See also apollo17.org'] = 'http://apollo17.org/';

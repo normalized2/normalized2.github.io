@@ -280,10 +280,23 @@ var utils = (function () {
         if (row.album_id) {
             t = t.split('{album_id}').join(row.album_id);
         }
+        if (row.spaceflight_page) {
+            t = t.split('{spaceflight_page}').join(row.spaceflight_page);
+        }
 
         return t;
     }
     that.format = format;
+
+    var fill_left = function paddy(num, padlen, padchar) {
+        if ((num + '').length >= padlen)  {
+            return num;
+        }
+        var pad_char = typeof padchar !== 'undefined' ? padchar : '0';
+        var pad = new Array(1 + padlen).join(pad_char);
+        return (pad + num).slice(-pad.length);
+    }
+    that.fill_left = fill_left 
 
     return that;
 }());
