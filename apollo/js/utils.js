@@ -267,6 +267,27 @@ var utils = (function () {
 
     that.get_flickr_url = get_flickr_url;
 
+    var get_little_img_url = function(row_common, my) {
+
+        var df_flickr, rows, row, number, res ='';
+        if (row_common.flickr == 1) {
+            df_flickr = my.m.meta_flickr(undefined);
+
+            rows = df_flickr.filter(function(r) { return r.number  == row_common.number;});
+            row = rows[0];
+
+            if (rows.length != 0) {
+                res = utils.get_flickr_url(row, 'q');
+            }
+        }
+        return res;
+    }
+    that.get_little_img_url = get_little_img_url;
+
+
+
+
+
     var format = function(t, row) {
         t = t.split('{mission}').join(row.mission);
         t = t.split('{magazine}').join(row.magazine);

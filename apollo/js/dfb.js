@@ -46,10 +46,68 @@ my.views.set("search", function (d) {
         return true;
     }
 
-    //
+    var df_lpi, df_common,
+        rows;
+
 
     d3.select("input#input_q")
-        .attr('value', d['q']);
+        .property('value', d['q']);
+
+    df_lpi = my.m.meta_lpi(undefined);
+    rows = df_lpi.filter(function(r) {
+        var res = false, s;
+        s = (r['Feature(s)'] + ', ' + r['Description']).toLowerCase();
+        res = s.indexOf(d['q'].toLowerCase()) >= 0;
+        return res;
+        });
+
+    var numbers = rows.map(function (row) {
+        return row.number;
+        });
+
+    df_common = my.m.meta_common(undefined);
+
+    rows = df_common.filter(function(row) {
+         return numbers.indexOf(row.number) != -1;
+        });
+
+    var images = [];
+    rows.forEach(function (row_common, i) {
+        var r = {};
+        r['title'] = utils.format("AS{mission}-{magazine}-{number}", row_common);
+        r['url']  = utils.get_little_img_url(row_common, my);
+        r['number'] = row_common.number;
+
+        images[images.length] = r;
+    });
+
+    //images = images.slice(0, 200);
+
+
+    var divs;
+    divs = d3.select("div#search_results")
+        .selectAll("div")
+        .data(images);
+
+    divs.enter().append("div");
+    divs.exit().remove();
+
+    // clear rows
+    divs.selectAll("div").remove();
+
+    divs.append("div")
+        .classed('col-md-2', true)
+        .append('a')
+            .attr('href', function (doc) {return '#/doc?image='+ doc.number;})
+            .text(function (doc) {return doc.title;})
+            .on('click', function (doc) {
+                view.dfb().set_view("/doc?image=" + doc.number);
+                d3.event.stopPropagation();
+                return undefined;
+            })
+            .append('img')
+                .attr('style', 'max-width: 150px;')
+                .attr('src', function (doc) {return doc.url;});
 
     view.loading(false);
     return true;
@@ -155,8 +213,9 @@ my.views.set("doc", function (d) {
         row = rows[0];
 
         p = d3.select("p#image_time");
-        p.classed("hidden", false);
-        p.text(row.time);
+        p.classed("hidden", true);
+        //p.classed("hidden", false);
+        //p.text(row.time);
 
         t = "https://www.hq.nasa.gov/alsj/a{mission}/AS{mission}-{magazine}-{number}.jpg";
         t = utils.format(t, row);
