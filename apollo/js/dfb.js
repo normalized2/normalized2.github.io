@@ -53,6 +53,7 @@ my.views.set("search", function (d) {
     d3.select("input#input_q")
         .property('value', d['q']);
 
+
     df_lpi = my.m.meta_lpi(undefined);
     rows = df_lpi.filter(function(r) {
         var res = false, s;
@@ -66,6 +67,7 @@ my.views.set("search", function (d) {
     var numbers = rows.map(function (row) {
         return row.number;
         });
+
 
     df_common = my.m.meta_common(undefined);
 
@@ -84,17 +86,17 @@ my.views.set("search", function (d) {
     });
 
 
-
     var divs;
     divs = d3.select("div#search_results")
-        .selectAll("div")
+        .selectAll("span")
         .data(images);
 
-    divs.enter().append("div");
+    divs.enter().append("span");
     divs.exit().remove();
 
     // clear rows
     divs.selectAll("div").remove();
+
 
     divs.append("div")
         .classed('col-md-2', true)
