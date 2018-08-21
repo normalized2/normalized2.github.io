@@ -11,6 +11,7 @@ var dfb = function (spec) {
         refresh,
         set_view,
         hide_topics,
+        do_search,
         setup_listeners, // initialization
         load_data,
         load;
@@ -36,6 +37,7 @@ var dfb = function (spec) {
 
 // Principal view-generating functions
 // -----------------------------------
+
 
 
 
@@ -645,6 +647,21 @@ hide_topics = function (flg) {
 };
 that.hide_topics = hide_topics;
 
+
+
+do_search = function() {
+    console.log(777);
+    var q;
+
+    q = d3.selectAll("input#input_q").property("value");
+
+    view.dfb().set_view('#/search?q='+ encodeURIComponent(q));
+}
+
+that.do_search = do_search;
+
+
+
 // initialization
 // --------------
 
@@ -906,4 +923,6 @@ that.load = load;
 // execution is up to index.html:
 // dfb({ ... })
 //     .load();
+
+
 
