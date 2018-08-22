@@ -716,7 +716,6 @@ p.title {
 }
 
 a.page_number:hover {
-    background-color: #f5f5f5;
 }
 
 a.page_number_selected {
@@ -730,4 +729,13 @@ a.page_number_selected {
 .footer {
     text-align: center;
     margin-bottom: 10px;
+}
+
+#taglist a {
+    padding-left: 5px;
+    padding-right: 5px;
+}
+
+#taglist a:hover {
+    background-color: #f5f5f5;
 }
