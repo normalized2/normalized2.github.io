@@ -710,3 +710,15 @@ td.img_prop {
 td.links {
     padding-top: 10px;
 }
+
+p.title {
+    font-weight: bold;
+}
+
+a.page_number:hover {
+    background-color: #f5f5f5;
+}
+
+a.page_number_selected {
+    background-color: #cccccc;
+}

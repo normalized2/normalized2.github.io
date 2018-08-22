@@ -50,7 +50,10 @@ my.views.set("search", function (d) {
 
     var df_lpi, df_common,
         rows;
-
+    var current_page = 1;
+    if (d['page']) {
+        current_page = parseInt(d['page']);
+    }
 
     d3.select("input#input_q")
         .property('value', d['q']);
@@ -64,7 +67,12 @@ my.views.set("search", function (d) {
         return res;
         });
 
-    rows = rows.slice(0, 200);
+    var n_pages, remainder, in_page=30;
+    n_pages = Math.floor(rows.length / in_page);
+    remainder = rows.length % in_page;
+    if (remainder > 0) {++n_pages;}
+
+    rows = rows.slice((current_page - 1) * in_page, current_page * in_page);
 
     var numbers = rows.map(function (row) {
         return row.number;
@@ -88,6 +96,7 @@ my.views.set("search", function (d) {
     });
 
 
+    // search result
     var divs;
     divs = d3.select("div#search_results")
         .selectAll("span")
@@ -113,6 +122,37 @@ my.views.set("search", function (d) {
             .append('img')
                 .attr('style', 'max-width: 150px;')
                 .attr('src', function (doc) {return doc.url;});
+
+
+    // page list
+    var page_list = [...Array(n_pages).keys()];
+    page_list = page_list.map(function (i) {return i + 1;})
+
+    divs = d3.select("div#search_pages")
+        .selectAll("span")
+        .data(page_list);
+
+    divs.enter().append("span");
+    divs.exit().remove();
+
+    // clear rows
+    divs.selectAll("a").remove();
+    
+
+    divs.append("a")
+        .classed('col-sm-1', true)
+        .classed('page_number', true)
+        .classed('page_number_selected', function (doc) {return doc == current_page;})
+        .attr('style', 'text-align: center')
+        //.append('a')
+            .attr('href', function (doc) {return '#/search?q='+ encodeURIComponent(d['q']) + '&page=' + doc;})
+            .text(function (doc) {return doc;})
+            .on('click', function (doc) {
+                view.dfb().set_view('/search?q='+ encodeURIComponent(d['q']) + '&page=' + doc);
+                d3.event.stopPropagation();
+                return undefined;
+            })
+
 
     view.loading(false);
     return true;
@@ -245,7 +285,6 @@ my.views.set("doc", function (d) {
         }
 
     } else {
-        d3.select("p#image_AS_title").text('');
         p = d3.select("p#image_desc_html");
         p.classed("hidden", true);
         p = d3.select("p#image_time");
