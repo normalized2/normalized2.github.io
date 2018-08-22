@@ -281,12 +281,16 @@ var utils = (function () {
             }
         } else if (row_common.lpi == 1) {
             var t = 'https://www.lpi.usra.edu/resources/apollo/images/browse/AS{mission}/{magazine}/{number}.jpg';
-            res = utils.format(t, row_common);
+            var dict = {
+                mission: utils.fill_left(row_common.mission, 2),
+                magazine: utils.fill_left(row_common.magazine, 2),
+                number: utils.fill_left(row_common.number, 3),
+            }
+            res = utils.format(t, dict);
         }
         return res;
     }
     that.get_little_img_url = get_little_img_url;
-
 
     var format = function(t, row) {
         t = t.split('{mission}').join(row.mission);

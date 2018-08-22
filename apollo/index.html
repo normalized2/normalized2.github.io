@@ -61,7 +61,7 @@
                 <tr>
                     <td>&nbsp;</td>
                     <td>&nbsp;</td>
-                    <td><p id="image_AS_title" class='title'>ASXX-XX-XXXX</p></td>
+                    <td><p id="image_AS_title" class='title'></p></td>
                     <td>&nbsp;</td>
                     <td>&nbsp;</td>
                 </tr>
@@ -130,7 +130,7 @@
   </div>
 
   <div id="search_view" class="hidden">
-    Search  <input id='input_q' type='text' value='' size='25'/>
+    Search  <input id='input_q' type='text' value='' size='25' onkeypress='view.dfb().do_search_enter(event, this)' />
             <button onclick="view.dfb().do_search()">Ok</button>
 
     <div id="search_results"  class="row">
@@ -141,42 +141,78 @@
     </div>
   </div>
 
+
+  <div>
+    <div>
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <div>
+        Some tags:
+        <a href="#/search?q=FLAG">FLAG</a>
+        <a href="#/search?q=TRACK">TRACK</a>
+        <a href="#/search?q=FOOT">FOOT</a>
+        <a href="#/search?q=EARTH">EARTH</a>
+        <a href="#/search?q=LUNAR MODULE">LUNAR MODULE</a>
+        <a href="#/search?q=LRV">LRV</a>
+        <a href="#/search?q=ROVER">ROVER</a>
+        <a href="#/search?q=S-IV-B">S-IV-B</a>
+        <a href="#/search?q=SURVEYOR">SURVEYOR</a>
+
+        <br />
+        Craters:
+        <a href="#/search?q=aristar">ARISTARCHUS</a>
+        <a href="#/search?q=HERODOT">HERODOTUS</a>
+        <a href="#/search?q=COPERNICUS">COPERNICUS</a>
+        <a href="#/search?q=GAGARIN">GAGARIN</a>
+        <a href="#/search?q=GASSENDI">GASSENDI</a>
+        <a href="#/search?q=HUMBOLDT">HUMBOLDT</a>
+        <a href="#/search?q=LANGRENUS">LANGRENUS</a>
+        <a href="#/search?q=LANGRENUS">MENDELEEV</a>
+        <a href="#/search?q=PETAVIUS">PETAVIUS</a>
+        <a href="#/search?q=PICARD">PICARD</a>
+        <a href="#/search?q=PLINIUS">PLINIUS</a>
+        <a href="#/search?q=PTOLEMAEUS">PTOLEMAEUS</a>
+        <a href="#/search?q=THEOPHILUS">THEOPHILUS</a>
+        <a href="#/search?q=TSIOLKOVSKIY">TSIOLKOVSKIY</a>
+        <a href="#/search?q=TYCHO">TYCHO</a>
+        <a href="#/search?q=VENDELINUS">VENDELINUS</a>
+        <br />
+        Mons: <a href="#/search?q=APENNINE">APENNINE</a>
+        <a href="#/search?q=HADLEY">HADLEY</a>
+        <br />
+
+        Vallis: <a href="#/search?q=Schroter">SCHROTERI</a>
+
+        <br />
+
+        Some images: <a href="#/doc?image=5009">5009</a>
+        <a href="#/doc?image=5123">5123</a>
+        <a href="#/doc?image=7084">7084</a>
+        <a href="#/doc?image=7091">7091</a>
+        <a href="#/doc?image=7388">7388</a>
+        <a href="#/doc?image=7597">7597</a>
+        <a href="#/doc?image=6715">6715</a>
+        <a href="#/doc?image=6715">20910</a>
+        <a href="#/doc?image=20384">20384</a>
+        <br />
+        <a href="LICENSE.txt">The MIT License (MIT)</a>
+        <br />
+
+
+    </div>
+  </div>
+
 </div> <!-- /container -->
 
 <a><img id="working_icon" alt="Working..."
           class="img-responsive"
           src="img/loading.gif" /></a>
-
-
-
-<a href="LICENSE.txt">The MIT License (MIT)</a>
-<br />
-<a href="#/doc?image=5009">5009</a>
-<a href="#/doc?image=5123">5123</a>
-<a href="#/doc?image=7084">7084</a>
-<a href="#/doc?image=7091">7091</a>
-<a href="#/doc?image=7388">7388</a>
-<a href="#/doc?image=7597">7597</a>
-<a href="#/doc?image=6715">6715</a>
-<a href="#/doc?image=20384">20384</a>
-<br />
-<a href="#/search?q=SURVEYOR">SURVEYOR</a>
-<a href="#/search?q=FLAG">FLAG</a>
-<a href="#/search?q=TRACK">TRACK</a>
-<a href="#/search?q=EARTH">EARTH</a>
-<a href="#/search?q=LRV">LRV</a>
-<a href="#/search?q=ROVER">ROVER</a>
-<br />
-<a href="#/search?q=TSIOLKOVSKIY">TSIOLKOVSKIY</a>
-<a href="#/search?q=GAGARIN">GAGARIN</a>
-<a href="#/search?q=HADLEY">HADLEY</a>
-<a href="#/search?q=aristar">ARISTARCHUS</a>
-
-
-
-
-
-<br />
 
 
 

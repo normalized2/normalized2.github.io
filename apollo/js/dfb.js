@@ -12,6 +12,7 @@ var dfb = function (spec) {
         set_view,
         hide_topics,
         do_search,
+        do_search_enter,
         setup_listeners, // initialization
         load_data,
         load;
@@ -58,12 +59,15 @@ my.views.set("search", function (d) {
     d3.select("input#input_q")
         .property('value', d['q']);
 
+    var q = d['q'];
+    if (q.length <= 1) { q += '  ';}
+
     // Search words in lpi descriptions
     df_lpi = my.m.meta_lpi(undefined);
     rows = df_lpi.filter(function(r) {
         var res = false, s;
         s = (r['Feature(s)'] + ', ' + r['Description']).toLowerCase();
-        res = s.indexOf(d['q'].toLowerCase()) >= 0;
+        res = s.indexOf(q.toLowerCase()) >= 0;
         return res;
         });
 
@@ -689,18 +693,23 @@ hide_topics = function (flg) {
 that.hide_topics = hide_topics;
 
 
-
 do_search = function() {
-    console.log(777);
     var q;
 
     q = d3.selectAll("input#input_q").property("value");
 
     view.dfb().set_view('#/search?q='+ encodeURIComponent(q));
 }
-
 that.do_search = do_search;
 
+do_search_enter = function(e) {
+    var code = (e.keyCode ? e.keyCode : e.which);
+    if (code == 13) { //Enter keycode
+        do_search();
+    }
+}
+
+that.do_search_enter = do_search_enter;
 
 
 // initialization
