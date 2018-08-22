@@ -58,7 +58,7 @@ my.views.set("search", function (d) {
     d3.select("input#input_q")
         .property('value', d['q']);
 
-
+    // Search words in lpi descriptions
     df_lpi = my.m.meta_lpi(undefined);
     rows = df_lpi.filter(function(r) {
         var res = false, s;
@@ -67,17 +67,19 @@ my.views.set("search", function (d) {
         return res;
         });
 
+    // count pages
     var n_pages, remainder, in_page=30;
     n_pages = Math.floor(rows.length / in_page);
     remainder = rows.length % in_page;
     if (remainder > 0) {++n_pages;}
 
+    // slice
     rows = rows.slice((current_page - 1) * in_page, current_page * in_page);
 
+    // extract numbers, then select rows in df_common
     var numbers = rows.map(function (row) {
         return row.number;
         });
-
 
     df_common = my.m.meta_common(undefined);
 
@@ -85,13 +87,13 @@ my.views.set("search", function (d) {
          return numbers.indexOf(row.number) != -1;
         });
 
+    // get properties if images
     var images = [];
     rows.forEach(function (row_common, i) {
         var r = {};
         r['title'] = utils.format("AS{mission}-{magazine}-{number}", row_common);
         r['url']  = utils.get_little_img_url(row_common, my);
         r['number'] = row_common.number;
-
         images[images.length] = r;
     });
 

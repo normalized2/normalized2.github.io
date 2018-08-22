@@ -279,13 +279,13 @@ var utils = (function () {
             if (rows.length != 0) {
                 res = utils.get_flickr_url(row, 'q');
             }
+        } else if (row_common.lpi == 1) {
+            var t = 'https://www.lpi.usra.edu/resources/apollo/images/browse/AS{mission}/{magazine}/{number}.jpg';
+            res = utils.format(t, row_common);
         }
         return res;
     }
     that.get_little_img_url = get_little_img_url;
-
-
-
 
 
     var format = function(t, row) {
