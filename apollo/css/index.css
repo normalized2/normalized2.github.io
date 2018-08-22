@@ -716,10 +716,15 @@ p.title {
 }
 
 a.page_number:hover {
+    background-color: #cccccc;
 }
 
 a.page_number_selected {
     background-color: #cccccc;
+}
+
+.search_tesult_item:hover {
+    background-color: #f5f5f5;
 }
 
 .favorites {

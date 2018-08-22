@@ -274,9 +274,8 @@ var utils = (function () {
             df_flickr = my.m.meta_flickr(undefined);
 
             rows = df_flickr.filter(function(r) { return r.number  == row_common.number;});
-            row = rows[0];
-
             if (rows.length != 0) {
+                row = rows[0];
                 res = utils.get_flickr_url(row, 'q');
             }
         } else if (row_common.lpi == 1) {
@@ -291,6 +290,32 @@ var utils = (function () {
         return res;
     }
     that.get_little_img_url = get_little_img_url;
+
+    var get_tag_list = function(row_common, my) {
+        var res = [];
+        // for image title in search result,  tags list
+        if (row_common.lpi == 1) {
+            var df_lpi, rows, row, number;
+
+            df_lpi = my.m.meta_lpi(undefined);
+            rows = df_lpi.filter(function(r) { return r.number  == row_common.number;});
+            if (rows.length != 0) {
+                row = rows[0];
+                var names = 'Description,Feature(s)'.split(",");
+                var taglist = [];
+                for (var k in names) {
+                    var key = names[k];
+                    if (row[key]) {
+                        var ba = row[key].split(/,|;/);
+                        taglist = taglist.concat(ba);
+                    }
+                }
+                res = taglist;
+            }
+        }
+        return res;
+    }
+    that.get_tag_list = get_tag_list;
 
     var format = function(t, row) {
         t = t.split('{mission}').join(row.mission);
