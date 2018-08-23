@@ -744,3 +744,33 @@ a.page_number_selected {
 #taglist a:hover {
     background-color: #f5f5f5;
 }
+
+img.thumb {
+    /* cursor: -webkit-zoom-in; cursor: -moz-zoom-in; cursor: -o-zoom-in; cursor: zoom-in; */
+    cursor: cell;
+    max-width: 150px;
+}
+
+.viewer-title {
+  color: #ccc;
+  display: inline-block;
+  font-size: 16px;
+  line-height: 1;
+  margin: 0 5% 20px;
+  max-width: 90%;
+  opacity: .8;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  -webkit-transition: opacity .15s;
+  transition: opacity .15s;
+  white-space: nowrap;
+}
+
+.viewer-transition {
+  -webkit-transition: all .1s;
+  transition: all .1s;
+}
+
+.viewer-backdrop {
+  background-color: rgba(0, 0, 0, .8);
+}

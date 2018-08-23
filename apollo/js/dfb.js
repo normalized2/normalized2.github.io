@@ -97,8 +97,10 @@ my.views.set("search", function (d) {
         var r = {};
         r['title'] = utils.format("AS{mission}-{magazine}-{number}", row_common);
         r['url']  = utils.get_little_img_url(row_common, my);
+        r['url_big']  = utils.get_big_img_url(row_common, my);
         r['number'] = row_common.number;
         r['tagslist'] = utils.get_tag_list(row_common, my);
+        r['i'] = i;
         images[images.length] = r;
     });
 
@@ -116,22 +118,27 @@ my.views.set("search", function (d) {
     divs.selectAll("div").remove();
 
 
-    divs.append("div")
+    var div = divs.append("div")
         .classed('col-md-2', true)
-        .classed('search_tesult_item', true)
-        .append('a')
-            // .attr('href', function (doc) {return '#/doc?image='+ doc.number;})
-            .attr('title', function (doc) {return doc.tagslist.join(', '); })
-            .text(function (doc) {return doc.title;})
-            /* .on('click', function (doc) {
-                view.dfb().set_view("/doc?image=" + doc.number);
-                d3.event.stopPropagation();
-                return undefined;
-            }) */
-            .append('img')
-                .attr('style', 'max-width: 150px;')
-                .attr('src', function (doc) {return doc.url;})
-                .attr('data-original', function (doc) {return doc.url;});
+        .classed('search_tesult_item', true);
+
+    div.append('a')
+        .attr('href', function (doc) {return '#/doc?image='+ doc.number;})
+        .attr('title', function (doc) {return doc.tagslist.join(', '); })
+        .text(function (doc) {return doc.title;})
+        .on('click', function (doc) {
+            view.dfb().set_view("/doc?image=" + doc.number);
+            d3.event.stopPropagation();
+            return undefined;
+        });
+    div.append('img')
+        .classed('thumb', true)
+        .attr('src', function (doc) {return doc.url;})
+        .attr('alt', function (doc) {return doc.title;})
+        .attr('data-original', function (doc) {return doc.url_big;})
+        .attr('title', function (doc) {return doc.tagslist.join(', '); })
+        .attr('i', function (doc) {return doc.i;});
+
 
 
     // page list
@@ -164,10 +171,20 @@ my.views.set("search", function (d) {
             })
 
     var gallery =  document.getElementById('search_results');
-    var viewer = new Viewer(gallery, {
-        url: 'data-original',
-        });
 
+    console.log("view.current_viewer: " + view.current_viewer);
+
+    if (view.current_viewer) {
+        //view.current_viewer.destroy();
+    } else {
+        var viewer = new Viewer(gallery, {
+            url: 'data-original',
+            transition: false,
+          });
+        view.current_viewer = viewer;
+        }
+
+    view.current_viewer.update();
 
     view.loading(false);
     return true;

@@ -261,7 +261,7 @@ var utils = (function () {
         res = res.split('{secret}').join(row.secret);
         res = res.split('{id}').join(row.id);
         res = res.split('{size}').join(size);
-
+        res = res.split('{originalsecret}').join(row.originalsecret);
         return res;
     };
 
@@ -290,6 +290,31 @@ var utils = (function () {
         return res;
     }
     that.get_little_img_url = get_little_img_url;
+
+    var get_big_img_url = function(row_common, my) {
+
+        var df_flickr, rows, row, number, res ='';
+        if (row_common.flickr == 1) {
+            df_flickr = my.m.meta_flickr(undefined);
+
+            rows = df_flickr.filter(function(r) { return r.number  == row_common.number;});
+            if (rows.length != 0) {
+                row = rows[0];
+                res = utils.get_flickr_url(row, 'c');
+            }
+        } else if (row_common.lpi == 1) {
+            var t = 'https://www.lpi.usra.edu/resources/apollo/images/browse/AS{mission}/{magazine}/{number}.jpg';
+            var dict = {
+                mission: utils.fill_left(row_common.mission, 2),
+                magazine: utils.fill_left(row_common.magazine, 2),
+                number: utils.fill_left(row_common.number, 3),
+            }
+            res = utils.format(t, dict);
+        }
+        return res;
+    }
+    that.get_big_img_url = get_big_img_url;
+
 
     var get_tag_list = function(row_common, my) {
         var res = [];
@@ -329,6 +354,9 @@ var utils = (function () {
         }
         if (row.album_id) {
             t = t.split('{album_id}').join(row.album_id);
+        }
+        if (row.originalsecret) {
+            t = t.split('{originalsecret}').join(row.originalsecret);
         }
         if (row.spaceflight_page) {
             t = t.split('{spaceflight_page}').join(row.spaceflight_page);
