@@ -120,17 +120,18 @@ my.views.set("search", function (d) {
         .classed('col-md-2', true)
         .classed('search_tesult_item', true)
         .append('a')
-            .attr('href', function (doc) {return '#/doc?image='+ doc.number;})
+            // .attr('href', function (doc) {return '#/doc?image='+ doc.number;})
             .attr('title', function (doc) {return doc.tagslist.join(', '); })
             .text(function (doc) {return doc.title;})
-            .on('click', function (doc) {
+            /* .on('click', function (doc) {
                 view.dfb().set_view("/doc?image=" + doc.number);
                 d3.event.stopPropagation();
                 return undefined;
-            })
+            }) */
             .append('img')
                 .attr('style', 'max-width: 150px;')
-                .attr('src', function (doc) {return doc.url;});
+                .attr('src', function (doc) {return doc.url;})
+                .attr('data-original', function (doc) {return doc.url;});
 
 
     // page list
@@ -161,6 +162,11 @@ my.views.set("search", function (d) {
                 d3.event.stopPropagation();
                 return undefined;
             })
+
+    var gallery =  document.getElementById('search_results');
+    var viewer = new Viewer(gallery, {
+        url: 'data-original',
+        });
 
 
     view.loading(false);
