@@ -235,7 +235,7 @@ var utils = (function () {
     'm': 'Medium 500 (500 x 497)',
     'z': 'Medium 640 (640 x 636)',
     'c': 'Medium 800 (800 x 795)',
-    'l': 'Large 1024 (1024 x 1018)',
+    'l/b': 'Large 1024 (1024 x 1018)',
     'h': 'Large 1600 (1600 x 1590)',
     'k': 'Large 2048 (2048 x 2036)',
     'o': 'Original (4175 x 4150)',
@@ -249,10 +249,10 @@ var utils = (function () {
 
         if (!size) {
             url_templ = "https://www.flickr.com/photos/projectapolloarchive/{id}/in/album-{album_id}/"
-        } else if (size == 'o') {
-            url_templ = "https://c1.staticflickr.com/1/{server}/{id}_{originalsecret}_{size}.jpg"
+        } else if ((size == 'o') || (size == 'h')) {
+            url_templ = "https://c1.staticflickr.com/{farm}/{server}/{id}_{originalsecret}_{size}.jpg"
         } else {
-            url_templ = "https://c1.staticflickr.com/1/{server}/{id}_{secret}_{size}.jpg";
+            url_templ = "https://c1.staticflickr.com/{farm}/{server}/{id}_{secret}_{size}.jpg";
         }
 
         res = url_templ;
@@ -262,6 +262,8 @@ var utils = (function () {
         res = res.split('{id}').join(row.id);
         res = res.split('{size}').join(size);
         res = res.split('{originalsecret}').join(row.originalsecret);
+        res = res.split('{farm}').join(row.farm);
+
         return res;
     };
 
@@ -300,10 +302,20 @@ var utils = (function () {
             rows = df_flickr.filter(function(r) { return r.number  == row_common.number;});
             if (rows.length != 0) {
                 row = rows[0];
-                res = utils.get_flickr_url(row, 'c');
+                res = utils.get_flickr_url(row, 'b');
             }
         } else if (row_common.lpi == 1) {
             var t = 'https://www.lpi.usra.edu/resources/apollo/images/browse/AS{mission}/{magazine}/{number}.jpg';
+            // TODO: use row_common.lpi_full flag
+
+            var df_lpi = my.m.meta_lpi(undefined);
+            rows = df_lpi.filter(function(r) { return r.number  == row_common.number;});
+            if (rows.length != 0) {
+                row = rows[0];
+                if (row['Hi Resolution Image(s)']) {
+                    t = 'https://www.lpi.usra.edu/resources/apollo/images/print/AS{mission}/{magazine}/{number}.jpg';
+                }
+            }
             var dict = {
                 mission: utils.fill_left(row_common.mission, 2),
                 magazine: utils.fill_left(row_common.magazine, 2),
@@ -357,6 +369,9 @@ var utils = (function () {
         }
         if (row.originalsecret) {
             t = t.split('{originalsecret}').join(row.originalsecret);
+        }
+        if (row.farm) {
+            t = t.split('{farm}').join(row.farm);
         }
         if (row.spaceflight_page) {
             t = t.split('{spaceflight_page}').join(row.spaceflight_page);

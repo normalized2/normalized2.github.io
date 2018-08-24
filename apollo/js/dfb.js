@@ -44,7 +44,7 @@ var dfb = function (spec) {
 
 my.views.set("search", function (d) {
 
-    if (!my.m.meta_flickr() || !my.m.meta_alsj() || !my.m.meta_lpi() || !my.m.meta_common() || !my.m.meta_magazines) {
+    if (!my.m.meta_flickr() || !my.m.meta_alsj() || !my.m.meta_lpi() || !my.m.meta_common() || !my.m.meta_magazines()) {
         view.loading(true);
         return true;
     }
@@ -172,8 +172,6 @@ my.views.set("search", function (d) {
 
     var gallery =  document.getElementById('search_results');
 
-    console.log("view.current_viewer: " + view.current_viewer);
-
     if (view.current_viewer) {
         //view.current_viewer.destroy();
     } else {
@@ -205,11 +203,10 @@ my.views.set("doc", function (d) {
         links_img_urls = {},
         p, t, k;
 
-    if (!my.m.meta_flickr() || !my.m.meta_alsj() || !my.m.meta_lpi() || !my.m.meta_common() || !my.m.meta_magazines) {
+    if (!my.m.meta_flickr() || !my.m.meta_alsj() || !my.m.meta_lpi() || !my.m.meta_common() || !my.m.meta_magazines()) {
         view.loading(true);
         return true;
     }
-
 
     //alert(Object.keys(my.m.doc_category));
 
@@ -404,12 +401,20 @@ my.views.set("doc", function (d) {
                 return s;
             });
 
-        links_desc['LPI'] = utils.format("https://www.lpi.usra.edu/resources/apollo/frame/?AS{mission}-{magazine}-{number}", row_common);
+        var dict = {
+            mission: utils.fill_left(row_common.mission, 2),
+            magazine: utils.fill_left(row_common.magazine, 2),
+            number: utils.fill_left(row_common.number, 3),
+        }
 
-        links_img_urls['LPI low'] = utils.format("https://www.lpi.usra.edu/resources/apollo/images/browse/AS{mission}/{magazine}/{number}.jpg", row_common);
+
+        links_desc['LPI'] = utils.format("https://www.lpi.usra.edu/resources/apollo/frame/?AS{mission}-{magazine}-{number}", dict);
+
+        links_img_urls['LPI low'] = utils.format("https://www.lpi.usra.edu/resources/apollo/images/browse/AS{mission}/{magazine}/{number}.jpg", dict);
 
         if (row['Hi Resolution Image(s)']) {
-            links_img_urls['LPI print'] = utils.format('https://www.lpi.usra.edu/resources/apollo/images/print/AS{mission}/{magazine}/{number}.jpg', row_common);
+            // TODO: 4 --> 04
+            links_img_urls['LPI print'] = utils.format('https://www.lpi.usra.edu/resources/apollo/images/print/AS{mission}/{magazine}/{number}.jpg', dict);
         }
 
     } else {
@@ -459,6 +464,7 @@ my.views.set("doc", function (d) {
     p = d3.select("img#image_thumb");
     p.classed("hidden", false);
     p.attr('src', img_url);
+    p.attr('bigsrc', utils.get_big_img_url(row_common, my));
 
     // links_desc
     var k, key;
@@ -559,6 +565,9 @@ my.views.set("doc", function (d) {
                 return undefined;
             });
 
+
+    // TODO: many calls, many IXB-img-container created... when changed view
+    view.imgzoombox.init();
 
     view.loading(false);
     return true;

@@ -2935,6 +2935,7 @@
             var target = _ref.target;
 
             if (target.tagName.toLowerCase() === 'img') {
+              // Fix this:
               //_this.view(_this.images.indexOf(target));
               _this.view(target.getAttribute('i'));
             }

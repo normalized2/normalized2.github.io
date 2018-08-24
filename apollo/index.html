@@ -9,6 +9,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="css/bootstrap.min.css" media="screen">
   <link rel="stylesheet" href="css/bootstrap.min.css"  type="text/css">
+
+  <link rel="stylesheet" href="css/imgzoombox.css" type="text/css">
   <link rel="stylesheet" href="viewerjs/viewer.css" type="text/css">
 
   <link rel="stylesheet" href="css/index.css" type="text/css">
@@ -108,8 +110,8 @@
                     </p>
                   </td>
                   <td style="width: 10px;">&nbsp;</td>
-                  <td>
-                    <img id="image_thumb" class='hidden' src='' style='max-width: 700px; cursor:cell;' />
+                  <td id="image_thumb_container">
+                    <img id="image_thumb" class='hidden' src='' style="max-width: 700px; cursor:cell;" onclick="view.imgzoombox.showZoomBox($(this).attr('bigsrc'));" />
                     <br /><a id="image_url" href='' target="_blank"></a>
                   </td>
                   <td style="width: 10px;">&nbsp;</td>
@@ -283,6 +285,7 @@
 <script type="text/javascript" src="js/utils.js"></script>
 <script type="text/javascript" src="js/model.js"></script>
 <script type="text/javascript" src="js/view.js"></script>
+<script type="text/javascript" src="js/view/imgzoombox.js"></script>
 
 <script type="text/javascript" src="js/metadata.js"></script>
 <script type="text/javascript" src="js/metadata/flickr.js"></script>
@@ -292,7 +295,6 @@
 <script type="text/javascript" src="js/metadata/magazines.js"></script>
 <script type="text/javascript" src="js/VIS.js"></script>
 <script type="text/javascript" src="js/dfb.js"></script>
-
 
 
 <script type="text/javascript">
