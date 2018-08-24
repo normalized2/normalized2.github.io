@@ -62,6 +62,10 @@ my.views.set("search", function (d) {
     var q = d['q'];
     if (q.length <= 1) { q += '  ';}
 
+    // TODO:  use ' - Apollo images agregations.' form info.json options
+    var page_title = q;
+    document.title = page_title + ' - Apollo images agregations.';
+
     // Search words in lpi descriptions
     df_lpi = my.m.meta_lpi(undefined);
     rows = df_lpi.filter(function(r) {
@@ -265,7 +269,10 @@ my.views.set("doc", function (d) {
         p.classed("hidden", true)
     }
 
-    d3.select("p#image_AS_title").text(utils.format("AS{mission}-{magazine}-{number}", row_common));
+    // TODO:  use ' - Apollo images agregations.' form info.json options
+    var page_title = utils.format("AS{mission}-{magazine}-{number}", row_common)
+    d3.select("p#image_AS_title").text(page_title);
+    document.title = page_title + ' - Apollo images agregations.';
 
     if (row_common.lpi==1) {
 
