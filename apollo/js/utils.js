@@ -355,6 +355,7 @@ var utils = (function () {
     that.get_tag_list = get_tag_list;
 
     var format = function(t, row) {
+        // TODO:  use Object.keys()
         t = t.split('{mission}').join(row.mission);
         t = t.split('{magazine}').join(row.magazine);
         t = t.split('{number}').join(row.number);
