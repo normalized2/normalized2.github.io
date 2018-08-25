@@ -1,4 +1,4 @@
-/*global view, VIS, set_view, utils, d3 */
+/*global view, VIS, utils, d3 */
 "use strict";
 
 view.imgzoombox = function (p) {
@@ -18,6 +18,8 @@ view.imgzoombox.imgSize = function(img) {
 };
 
 view.imgzoombox.showZoomBox = function(src) {
+
+    console.log("showZoomBox: " + src);
 
     if (src == '') {
         return;
@@ -52,6 +54,19 @@ view.imgzoombox.hideZoomBox = function() {
     $("#IZB-zoom-box-tools").hide();
     $("#zoom-box-img").attr('src', '');
 };
+
+
+view.imgzoombox.isShowing = function () {
+    return this.zoomBox.is(":visible");
+}
+
+view.imgzoombox.update = function (src) {
+    if (this.isShowing()) {
+        this.showZoomBox(src);
+    };
+};
+
+
 
 // set new zoom
 view.imgzoombox.zoom = function(command, val) {
@@ -189,6 +204,7 @@ view.imgzoombox.doProcImages = function() {
 
 view.imgzoombox.init = function() {
 
+    this.wheeling = false;
 
             if (document.getElementById('zoom-box-img')) {
                 return;
@@ -223,7 +239,7 @@ view.imgzoombox.init = function() {
                     .appendTo( $(document.body) );
             // zoomBox widget
             // First make zoom-select control
-            var zoomSelContainer = '<div style="display: inline-block; float: left; margin-top: 4px; position: relative;">',
+            var zoomSelContainer = '<div class="IZB-combobox">',
                 zoomSelOptions = [
                         '<option value="none"></option>',
                         '<option value="200">200%</option>',
@@ -320,4 +336,47 @@ view.imgzoombox.init = function() {
                 widget.zoom();
             });
             this.doProcImages();
+
+    this.appendListeners()
 }; //init()
+
+
+view.imgzoombox.appendListeners = function () {
+    var EVENT_WHEEL = 'wheel mousewheel DOMMouseScroll';
+    // TODO: change document.getElementById to jsQueary or d3js
+    var element = document.getElementById('zoom-box-img');
+    addListener(element.ownerDocument, EVENT_WHEEL, this.onWheel = this.wheel.bind(this));
+};
+
+view.imgzoombox.wheel = function(e) {
+    var _this3 = this;
+
+    if (!this.isShowing()) {
+        return;
+      }
+
+      this.wheeling = true;
+
+      setTimeout(function () {
+        _this3.wheeling = false;
+      }, 50);
+
+
+      var delta = 1;
+
+      if (e.deltaY) {
+        delta = e.deltaY > 0 ? 1 : -1;
+      } else if (e.wheelDelta) {
+        delta = -e.wheelDelta / 120;
+      } else if (e.detail) {
+        delta = e.detail > 0 ? 1 : -1;
+      }
+
+    if (delta > 0) {
+        this.zoom('zoomStep', -1);
+    } else {
+        this.zoom('zoomStep', 1);
+    }
+
+    e.preventDefault();
+}

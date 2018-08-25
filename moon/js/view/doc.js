@@ -1,4 +1,4 @@
-/*global view, VIS, set_view, bib, utils, d3 */
+/*global view, VIS, bib, utils, d3 */
 "use strict";
 
 view.doc = function (p) {

@@ -35,7 +35,10 @@
                 "unit": "year",
                 "n": 1
             }
-        }
+        },
+        "title": "Apollo image agregater.",
+        "flickr_sizes": ["o", "k", "h", "l", "c", "z", "n", "s", "m", "sq"],
+        "flickr_big_size": "h"
     },
     "meta_info": "This site is the working demo for <a href=\"http://agoldst.github.io/dfr-browser\">dfr-browser</a>, a browsing interface for topic models of journal articles or other text.",
     "topic_labels": [
@@ -72,5 +75,5 @@
         "Topic 30",
         "\u0424\u043e\u043d\u043e\u0432\u0430\u044f \u0442\u0435\u043c\u0430 0"
     ],
-    "title": "Apollo image agregater"
+    "title": "Apollo image agregater."
 }

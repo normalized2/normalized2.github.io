@@ -24,7 +24,7 @@ metadata.flickr = function (spec) {
         s = meta_s.replace(/^\n*/, "")
             .replace(/\n*$/, "\n");
 
-        headers = 'title,mission,magazine,number,album_id,description,farm,id,originalsecret,secret,server,tags_raw,tags_text'.split(',');
+        headers = 'title,mission,magazine,number,album_id,farm,id,originalsecret,secret,server,sizes'.split(',');
 
         // assume that there is no column header
         my.docs = d3.csv.parseRows(s, function (d, j) {

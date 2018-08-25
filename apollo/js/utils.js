@@ -1,4 +1,4 @@
-/*global jQuery */
+/*global jQuery, VIS */
 
 var utils = (function () {
     "use strict";
@@ -232,7 +232,7 @@ var utils = (function () {
     't': 'Thumbnail (100 x 99)',
     's': 'Small 240 (240 x 239)',
     'n': 'Small 320 (320 x 318)',
-    'm': 'Medium 500 (500 x 497)',
+    'm/': 'Medium 500 (500 x 497)',
     'z': 'Medium 640 (640 x 636)',
     'c': 'Medium 800 (800 x 795)',
     'l/b': 'Large 1024 (1024 x 1018)',
@@ -244,30 +244,67 @@ var utils = (function () {
 
     that.availables_sizes = availables_sizes;
 
-    var get_flickr_url = function (row, size) {
+    var get_flickr_url = function (row, size, sizes_table) {
+
         var url_templ, res;
 
         if (!size) {
-            url_templ = "https://www.flickr.com/photos/projectapolloarchive/{id}/in/album-{album_id}/"
-        } else if ((size == 'o') || (size == 'h')) {
-            url_templ = "https://c1.staticflickr.com/{farm}/{server}/{id}_{originalsecret}_{size}.jpg"
-        } else {
-            url_templ = "https://c1.staticflickr.com/{farm}/{server}/{id}_{secret}_{size}.jpg";
+            url_templ = "https://www.flickr.com/photos/projectapolloarchive/{id}/in/album-{album_id}/";
+            return utils.format(url_templ, row);
         }
 
-        res = url_templ;
-        res = res.split('{album_id}').join(row.album_id);
-        res = res.split('{server}').join(row.server);
-        res = res.split('{secret}').join(row.secret);
-        res = res.split('{id}').join(row.id);
-        res = res.split('{size}').join(size);
-        res = res.split('{originalsecret}').join(row.originalsecret);
-        res = res.split('{farm}').join(row.farm);
 
-        return res;
+        if (!sizes_table) {
+            // TODO:  utils --> this
+            sizes_table = utils.get_flickr_sizes_table(row);
+        }
+
+        var row_size = sizes_table.filter(function (r) {return r.chars == size});
+
+        if (row_size.length == 0)
+            {
+            console.log("get_flickr_url: not found size: " + size)
+            return '';
+            }
+        row_size = row_size[0]
+
+        if (row_size.secret == '')  {
+            row_size.secret = row.secret;
+        }
+        row_size.size = row_size.l;
+        if (row_size.size == '') {
+            row_size.size = 'm';
+        }
+        row_size.server = row.server;
+        row_size.farm = row.farm;
+        row_size.id = row.id;
+
+        url_templ = "https://farm{farm}.staticflickr.com/{server}/{id}_{secret}_{size}.jpg";
+        // Another variant "https://c1.staticflickr.com/{farm}/{server}/{id}_{secret}_{size}.jpg"
+
+        return utils.format(url_templ, row_size);
     };
-
     that.get_flickr_url = get_flickr_url;
+
+    var get_flickr_sizes_table = function (row) {
+        // row.sizes : 'label.width.height.chars.l.secret;label.width.height.chars.l.secret'
+        var rows = row.sizes.split(';')
+        
+        return rows.map(function(item) {
+            var a = item.split('.')
+            return {
+                'label': a[0],
+                'width': a[1],
+                'height': a[2],
+                'chars': a[3],
+                'l': a[4],
+                'secret': a[5],
+            };
+        });
+
+        /* return [{"l": "s", "chars": "sq", "height": 75, "width": 75, "label": "Square", "secret": ""}, {"l": "t", "chars": "t", "height": 100, "width": 96, "label": "Thumbnail", "secret": ""}, {"l": "q", "chars": "q", "height": 150, "width": 150, "label": "Large Square", "secret": ""}, {"l": "m", "chars": "s", "height": 240, "width": 229, "label": "Small", "secret": ""}, {"l": "n", "chars": "n", "height": 320, "width": 306, "label": "Small 320", "secret": ""}, {"l": "", "chars": "m", "height": 500, "width": 478, "label": "Medium", "secret": ""}, {"l": "z", "chars": "z", "height": 640, "width": 612, "label": "Medium 640", "secret": ""}, {"l": "c", "chars": "c", "height": 800, "width": 765, "label": "Medium 800", "secret": ""}, {"l": "b", "chars": "l", "height": 1024, "width": 979, "label": "Large", "secret": ""}, {"l": "h", "chars": "h", "height": 1600, "width": 1530, "label": "Large 1600", "secret": "b9ef0a0666"}, {"l": "k", "chars": "k", "height": 2048, "width": 1959, "label": "Large 2048", "secret": "9ca195915e"}, {"l": "o", "chars": "o", "height": 4600, "width": 4400, "label": "Original", "secret": "19970ddae6"}]; */
+    }
+    that.get_flickr_sizes_table = get_flickr_sizes_table;
 
     var get_little_img_url = function(row_common, my) {
 
@@ -302,7 +339,7 @@ var utils = (function () {
             rows = df_flickr.filter(function(r) { return r.number  == row_common.number;});
             if (rows.length != 0) {
                 row = rows[0];
-                res = utils.get_flickr_url(row, 'b');
+                res = utils.get_flickr_url(row, VIS.flickr_big_size);
             }
         } else if (row_common.lpi == 1) {
             var t = 'https://www.lpi.usra.edu/resources/apollo/images/browse/AS{mission}/{magazine}/{number}.jpg';
@@ -368,6 +405,18 @@ var utils = (function () {
         if (row.album_id) {
             t = t.split('{album_id}').join(row.album_id);
         }
+        if (row.server) {
+            t = t.split('{server}').join(row.server);
+        }
+        if (row.secret) {
+            t = t.split('{secret}').join(row.secret);
+        }
+        if (row.id) {
+            t = t.split('{id}').join(row.id);
+        }
+        if (row.size) {
+            t = t.split('{size}').join(row.size);
+        }
         if (row.originalsecret) {
             t = t.split('{originalsecret}').join(row.originalsecret);
         }
@@ -377,7 +426,6 @@ var utils = (function () {
         if (row.spaceflight_page) {
             t = t.split('{spaceflight_page}').join(row.spaceflight_page);
         }
-
         return t;
     }
     that.format = format;

@@ -49,6 +49,8 @@ my.views.set("search", function (d) {
         return true;
     }
 
+    view.image.unbind_events();
+
     var df_lpi, df_common,
         rows;
     var current_page = 1;
@@ -204,7 +206,7 @@ my.views.set("doc", function (d) {
         row, row_common,
         img_url='',
         links_desc = {},
-        links_img_urls = {},
+        links_img_urls = [],
         p, t, k;
 
     if (!my.m.meta_flickr() || !my.m.meta_alsj() || !my.m.meta_lpi() || !my.m.meta_common() || !my.m.meta_magazines()) {
@@ -224,55 +226,9 @@ my.views.set("doc", function (d) {
     rows = df_common.filter(function(r) { return r.number  == d['image'];});
     row_common = rows[0];
 
-    var number_next, number_prev, a;
+    view.image.set_next_prev(row_common);
 
-    number_next = row_common.next.split(',');
-    if (number_next.length !=0) {
-        p = d3.select("p#image_next");
-        p.classed("hidden", false)
-        //p.text(row.next);
-        number_next = number_next[0];
-        var func_next = function (w) {
-                d3.event.preventDefault();
-                view.dfb().set_view("/doc?image=" + number_next);
-            };
-
-        a = d3.select("#image_view_next");
-        a.on("click", func_next);
-        a.text(number_next + " >>>");
-        a = d3.select("#td_image_view_next");
-        a.on("click", func_next);
-    } else {
-        p = d3.select("p#image_next");
-        p.classed("hidden", true)
-    }
-
-    number_prev = row_common.prev.split(',');
-    if (number_prev.length !=0) {
-        p = d3.select("p#image_prev");
-        p.classed("hidden", false)
-        //p.text(row.next);
-        number_prev = number_prev[number_prev.length - 1];
-        var func_prev = function (w) {
-                d3.event.preventDefault();
-                view.dfb().set_view("/doc?image=" + number_prev);
-            };
-        a = d3.select("#image_view_prev");
-        a.on("click", );
-        a.text("<<< " + number_prev);
-
-        a = d3.select("#td_image_view_prev");
-        a.on("click", func_prev);
-
-    } else {
-        p = d3.select("p#image_prev");
-        p.classed("hidden", true)
-    }
-
-    // TODO:  use ' - Apollo images agregations.' form info.json options
-    var page_title = utils.format("AS{mission}-{magazine}-{number}", row_common)
-    d3.select("p#image_AS_title").text(page_title);
-    document.title = page_title + ' - Apollo images agregations.';
+    view.image.set_document_title(row_common);
 
     if (row_common.lpi==1) {
 
@@ -288,7 +244,6 @@ my.views.set("doc", function (d) {
     }
 
     df_alsj = my.m.meta_alsj(undefined);
-
     rows = df_alsj.filter(function(r) { return r.number  == d['image'];});
     if (rows.length != 0) {
         row = rows[0];
@@ -336,7 +291,7 @@ my.views.set("doc", function (d) {
         var flickr_url = utils.get_flickr_url(row, 'z');
         img_url = flickr_url;
 
-        links_desc['Flickr'] = utils.get_flickr_url(row, undefined);
+        links_desc['Flickr card'] = utils.get_flickr_url(row, undefined);
 
         t = 'https://www.flickr.com/photos/projectapolloarchive/{id}/sizes/l/';
         links_desc['Flickr all sizes'] = utils.format(t, row);
@@ -344,9 +299,7 @@ my.views.set("doc", function (d) {
         t = 'https://www.flickr.com/photos/projectapolloarchive/albums/{album_id}';
         links_desc['Flickr album'] = utils.format(t, row);
 
-        links_img_urls['Flickr Small 320'] = utils.get_flickr_url(row, 'n');
-        links_img_urls['Flickr Large 2048'] = utils.get_flickr_url(row, 'k');
-        links_img_urls['Flickr Original 4175'] = utils.get_flickr_url(row, 'o');
+        links_img_urls = links_img_urls.concat(view.image.get_img_list_flickr(row));
 
     } else {
         d3.select("p#image_flickr_url").text('');
@@ -417,11 +370,11 @@ my.views.set("doc", function (d) {
 
         links_desc['LPI'] = utils.format("https://www.lpi.usra.edu/resources/apollo/frame/?AS{mission}-{magazine}-{number}", dict);
 
-        links_img_urls['LPI low'] = utils.format("https://www.lpi.usra.edu/resources/apollo/images/browse/AS{mission}/{magazine}/{number}.jpg", dict);
+        //links_img_urls['LPI low'] = utils.format("https://www.lpi.usra.edu/resources/apollo/images/browse/AS{mission}/{magazine}/{number}.jpg", dict);
 
         if (row['Hi Resolution Image(s)']) {
             // TODO: 4 --> 04
-            links_img_urls['LPI print'] = utils.format('https://www.lpi.usra.edu/resources/apollo/images/print/AS{mission}/{magazine}/{number}.jpg', dict);
+            //links_img_urls['LPI print'] = utils.format('https://www.lpi.usra.edu/resources/apollo/images/print/AS{mission}/{magazine}/{number}.jpg', dict);
         }
 
     } else {
@@ -573,8 +526,13 @@ my.views.set("doc", function (d) {
             });
 
 
-    // TODO: many calls, many IXB-img-container created... when changed view
+    view.image.show_img_urls(links_img_urls);
+
     view.imgzoombox.init();
+
+    view.imgzoombox.update($('#image_thumb').attr('bigsrc'));
+
+    view.image.bind_events();
 
     view.loading(false);
     return true;
@@ -853,6 +811,7 @@ load = function () {
 
         if (typeof info_s === 'string') {
             my.m.info(JSON.parse(info_s));
+            //my.m.info($.parseJSON(info_s));
 
             // finish initializing VIS by loading any preferences
             // stashed in model info
