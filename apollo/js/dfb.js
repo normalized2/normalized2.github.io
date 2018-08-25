@@ -427,30 +427,7 @@ my.views.set("doc", function (d) {
     p.attr('bigsrc', utils.get_big_img_url(row_common, my));
 
     // links_desc
-    var k, key;
-    var keys_values = [];
-
-    for (k in links_desc) {
-        keys_values[keys_values.length] = [k, links_desc[k]]
-    };
-
-
-    trs = d3.select("table#links_desc tbody")
-        .selectAll("tr")
-        .data(keys_values);
-
-    trs.enter().append("tr");
-    trs.exit().remove();
-
-    // clear rows
-    trs.selectAll("td").remove();
-
-    trs.append("td")
-        .attr('class', 'links')
-        .append('a')
-            .attr('target', '_blank')
-            .attr('href', function (doc) {return doc[1];})
-            .text(function (doc) {return doc[0];});
+    view.image.show_links_to_sources(links_desc);
 
 
     // magazines list
