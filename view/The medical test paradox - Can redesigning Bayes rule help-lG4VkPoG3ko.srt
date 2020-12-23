@@ -1,0 +1,2420 @@
+1
+00:00:20,160 --> 00:00:22,740
+particular test result is correct you can
+
+2
+00:00:22,740 --> 00:00:24,390
+still land on a very low number
+
+3
+00:00:24,690 --> 00:00:28,110
+arbitrarily low in fact in short an
+
+4
+00:00:28,140 --> 00:00:30,900
+accurate test is not necessarily a very
+
+5
+00:00:30,900 --> 00:00:31,800
+predictive test
+
+6
+00:00:32,970 --> 00:00:35,040
+don't people think about math and formulas
+
+7
+00:00:35,070 --> 00:00:36,390
+they don't often think of it as
+
+8
+00:00:36,420 --> 00:00:38,550
+a design process i mean maybe in
+
+9
+00:00:38,550 --> 00:00:40,080
+the case of notation it's easy to
+
+10
+00:00:40,080 --> 00:00:42,480
+see the different choices are possible but
+
+11
+00:00:42,480 --> 00:00:43,950
+when it comes to the structure of
+
+12
+00:00:43,950 --> 00:00:46,020
+the formulas themselves and how we use
+
+13
+00:00:46,020 --> 00:00:48,390
+them that's something that people typically view
+
+14
+00:00:48,420 --> 00:00:51,660
+as fixed in this video you and
+
+15
+00:00:51,660 --> 00:00:53,130
+i will dig into this paradox
+
+16
+00:00:53,400 --> 00:00:54,690
+but instead of using it to talk
+
+17
+00:00:54,690 --> 00:00:56,640
+about the usual version of base rule
+
+18
+00:00:56,880 --> 00:00:58,860
+i'd like to motivate an alternate version
+
+19
+00:00:59,160 --> 00:01:00,660
+an alternate design choice
+
+20
+00:01:01,744 --> 00:01:03,089
+what's up on the screen now is
+
+21
+00:01:03,150 --> 00:01:04,920
+a little bit abstract which makes it
+
+22
+00:01:04,920 --> 00:01:06,780
+difficult to justify that there really is
+
+23
+00:01:06,780 --> 00:01:09,000
+a substantive difference here especially when i
+
+24
+00:01:09,000 --> 00:01:11,370
+haven't explained either one yet to see
+
+25
+00:01:11,370 --> 00:01:12,630
+what i'm talking about though we should
+
+26
+00:01:12,630 --> 00:01:14,129
+really start by spending some time a
+
+27
+00:01:14,129 --> 00:01:16,260
+little more concretely and just laying out
+
+28
+00:01:16,260 --> 00:01:18,210
+what exactly this paradox is
+
+29
+00:01:24,270 --> 00:01:26,279
+picture a thousand women and suppose that
+
+30
+00:01:26,279 --> 00:01:28,020
+one percent of them have breast cancer
+
+31
+00:01:28,620 --> 00:01:30,060
+and let's say they all undergo a
+
+32
+00:01:30,060 --> 00:01:32,604
+certain breast cancer screening and nine of
+
+33
+00:01:32,604 --> 00:01:35,190
+those with cancer correctly get positive results
+
+34
+00:01:35,400 --> 00:01:37,710
+and there's one false negative and then
+
+35
+00:01:37,710 --> 00:01:39,509
+suppose that among the remainder without
+
+36
+00:01:39,540 --> 00:01:42,450
+cancer eighty nine get false positives and
+
+37
+00:01:42,450 --> 00:01:44,460
+nine hundred and one correctly get negative
+
+38
+00:01:44,460 --> 00:01:46,920
+results so if all you know about
+
+39
+00:01:46,920 --> 00:01:48,330
+a woman is that she does the
+
+40
+00:01:48,333 --> 00:01:50,190
+screening and she gets a positive result
+
+41
+00:01:50,280 --> 00:01:52,020
+you don't have information about symptoms or
+
+42
+00:01:52,020 --> 00:01:54,210
+anything like that you know that she's
+
+43
+00:01:54,240 --> 00:01:56,040
+either one of these nine true positives
+
+44
+00:01:56,370 --> 00:01:57,720
+or one of these eighty nine false
+
+45
+00:01:57,720 --> 00:01:58,380
+positives
+
+46
+00:01:59,640 --> 00:02:01,199
+so the probability that she's in the
+
+47
+00:02:01,199 --> 00:02:03,900
+cancer group given the test result is
+
+48
+00:02:03,900 --> 00:02:06,270
+nine divided by nine plus eighty nine
+
+49
+00:02:06,510 --> 00:02:08,250
+which is approximately one in eleven
+
+50
+00:02:09,060 --> 00:02:10,678
+in medical parlance you would call this
+
+51
+00:02:10,680 --> 00:02:13,050
+the positive predictive value of the test
+
+52
+00:02:13,080 --> 00:02:15,180
+or p p v the number of
+
+53
+00:02:15,210 --> 00:02:17,400
+true positives divided by the total number
+
+54
+00:02:17,400 --> 00:02:19,530
+of positive test results you can see
+
+55
+00:02:19,530 --> 00:02:21,030
+where the name comes from to what
+
+56
+00:02:21,030 --> 00:02:23,910
+extent does a positive test result actually
+
+57
+00:02:23,910 --> 00:02:25,560
+predicts that you have the disease
+
+58
+00:02:26,760 --> 00:02:28,860
+now hopefully as i presented it this
+
+59
+00:02:28,860 --> 00:02:30,600
+way where we're thinking concretely about a
+
+60
+00:02:30,600 --> 00:02:33,090
+sample population all of this makes perfect
+
+61
+00:02:33,090 --> 00:02:34,979
+sense but where it comes across as
+
+62
+00:02:34,979 --> 00:02:37,140
+counter intuitive as if you just look
+
+63
+00:02:37,140 --> 00:02:39,120
+at the accuracy of the day present
+
+64
+00:02:39,120 --> 00:02:40,832
+it to people as a statistic and
+
+65
+00:02:40,832 --> 00:02:42,420
+then ask them to make judgments about
+
+66
+00:02:42,450 --> 00:02:45,000
+their test results test accuracy is not
+
+67
+00:02:45,000 --> 00:02:46,350
+actually one number but two
+
+68
+00:02:46,920 --> 00:02:48,746
+first you ask how often does it
+
+69
+00:02:48,746 --> 00:02:51,270
+test correct on those with the disease
+
+70
+00:02:51,570 --> 00:02:53,580
+this is known as the test sensitivity
+
+71
+00:02:53,850 --> 00:02:55,680
+as in how sensitive is it to
+
+72
+00:02:55,680 --> 00:02:58,350
+detecting the presence of the disease in
+
+73
+00:02:58,350 --> 00:03:00,359
+our example test sensitivity is nine and
+
+74
+00:03:00,359 --> 00:03:02,790
+ten or ninety percent and another way
+
+75
+00:03:02,790 --> 00:03:04,080
+to say the same fact would be
+
+76
+00:03:04,080 --> 00:03:05,610
+to say the false negative rate is
+
+77
+00:03:05,610 --> 00:03:06,270
+ten percent
+
+78
+00:03:06,900 --> 00:03:09,270
+and then a separate not necessarily related
+
+79
+00:03:09,270 --> 00:03:11,220
+number is how often it's correct for
+
+80
+00:03:11,220 --> 00:03:13,410
+those without the disease which is known
+
+81
+00:03:13,410 --> 00:03:16,140
+as the test specificity as in our
+
+82
+00:03:16,142 --> 00:03:19,140
+positive results caused specifically by the disease
+
+83
+00:03:19,320 --> 00:03:21,690
+or are their confounding triggers giving false
+
+84
+00:03:21,690 --> 00:03:25,020
+positives in our example the specificity is
+
+85
+00:03:25,110 --> 00:03:27,060
+about ninety one percent or
+
+86
+00:03:27,060 --> 00:03:28,284
+or another way to say the same
+
+87
+00:03:28,290 --> 00:03:29,700
+fact would be to say the false
+
+88
+00:03:29,700 --> 00:03:32,370
+positive rate is nine percent so the
+
+89
+00:03:32,370 --> 00:03:34,680
+paradox here is that in one sense
+
+90
+00:03:34,830 --> 00:03:36,838
+the test is over ninety percent accurate
+
+91
+00:03:36,960 --> 00:03:39,090
+it gives correct results to over ninety
+
+92
+00:03:39,090 --> 00:03:40,470
+percent of the patients who take it
+
+93
+00:03:41,190 --> 00:03:42,870
+and yet if you learn that someone
+
+94
+00:03:42,870 --> 00:03:44,850
+gets a positive result without any added
+
+95
+00:03:44,850 --> 00:03:46,980
+information is actually only a one in
+
+96
+00:03:46,980 --> 00:03:47,220
+the leg
+
+97
+00:03:47,224 --> 00:03:49,200
+and chance that that particular result is
+
+98
+00:03:49,200 --> 00:03:49,620
+accurate
+
+99
+00:03:50,580 --> 00:03:51,690
+this is a bit of a problem
+
+100
+00:03:51,780 --> 00:03:53,302
+because of all of the places for
+
+101
+00:03:53,310 --> 00:03:55,589
+match to be counter intuitive medical tests
+
+102
+00:03:55,590 --> 00:03:56,910
+or one area where it matters a
+
+103
+00:03:56,910 --> 00:03:58,829
+lot in two thousand and six and
+
+104
+00:03:58,829 --> 00:04:00,754
+two thousand and seven the psychologist scared
+
+105
+00:04:00,754 --> 00:04:01,770
+to get your ends are gave a
+
+106
+00:04:01,770 --> 00:04:04,800
+series of statistics seminars to practicing gynecologist
+
+107
+00:04:05,130 --> 00:04:06,840
+and he opened with the following example
+
+108
+00:04:07,410 --> 00:04:09,300
+a fifty year old woman no symptoms
+
+109
+00:04:09,600 --> 00:04:10,320
+participates in
+
+110
+00:04:10,320 --> 00:04:13,260
+the routine demography screening she tests positive
+
+111
+00:04:13,440 --> 00:04:15,150
+is alarmed and wants to know from
+
+112
+00:04:15,150 --> 00:04:16,649
+you whether she has breast cancer for
+
+113
+00:04:16,650 --> 00:04:19,110
+certain or what her chances are apart
+
+114
+00:04:19,110 --> 00:04:20,790
+from the screening result you know nothing
+
+115
+00:04:20,790 --> 00:04:23,310
+else about this woman in that seminar
+
+116
+00:04:23,340 --> 00:04:24,600
+the doctors were then told that the
+
+117
+00:04:24,600 --> 00:04:26,280
+prevalence of breast cancer for women of
+
+118
+00:04:26,280 --> 00:04:28,470
+this age is about one percent and
+
+119
+00:04:28,470 --> 00:04:30,480
+then to suppose that the test sensitivity
+
+120
+00:04:30,540 --> 00:04:32,848
+is ninety percent and that it's specificity
+
+121
+00:04:32,850 --> 00:04:35,190
+was ninety one percent you might notice
+
+122
+00:04:35,190 --> 00:04:36,657
+these are exactly the same numbers from
+
+123
+00:04:36,657 --> 00:04:37,770
+the example that you and i just
+
+124
+00:04:37,770 --> 00:04:39,090
+looked at this is where i got
+
+125
+00:04:39,090 --> 00:04:41,520
+them so having already thought it through
+
+126
+00:04:41,580 --> 00:04:42,990
+you and i know the answer it's
+
+127
+00:04:42,990 --> 00:04:43,980
+about one and eleven
+
+128
+00:04:44,550 --> 00:04:46,380
+however the doctors in the session were
+
+129
+00:04:46,380 --> 00:04:48,119
+not primed with his ingestion to picture
+
+130
+00:04:48,150 --> 00:04:49,710
+a concrete sample of it that was
+
+131
+00:04:49,710 --> 00:04:51,180
+in individuals' the way that you and
+
+132
+00:04:51,180 --> 00:04:52,950
+i had all they saw were these
+
+133
+00:04:52,950 --> 00:04:55,470
+numbers they were then asked how many
+
+134
+00:04:55,470 --> 00:04:58,080
+women who test positive actually have breast
+
+135
+00:04:58,080 --> 00:05:00,059
+cancer what is the best answer and
+
+136
+00:05:00,059 --> 00:05:01,890
+they were presented with these four choices
+
+137
+00:05:02,520 --> 00:05:04,440
+in one of the sessions over half
+
+138
+00:05:04,440 --> 00:05:04,710
+the dock
+
+139
+00:05:04,710 --> 00:05:06,720
+doctors president said that the correct answer
+
+140
+00:05:06,720 --> 00:05:08,940
+was nine and ten which is way
+
+141
+00:05:08,940 --> 00:05:11,280
+off only a fifth of them gave
+
+142
+00:05:11,280 --> 00:05:13,170
+the correct answer which is worse than
+
+143
+00:05:13,170 --> 00:05:14,369
+what it would have been if everybody
+
+144
+00:05:14,370 --> 00:05:15,480
+had randomly guessed
+
+145
+00:05:16,680 --> 00:05:17,910
+it might seem a little extreme to
+
+146
+00:05:17,910 --> 00:05:19,980
+be calling this a paradox i mean
+
+147
+00:05:20,250 --> 00:05:21,870
+it's just a fact it's not something
+
+148
+00:05:21,900 --> 00:05:25,350
+intrinsically self contradictory but as these seminars
+
+149
+00:05:25,350 --> 00:05:27,780
+with bigger and to show people including
+
+150
+00:05:27,780 --> 00:05:30,780
+doctors definitely find it counterintuitive that a
+
+151
+00:05:30,780 --> 00:05:32,850
+test with high accuracy can give you
+
+152
+00:05:32,850 --> 00:05:34,350
+such a low predictive value
+
+153
+00:05:35,430 --> 00:05:37,830
+we might call this a vertical paradox
+
+154
+00:05:37,920 --> 00:05:39,780
+which refers to facts that are proven
+
+155
+00:05:39,780 --> 00:05:41,790
+to be true but which nevertheless can
+
+156
+00:05:41,790 --> 00:05:43,800
+feel false when faced a certain way
+
+157
+00:05:44,310 --> 00:05:45,630
+it's sort of the softest form of
+
+158
+00:05:45,630 --> 00:05:47,910
+a paradox saying more about human psychology
+
+159
+00:05:47,910 --> 00:05:50,880
+than about logic the question is how
+
+160
+00:05:50,880 --> 00:05:51,930
+we can combat this
+
+161
+00:05:54,060 --> 00:05:55,200
+where we going with this by the
+
+162
+00:05:55,200 --> 00:05:56,490
+way is it i want you to
+
+163
+00:05:56,490 --> 00:05:57,750
+be able to look at numbers like
+
+164
+00:05:57,750 --> 00:05:59,940
+this and quickly estimate in your head
+
+165
+00:06:00,120 --> 00:06:01,470
+that it means to predict the value
+
+166
+00:06:01,470 --> 00:06:03,510
+of a positive test should be around
+
+167
+00:06:03,510 --> 00:06:05,670
+one in eleven or if i change
+
+168
+00:06:05,670 --> 00:06:07,170
+things and asked what if it was
+
+169
+00:06:07,170 --> 00:06:09,090
+ten percent of the population who had
+
+170
+00:06:09,090 --> 00:06:10,830
+breast cancer you should be able to
+
+171
+00:06:10,830 --> 00:06:12,660
+quickly turn around and say that the
+
+172
+00:06:12,660 --> 00:06:13,170
+final in
+
+173
+00:06:13,170 --> 00:06:14,910
+after would be a little over fifty
+
+174
+00:06:14,910 --> 00:06:17,460
+percent or if i said imagine a
+
+175
+00:06:17,460 --> 00:06:19,530
+really low prevalence something like zero point
+
+176
+00:06:19,530 --> 00:06:22,110
+one percent of patients having cancer you
+
+177
+00:06:22,110 --> 00:06:24,209
+should again quickly estimate that the predictive
+
+178
+00:06:24,209 --> 00:06:25,680
+value of the test is around one
+
+179
+00:06:25,680 --> 00:06:27,239
+in a hundred that one in a
+
+180
+00:06:27,239 --> 00:06:29,190
+hundred of those with positive test results
+
+181
+00:06:29,220 --> 00:06:30,690
+in that case would have cancer
+
+182
+00:06:31,650 --> 00:06:32,700
+or let's say we go back to
+
+183
+00:06:32,700 --> 00:06:34,350
+the one percent prevalence but i make
+
+184
+00:06:34,350 --> 00:06:35,790
+the test more accurate i tell you
+
+185
+00:06:35,790 --> 00:06:37,740
+to imagine the specificity is ninety nine
+
+186
+00:06:37,740 --> 00:06:39,869
+percent there you should be able to
+
+187
+00:06:39,870 --> 00:06:42,060
+relatively quickly estimate that the answer is
+
+188
+00:06:42,240 --> 00:06:44,548
+a little less than fifty percent the
+
+189
+00:06:44,548 --> 00:06:45,810
+hope is that you're doing all of
+
+190
+00:06:45,810 --> 00:06:47,790
+this with minimal calculations in your head
+
+191
+00:06:48,870 --> 00:06:50,610
+for the goals of quick calculations might
+
+192
+00:06:50,610 --> 00:06:52,080
+feel very different from the goals of
+
+193
+00:06:52,080 --> 00:06:55,289
+addressing whatever misconception underlies this paradox but
+
+194
+00:06:55,290 --> 00:06:56,969
+they actually go hand in hand let
+
+195
+00:06:56,969 --> 00:06:58,560
+me show you what i mean on
+
+196
+00:06:58,560 --> 00:07:01,050
+the state of addressing misconceptions what would
+
+197
+00:07:01,050 --> 00:07:02,190
+you tell to the people in that
+
+198
+00:07:02,190 --> 00:07:04,709
+seminar who answered nine and ten what
+
+199
+00:07:04,714 --> 00:07:07,080
+fundamental misconception are they reviewing
+
+200
+00:07:08,190 --> 00:07:09,540
+what i might tell them is that
+
+201
+00:07:09,600 --> 00:07:10,830
+in much the same way that you
+
+202
+00:07:10,830 --> 00:07:12,480
+shouldn't think of tests as telling you
+
+203
+00:07:12,510 --> 00:07:14,640
+deterministic early whether you have a disease
+
+204
+00:07:15,150 --> 00:07:16,290
+you shouldn't even think of them as
+
+205
+00:07:16,290 --> 00:07:18,119
+telling you your chances of having a
+
+206
+00:07:18,120 --> 00:07:21,420
+disease instead the healthy view of what
+
+207
+00:07:21,420 --> 00:07:23,940
+test do is it they update your
+
+208
+00:07:23,940 --> 00:07:24,600
+chances
+
+209
+00:07:26,040 --> 00:07:27,960
+in our example before taking the test
+
+210
+00:07:28,230 --> 00:07:30,000
+the patient's chances of having cancer were
+
+211
+00:07:30,000 --> 00:07:31,680
+one in a hundred in basie in
+
+212
+00:07:31,680 --> 00:07:33,840
+terms we call this the prior probability
+
+213
+00:07:34,470 --> 00:07:35,970
+the effect of this test was to
+
+214
+00:07:36,060 --> 00:07:38,340
+update that prior almost an order of
+
+215
+00:07:38,340 --> 00:07:40,500
+magnitude up to around one and eleven
+
+216
+00:07:41,310 --> 00:07:42,960
+the accuracy of a test is telling
+
+217
+00:07:42,960 --> 00:07:44,940
+us about the strength of this updating
+
+218
+00:07:45,060 --> 00:07:46,830
+it's not telling us the final answer
+
+219
+00:07:47,758 --> 00:07:48,719
+what does this have to do with
+
+220
+00:07:48,720 --> 00:07:50,400
+quick approximations well
+
+221
+00:07:50,430 --> 00:07:53,099
+a key number for those approximations is
+
+222
+00:07:53,099 --> 00:07:55,290
+something called the base factor in the
+
+223
+00:07:55,290 --> 00:07:57,480
+very act of defining this number serves
+
+224
+00:07:57,494 --> 00:08:00,150
+to reinforce the central lesson about reclaiming
+
+225
+00:08:00,150 --> 00:08:02,460
+what it is the tests do you
+
+226
+00:08:02,460 --> 00:08:03,540
+think one of the things that makes
+
+227
+00:08:03,540 --> 00:08:05,910
+tested his dick's so very confusing is
+
+228
+00:08:05,910 --> 00:08:07,409
+it there are at least four numbers
+
+229
+00:08:07,410 --> 00:08:09,450
+that you'll hear associated with them for
+
+230
+00:08:09,450 --> 00:08:10,559
+those with the disease there's
+
+231
+00:08:10,560 --> 00:08:12,628
+insensitivity in the false negative rate and
+
+232
+00:08:12,628 --> 00:08:14,460
+then for those without there's the specificity
+
+233
+00:08:14,460 --> 00:08:16,200
+in the false positive rate and none
+
+234
+00:08:16,200 --> 00:08:17,730
+of these numbers actually tell you the
+
+235
+00:08:17,731 --> 00:08:20,640
+thing you want to know luckily if
+
+236
+00:08:20,640 --> 00:08:22,110
+you want to interpret a positive test
+
+237
+00:08:22,110 --> 00:08:24,090
+result you can pull out just one
+
+238
+00:08:24,090 --> 00:08:25,650
+number to focus on from all this
+
+239
+00:08:26,072 --> 00:08:27,930
+take the sensitivity divided by the false
+
+240
+00:08:27,930 --> 00:08:30,420
+positive rate in other words how much
+
+241
+00:08:30,450 --> 00:08:30,720
+more
+
+242
+00:08:30,720 --> 00:08:31,950
+we're likely are you to see the
+
+243
+00:08:31,950 --> 00:08:34,920
+positive test result with cancer versus without
+
+244
+00:08:35,370 --> 00:08:37,200
+in our example this number is ten
+
+245
+00:08:37,800 --> 00:08:40,290
+this is the base factor also sometimes
+
+246
+00:08:40,290 --> 00:08:41,820
+called the likelihood ratio
+
+247
+00:08:43,080 --> 00:08:44,588
+a very handy rule of thumb is
+
+248
+00:08:44,707 --> 00:08:46,380
+to update a small pryor or at
+
+249
+00:08:46,380 --> 00:08:48,600
+least to approximate the answer you simply
+
+250
+00:08:48,600 --> 00:08:50,848
+multiply it by the base factor so
+
+251
+00:08:50,850 --> 00:08:52,140
+in our example where the prior was
+
+252
+00:08:52,140 --> 00:08:54,000
+one in a hundred you would estimate
+
+253
+00:08:54,000 --> 00:08:55,260
+that the final answer should be around
+
+254
+00:08:55,290 --> 00:08:57,000
+one in ten which is in fact
+
+255
+00:08:57,120 --> 00:08:59,850
+slightly above the true correct answer so
+
+256
+00:08:59,850 --> 00:09:01,350
+based on this rule of thumb if
+
+257
+00:09:01,350 --> 00:09:03,060
+i asked you what would happen if
+
+258
+00:09:03,060 --> 00:09:04,920
+the prior from her example was instead
+
+259
+00:09:04,980 --> 00:09:07,200
+one in a thousand you could quickly
+
+260
+00:09:07,200 --> 00:09:08,580
+estimate that the effect of the test
+
+261
+00:09:08,640 --> 00:09:10,380
+should be to update those chances to
+
+262
+00:09:10,380 --> 00:09:12,540
+around one in a hundred and in
+
+263
+00:09:12,540 --> 00:09:14,190
+fact take a moment to check yourself
+
+264
+00:09:14,190 --> 00:09:16,860
+by thinking through a sample population in
+
+265
+00:09:16,860 --> 00:09:18,720
+this case you might picture ten thousand
+
+266
+00:09:18,720 --> 00:09:20,310
+patients were only ten of them really
+
+267
+00:09:20,310 --> 00:09:20,970
+have cancer
+
+268
+00:09:22,170 --> 00:09:23,520
+and then based on that ninety percent
+
+269
+00:09:23,520 --> 00:09:25,980
+sensitivity we would expect nine of those
+
+270
+00:09:25,980 --> 00:09:27,990
+cancer cases to give true positives
+
+271
+00:09:29,430 --> 00:09:30,900
+and on the other side and ninety
+
+272
+00:09:30,900 --> 00:09:33,510
+one percent specificity means that nine percent
+
+273
+00:09:33,540 --> 00:09:35,310
+of those without cancer are getting false
+
+274
+00:09:35,310 --> 00:09:37,920
+positives so we'd expect nine percent of
+
+275
+00:09:37,920 --> 00:09:39,750
+the remaining patients which is around nine
+
+276
+00:09:39,750 --> 00:09:43,050
+hundred to get false positive results here
+
+277
+00:09:43,200 --> 00:09:45,480
+with such a low prevalence the false
+
+278
+00:09:45,480 --> 00:09:47,910
+positives really do dominate the true positives
+
+279
+00:09:48,270 --> 00:09:49,230
+so the probability that
+
+280
+00:09:49,260 --> 00:09:51,510
+a randomly chosen positive case from this
+
+281
+00:09:51,510 --> 00:09:54,510
+population actually has cancer is only around
+
+282
+00:09:54,510 --> 00:09:56,340
+one percent just like the rule of
+
+283
+00:09:56,340 --> 00:09:57,120
+thumb predicted
+
+284
+00:09:58,980 --> 00:10:00,750
+now this rule of thumb clearly cannot
+
+285
+00:10:00,750 --> 00:10:03,120
+work for hire priors for example they
+
+286
+00:10:03,121 --> 00:10:04,770
+would predict that a prior of ten
+
+287
+00:10:04,770 --> 00:10:06,630
+percent gets updated all the way to
+
+288
+00:10:06,630 --> 00:10:09,060
+one hundred percent certainty that can't be
+
+289
+00:10:09,060 --> 00:10:11,010
+right in fact take a moment to
+
+290
+00:10:11,010 --> 00:10:12,660
+think through what the answer should be
+
+291
+00:10:12,780 --> 00:10:15,390
+again using a sample population maybe this
+
+292
+00:10:15,390 --> 00:10:16,830
+time we picture ten out of a
+
+293
+00:10:16,830 --> 00:10:18,000
+hundred and having cancer
+
+294
+00:10:19,165 --> 00:10:20,875
+based on the ninety percent sensitivity of
+
+295
+00:10:20,875 --> 00:10:22,855
+the test we'd expect nine of those
+
+296
+00:10:22,855 --> 00:10:24,985
+true cancer cases to get positive results
+
+297
+00:10:25,525 --> 00:10:27,025
+but what about the false positive how
+
+298
+00:10:27,025 --> 00:10:28,165
+many do we expect there
+
+299
+00:10:29,815 --> 00:10:31,915
+about nine percent of the remaining ninety
+
+300
+00:10:32,005 --> 00:10:33,955
+about eight so
+
+301
+00:10:34,345 --> 00:10:36,503
+upon seeing a positive test result it
+
+302
+00:10:36,503 --> 00:10:37,975
+tells you that you're either one of
+
+303
+00:10:37,975 --> 00:10:40,045
+these nine true positives or one of
+
+304
+00:10:40,045 --> 00:10:41,245
+the eight false positive
+
+305
+00:10:41,935 --> 00:10:43,375
+this means the chances are a little
+
+306
+00:10:43,375 --> 00:10:45,655
+over fifty percent roughly nine out of
+
+307
+00:10:45,655 --> 00:10:48,655
+seventeen or fifty three percent at this
+
+308
+00:10:48,655 --> 00:10:50,607
+point having dared to dream debate and
+
+309
+00:10:50,635 --> 00:10:52,735
+updating could look as simple as multiplication
+
+310
+00:10:53,095 --> 00:10:54,355
+you might tear down your hopes and
+
+311
+00:10:54,355 --> 00:10:56,755
+pragmatically acknowledge sometimes life is just more
+
+312
+00:10:56,755 --> 00:10:57,685
+complicated than that
+
+313
+00:10:59,965 --> 00:11:02,365
+except it's not this rule of thumb
+
+314
+00:11:02,365 --> 00:11:04,795
+turns into a precise mathematical fact as
+
+315
+00:11:04,795 --> 00:11:06,175
+long as we shift away from talking
+
+316
+00:11:06,175 --> 00:11:09,205
+about probabilities to instead talking about audits
+
+317
+00:11:10,315 --> 00:11:11,695
+if you've ever heard someone talk about
+
+318
+00:11:11,695 --> 00:11:13,315
+the chances of an event being one
+
+319
+00:11:13,315 --> 00:11:14,905
+to one or two to one things
+
+320
+00:11:14,905 --> 00:11:17,125
+like that you already know about odds
+
+321
+00:11:17,695 --> 00:11:19,825
+with probability were taking the ratio of
+
+322
+00:11:19,825 --> 00:11:21,595
+the number of positive cases out of
+
+323
+00:11:21,625 --> 00:11:24,175
+all possible cases things like one in
+
+324
+00:11:24,175 --> 00:11:26,544
+five or one in with odds what
+
+325
+00:11:26,544 --> 00:11:27,775
+you do is take the ratio of
+
+326
+00:11:27,775 --> 00:11:30,415
+all positive cases to all negative cases
+
+327
+00:11:31,495 --> 00:11:33,085
+you commonly see odds written with a
+
+328
+00:11:33,085 --> 00:11:35,334
+colon to emphasize the distinction but it's
+
+329
+00:11:35,334 --> 00:11:38,034
+still just a fraction a number to
+
+330
+00:11:38,034 --> 00:11:40,165
+an event with a fifty percent probability
+
+331
+00:11:40,315 --> 00:11:41,875
+would be described as having one to
+
+332
+00:11:41,875 --> 00:11:44,665
+one odds are ten percent probability is
+
+333
+00:11:44,665 --> 00:11:46,285
+the same as one to nine odds
+
+334
+00:11:46,705 --> 00:11:48,475
+an eighty percent probability is the same
+
+335
+00:11:48,475 --> 00:11:50,125
+as four to one odds you get
+
+336
+00:11:50,125 --> 00:11:50,515
+the point
+
+337
+00:11:51,445 --> 00:11:53,485
+it's the same information it still describes
+
+338
+00:11:53,485 --> 00:11:55,465
+the chances of a random event but
+
+339
+00:11:55,465 --> 00:11:57,265
+it's presented a little differently like a
+
+340
+00:11:57,265 --> 00:12:00,955
+different unit system probabilities are constrained between
+
+341
+00:12:00,955 --> 00:12:03,115
+zero and one with even chances sitting
+
+342
+00:12:03,115 --> 00:12:05,875
+at zero point five but odds range
+
+343
+00:12:05,875 --> 00:12:07,945
+from zero up to infinity with even
+
+344
+00:12:07,945 --> 00:12:09,715
+chance is sitting at the number one
+
+345
+00:12:12,205 --> 00:12:14,305
+the beauty here is it a completely
+
+346
+00:12:14,305 --> 00:12:16,494
+accurate not even approximating things way to
+
+347
+00:12:16,495 --> 00:12:18,976
+frame basic rule is to say expressed
+
+348
+00:12:18,992 --> 00:12:21,025
+your prior using odds and then just
+
+349
+00:12:21,025 --> 00:12:23,725
+multiply by the base sector think about
+
+350
+00:12:23,725 --> 00:12:25,375
+what the prior odds are really saying
+
+351
+00:12:25,675 --> 00:12:27,385
+it's the number of people with cancer
+
+352
+00:12:27,445 --> 00:12:28,945
+divided by the number without it
+
+353
+00:12:29,845 --> 00:12:31,104
+let's just write that down to the
+
+354
+00:12:31,104 --> 00:12:32,455
+normal fraction for a moment so we
+
+355
+00:12:32,455 --> 00:12:34,735
+can multiply it when you filter down
+
+356
+00:12:34,795 --> 00:12:36,804
+just to those with positive test results
+
+357
+00:12:37,015 --> 00:12:38,815
+the number of people with cancer gets
+
+358
+00:12:38,815 --> 00:12:41,185
+scaled down scaled down by the probability
+
+359
+00:12:41,245 --> 00:12:43,435
+of seeing a positive test result given
+
+360
+00:12:43,435 --> 00:12:45,895
+that someone has cancer and then similarly
+
+361
+00:12:46,015 --> 00:12:48,444
+the number of people without cancer also
+
+362
+00:12:48,445 --> 00:12:49,615
+get scaled down this
+
+363
+00:12:49,628 --> 00:12:51,415
+time by the probability of seeing a
+
+364
+00:12:51,415 --> 00:12:53,485
+positive test result but in that case
+
+365
+00:12:54,115 --> 00:12:56,095
+so the ratio between these two counts
+
+366
+00:12:56,245 --> 00:12:58,345
+the new odds upon seeing the test
+
+367
+00:12:58,705 --> 00:13:01,164
+looks just like the prior odds except
+
+368
+00:13:01,195 --> 00:13:03,535
+multiplied by this term here which is
+
+369
+00:13:03,535 --> 00:13:04,855
+exactly the base factor
+
+370
+00:13:08,125 --> 00:13:09,505
+look back at our example where the
+
+371
+00:13:09,505 --> 00:13:11,485
+base factor was ten and as a
+
+372
+00:13:11,485 --> 00:13:13,495
+reminder this came from the ninety percent
+
+373
+00:13:13,495 --> 00:13:15,865
+sensitivity divided by the nine percent false
+
+374
+00:13:15,865 --> 00:13:18,025
+positive rate how much more likely are
+
+375
+00:13:18,025 --> 00:13:19,435
+you to see a positive result with
+
+376
+00:13:19,435 --> 00:13:22,495
+cancer versus without if the prayer is
+
+377
+00:13:22,495 --> 00:13:24,835
+one percent expressed his odds this looks
+
+378
+00:13:24,835 --> 00:13:26,095
+like one to ninety nine
+
+379
+00:13:27,235 --> 00:13:28,795
+so by our rule this gets updated
+
+380
+00:13:28,795 --> 00:13:30,205
+to tend to ninety nine
+
+381
+00:13:31,405 --> 00:13:32,515
+which if you weren't you could convert
+
+382
+00:13:32,515 --> 00:13:33,955
+back to a probability it would be
+
+383
+00:13:33,955 --> 00:13:35,845
+ten divided by ten plus ninety nine
+
+384
+00:13:36,235 --> 00:13:37,375
+were about one in eleven
+
+385
+00:13:38,215 --> 00:13:40,255
+if instead the prior was ten percent
+
+386
+00:13:40,585 --> 00:13:41,941
+which was the example that tripped up
+
+387
+00:13:41,941 --> 00:13:44,155
+our rule of thumb earlier expressed his
+
+388
+00:13:44,185 --> 00:13:46,345
+odds this looks like one to nine
+
+389
+00:13:47,065 --> 00:13:48,924
+by her simple rule this get updated
+
+390
+00:13:48,925 --> 00:13:50,575
+to tend to nine which you can
+
+391
+00:13:50,575 --> 00:13:52,915
+already read off pretty intuitively it's a
+
+392
+00:13:52,915 --> 00:13:54,925
+little above even chances a little above
+
+393
+00:13:54,955 --> 00:13:57,415
+one to one if you prefer you
+
+394
+00:13:57,415 --> 00:13:58,075
+can convert it back
+
+395
+00:13:58,138 --> 00:13:59,665
+to a probability you would write it
+
+396
+00:13:59,665 --> 00:14:01,855
+as ten out of nineteen or about
+
+397
+00:14:01,885 --> 00:14:04,405
+fifty three percent and indeed that is
+
+398
+00:14:04,405 --> 00:14:05,875
+what we already found by thinking things
+
+399
+00:14:05,875 --> 00:14:08,665
+through with a sample population let's say
+
+400
+00:14:08,665 --> 00:14:09,715
+we go back to the one percent
+
+401
+00:14:09,715 --> 00:14:11,305
+prevalence but i make the tests more
+
+402
+00:14:11,305 --> 00:14:12,895
+accurate now what if i told you
+
+403
+00:14:12,895 --> 00:14:14,485
+to imagine that the false positive rate
+
+404
+00:14:14,515 --> 00:14:16,225
+was only one person instead of nine
+
+405
+00:14:16,225 --> 00:14:18,235
+percent but that would mean is
+
+406
+00:14:18,235 --> 00:14:20,125
+that are based factor is ninety instead
+
+407
+00:14:20,125 --> 00:14:21,805
+of ten the test is doing more
+
+408
+00:14:21,805 --> 00:14:23,844
+work for us in this case with
+
+409
+00:14:23,844 --> 00:14:25,855
+the more accurate test it gets updated
+
+410
+00:14:25,945 --> 00:14:28,075
+to ninety to ninety nine which is
+
+411
+00:14:28,075 --> 00:14:29,665
+a little less than even chance is
+
+412
+00:14:29,755 --> 00:14:32,215
+something a little under fifty percent to
+
+413
+00:14:32,215 --> 00:14:33,685
+be more precise you could make the
+
+414
+00:14:33,685 --> 00:14:35,905
+conversion back to probability and work out
+
+415
+00:14:35,905 --> 00:14:37,915
+that it's around forty eight percent but
+
+416
+00:14:37,915 --> 00:14:38,376
+honestly
+
+417
+00:14:38,418 --> 00:14:39,775
+you're just going for a gut feel
+
+418
+00:14:40,105 --> 00:14:41,545
+it's fine to stick with the odds
+
+419
+00:14:42,955 --> 00:14:44,125
+do you see what i mean about
+
+420
+00:14:44,125 --> 00:14:46,014
+how just defining this number helps to
+
+421
+00:14:46,015 --> 00:14:49,074
+combat potential misconceptions for anybody who's a
+
+422
+00:14:49,074 --> 00:14:51,865
+little hasty in connecting test accuracy directly
+
+423
+00:14:51,925 --> 00:14:53,635
+to your probability of having a disease
+
+424
+00:14:54,055 --> 00:14:56,305
+it's worth emphasizing that you could administer
+
+425
+00:14:56,365 --> 00:14:58,615
+the same test with the same accuracy
+
+426
+00:14:58,885 --> 00:15:00,775
+to multiple different patients who all get
+
+427
+00:15:00,775 --> 00:15:02,755
+the same exact result but if
+
+428
+00:15:02,755 --> 00:15:04,705
+they are coming from different contact that
+
+429
+00:15:04,705 --> 00:15:07,765
+result could mean wildly different things however
+
+430
+00:15:08,125 --> 00:15:09,926
+the one thing that does stay constant
+
+431
+00:15:09,955 --> 00:15:11,965
+in every case is the factor by
+
+432
+00:15:11,965 --> 00:15:14,665
+which each patient prior odds get updated
+
+433
+00:15:16,195 --> 00:15:17,365
+and by the way this whole time
+
+434
+00:15:17,365 --> 00:15:18,775
+we've been using the prevalence of the
+
+435
+00:15:18,775 --> 00:15:20,755
+disease which is the proportion of people
+
+436
+00:15:20,755 --> 00:15:22,555
+in a population who have it as
+
+437
+00:15:22,555 --> 00:15:25,225
+a substitute for the prior the probability
+
+438
+00:15:25,225 --> 00:15:26,484
+of having it before you see a
+
+439
+00:15:26,485 --> 00:15:29,545
+test however that's not necessarily the case
+
+440
+00:15:29,845 --> 00:15:31,705
+if there were other unknown factors things
+
+441
+00:15:31,705 --> 00:15:33,324
+like symptoms or in the case of
+
+442
+00:15:33,325 --> 00:15:35,935
+a contagious disease things like known contacts
+
+443
+00:15:35,935 --> 00:15:38,122
+those also factor into the prior and
+
+444
+00:15:38,122 --> 00:15:39,985
+they could potentially make a huge difference
+
+445
+00:15:40,735 --> 00:15:42,385
+as another side note so far we've
+
+446
+00:15:42,385 --> 00:15:44,965
+only talked about positive test results but
+
+447
+00:15:44,995 --> 00:15:46,405
+way more often you would be seeing
+
+448
+00:15:46,435 --> 00:15:48,745
+a negative test result the logic there
+
+449
+00:15:48,775 --> 00:15:50,455
+is completely the same but the biggest
+
+450
+00:15:50,455 --> 00:15:51,804
+factor that you compute is going to
+
+451
+00:15:51,804 --> 00:15:53,725
+look different instead you look at the
+
+452
+00:15:53,725 --> 00:15:56,095
+probability of seeing this negative test result
+
+453
+00:15:56,155 --> 00:15:58,705
+with the disease versus without the disease
+
+454
+00:15:59,245 --> 00:16:00,774
+so in our cancer example this would
+
+455
+00:16:00,774 --> 00:16:02,605
+have been the ten percent false negative
+
+456
+00:16:02,605 --> 00:16:04,765
+rate divided by the ninety one percent
+
+457
+00:16:04,795 --> 00:16:07,885
+specificity or about one in nine in
+
+458
+00:16:07,885 --> 00:16:10,015
+other words seeing a negative test result
+
+459
+00:16:10,135 --> 00:16:12,565
+in that example would reduce your prior
+
+460
+00:16:12,565 --> 00:16:14,575
+odds by about an order of magnitude
+
+461
+00:16:15,925 --> 00:16:16,944
+when you write it all out as
+
+462
+00:16:16,945 --> 00:16:18,865
+a formula here's how it looks it
+
+463
+00:16:18,865 --> 00:16:20,635
+says your odds of having a disease
+
+464
+00:16:20,845 --> 00:16:23,545
+given a test result equals your odds
+
+465
+00:16:23,605 --> 00:16:26,215
+before taking the test prior odds times
+
+466
+00:16:26,215 --> 00:16:28,765
+the biggest factor that let's contrast this
+
+467
+00:16:28,795 --> 00:16:30,294
+with the usual way that pays well
+
+468
+00:16:30,295 --> 00:16:31,735
+as britain which is a bit more
+
+469
+00:16:31,735 --> 00:16:33,895
+complicated in case you haven't seen it
+
+470
+00:16:33,895 --> 00:16:35,635
+before it's essentially just what we were
+
+471
+00:16:35,635 --> 00:16:35,785
+doing
+
+472
+00:16:35,846 --> 00:16:37,855
+what sampled populations but you wrap it
+
+473
+00:16:37,855 --> 00:16:40,585
+all up symbolically remember how every time
+
+474
+00:16:40,645 --> 00:16:42,115
+we were counting the number of true
+
+475
+00:16:42,115 --> 00:16:44,425
+positives and then dividing it by some
+
+476
+00:16:44,425 --> 00:16:45,805
+of the true positives and the false
+
+477
+00:16:45,805 --> 00:16:48,805
+positives we do just that except instead
+
+478
+00:16:48,805 --> 00:16:50,844
+of talking about absolute amounts we talk
+
+479
+00:16:50,845 --> 00:16:53,125
+of each term as a proportion so
+
+480
+00:16:53,155 --> 00:16:54,835
+the proportion of true positives in the
+
+481
+00:16:54,835 --> 00:16:55,555
+population
+
+482
+00:16:55,945 --> 00:16:57,655
+i'm from the prior probability of having
+
+483
+00:16:57,655 --> 00:17:00,145
+the disease multiplied by the probability of
+
+484
+00:17:00,145 --> 00:17:01,825
+seeing a positive test result in that
+
+485
+00:17:01,825 --> 00:17:04,283
+case then we copy that term down
+
+486
+00:17:04,316 --> 00:17:06,355
+again into the denominator and then the
+
+487
+00:17:06,355 --> 00:17:08,725
+proportion of false positives comes from the
+
+488
+00:17:08,725 --> 00:17:11,155
+prior probability of not having the disease
+
+489
+00:17:11,485 --> 00:17:13,255
+times the probability of a positive test
+
+490
+00:17:13,315 --> 00:17:15,625
+in that case if you weren't you
+
+491
+00:17:15,625 --> 00:17:16,104
+could also write
+
+492
+00:17:16,105 --> 00:17:17,981
+this down with words instead of symbols
+
+493
+00:17:18,235 --> 00:17:20,155
+terms like sensitivity and false positive rate
+
+494
+00:17:20,185 --> 00:17:22,255
+are more comfortable and this is one
+
+495
+00:17:22,255 --> 00:17:23,665
+of those formulas where once you say
+
+496
+00:17:23,665 --> 00:17:24,685
+it out loud it seems like a
+
+497
+00:17:24,685 --> 00:17:26,365
+bit much but it really is no
+
+498
+00:17:26,365 --> 00:17:27,564
+different from what we were doing was
+
+499
+00:17:27,564 --> 00:17:29,965
+sampled populations if you wanted to make
+
+500
+00:17:29,965 --> 00:17:31,495
+the whole thing look simpler you often
+
+501
+00:17:31,495 --> 00:17:34,015
+see this entire denominator written just as
+
+502
+00:17:34,045 --> 00:17:35,995
+the probability of seeing a positive test
+
+503
+00:17:35,995 --> 00:17:36,265
+result
+
+504
+00:17:36,535 --> 00:17:39,115
+overall while that does make for a
+
+505
+00:17:39,115 --> 00:17:41,575
+really elegant little expression if you intend
+
+506
+00:17:41,575 --> 00:17:43,255
+to use this for calculations it's a
+
+507
+00:17:43,255 --> 00:17:45,985
+little disingenuous because in practice every single
+
+508
+00:17:45,985 --> 00:17:46,975
+time you do this you need to
+
+509
+00:17:46,975 --> 00:17:49,195
+break down that denominator into two separate
+
+510
+00:17:49,195 --> 00:17:52,134
+parts breaking down the cases so taking
+
+511
+00:17:52,134 --> 00:17:54,325
+this more honest representation of it let's
+
+512
+00:17:54,325 --> 00:17:56,155
+compare two versions of base rule
+
+513
+00:17:56,755 --> 00:17:58,165
+and again maybe it looks nicer if
+
+514
+00:17:58,165 --> 00:17:59,695
+we use the word sensitivity and false
+
+515
+00:17:59,695 --> 00:18:01,615
+positive rate if nothing else it helps
+
+516
+00:18:01,615 --> 00:18:03,474
+emphasize which parts of the formula are
+
+517
+00:18:03,475 --> 00:18:05,785
+coming from statistics about the test accuracy
+
+518
+00:18:06,145 --> 00:18:07,735
+i mean this actually emphasizes one thing
+
+519
+00:18:07,735 --> 00:18:08,995
+i really like about the framing with
+
+520
+00:18:09,025 --> 00:18:10,795
+odds and a base factor which is
+
+521
+00:18:10,795 --> 00:18:12,624
+that it cleanly factors out the parts
+
+522
+00:18:12,625 --> 00:18:13,765
+that have to do with the prior
+
+523
+00:18:14,005 --> 00:18:14,935
+and the parts that have to do
+
+524
+00:18:14,935 --> 00:18:15,925
+with the test accuracy
+
+525
+00:18:16,645 --> 00:18:18,685
+but over in the usual formula all
+
+526
+00:18:18,685 --> 00:18:20,965
+of those are very intermingled together and
+
+527
+00:18:20,965 --> 00:18:22,824
+this is a very practical benefit it's
+
+528
+00:18:22,825 --> 00:18:24,055
+really nice if you want to swap
+
+529
+00:18:24,055 --> 00:18:25,884
+out different priors and easily see their
+
+530
+00:18:25,885 --> 00:18:27,535
+effect this is what we were doing
+
+531
+00:18:27,535 --> 00:18:29,605
+earlier but with the other formula to
+
+532
+00:18:29,605 --> 00:18:31,225
+do that you have to re compute
+
+533
+00:18:31,225 --> 00:18:33,355
+everything each time you can't leverage a
+
+534
+00:18:33,355 --> 00:18:35,365
+pre computed based factor the same way
+
+535
+00:18:36,205 --> 00:18:36,718
+the odds
+
+536
+00:18:36,745 --> 00:18:38,215
+aiming also makes things really nice if
+
+537
+00:18:38,215 --> 00:18:39,805
+you want to do multiple different busy
+
+538
+00:18:39,805 --> 00:18:41,695
+and updates based on multiple pieces of
+
+539
+00:18:41,695 --> 00:18:43,645
+evidence for example let's say you took
+
+540
+00:18:43,645 --> 00:18:45,865
+not one test but to or you
+
+541
+00:18:45,865 --> 00:18:46,765
+want it to think about how the
+
+542
+00:18:46,765 --> 00:18:49,225
+presence of symptoms plays into it for
+
+543
+00:18:49,255 --> 00:18:50,875
+each piece of new evidence you see
+
+544
+00:18:51,085 --> 00:18:52,705
+you always ask the question how much
+
+545
+00:18:52,735 --> 00:18:53,995
+more likely would you be to see
+
+546
+00:18:53,995 --> 00:18:56,185
+that with the disease versus without the
+
+547
+00:18:56,185 --> 00:18:56,725
+disease
+
+548
+00:18:57,205 --> 00:18:58,855
+each answer to that question gives you
+
+549
+00:18:58,855 --> 00:19:00,565
+a new base factor in new thing
+
+550
+00:19:00,565 --> 00:19:02,095
+that you multiply by your odds
+
+551
+00:19:03,205 --> 00:19:05,605
+beyond just making calculations easier there's something
+
+552
+00:19:05,605 --> 00:19:07,135
+i really like about attaching a number
+
+553
+00:19:07,135 --> 00:19:09,115
+to test accuracy that doesn't even look
+
+554
+00:19:09,116 --> 00:19:11,305
+like a probability mean if you hear
+
+555
+00:19:11,305 --> 00:19:12,925
+that a test has for example eight
+
+556
+00:19:12,955 --> 00:19:15,295
+nine percent false positive rate that's just
+
+557
+00:19:15,295 --> 00:19:18,205
+such a disastrously ambiguous phrase it's so
+
+558
+00:19:18,205 --> 00:19:19,824
+easy to misinterpret it to mean there's
+
+559
+00:19:19,824 --> 00:19:21,505
+a nine percent chance that your positive
+
+560
+00:19:21,505 --> 00:19:23,365
+test result is false but
+
+561
+00:19:23,366 --> 00:19:24,865
+imagine if instead the number that we
+
+562
+00:19:24,865 --> 00:19:26,811
+heard tacked on to test result was
+
+563
+00:19:26,815 --> 00:19:28,495
+that the base factor for a positive
+
+564
+00:19:28,495 --> 00:19:31,465
+test result is safe ten there's no
+
+565
+00:19:31,465 --> 00:19:33,325
+room to confuse that for your probability
+
+566
+00:19:33,325 --> 00:19:35,575
+of having a disease the entire framing
+
+567
+00:19:35,575 --> 00:19:37,408
+of what a base factor is is
+
+568
+00:19:37,408 --> 00:19:38,695
+it it's something that acts on their
+
+569
+00:19:38,709 --> 00:19:41,035
+prior it forces your hand to acknowledge
+
+570
+00:19:41,035 --> 00:19:43,135
+the prior is something that's separate entirely
+
+571
+00:19:43,255 --> 00:19:43,525
+and how
+
+572
+00:19:43,525 --> 00:19:45,565
+highly necessary to drawing any conclusion
+
+573
+00:19:47,605 --> 00:19:49,795
+all that said the usual formulas definitely
+
+574
+00:19:49,795 --> 00:19:51,627
+not without it's merits if you view
+
+575
+00:19:51,627 --> 00:19:53,005
+it not simply as something to plug
+
+576
+00:19:53,005 --> 00:19:55,675
+numbers into but as an encapsulation of
+
+577
+00:19:55,675 --> 00:19:57,385
+the sample population idea that we've been
+
+578
+00:19:57,385 --> 00:19:59,935
+using throughout you could very easily argue
+
+579
+00:19:59,935 --> 00:20:01,465
+that that's actually much better for your
+
+580
+00:20:01,465 --> 00:20:03,715
+intuition after all it's what we were
+
+581
+00:20:03,715 --> 00:20:05,425
+routinely falling back on in order to
+
+582
+00:20:05,425 --> 00:20:06,175
+check ourselves
+
+583
+00:20:06,415 --> 00:20:08,125
+at the base vector computation even made
+
+584
+00:20:08,125 --> 00:20:09,175
+sense in the first place
+
+585
+00:20:11,875 --> 00:20:13,795
+like any design decision there is no
+
+586
+00:20:13,795 --> 00:20:15,955
+clear cut objective best here but it's
+
+587
+00:20:15,955 --> 00:20:17,845
+almost certainly the case that giving serious
+
+588
+00:20:17,845 --> 00:20:20,095
+consideration to that question will lead you
+
+589
+00:20:20,095 --> 00:20:22,645
+to a better understanding of peaceful
+
+590
+00:20:24,780 --> 00:20:25,290
+oh
+
+591
+00:20:30,240 --> 00:20:31,770
+also since we're on the topic of
+
+592
+00:20:31,800 --> 00:20:33,809
+kind of paradoxical things a friend of
+
+593
+00:20:33,809 --> 00:20:35,460
+mine matt cooke recently wrote a book
+
+594
+00:20:35,490 --> 00:20:38,130
+all about paradoxes i actually contributed a
+
+595
+00:20:38,130 --> 00:20:39,600
+small chapter to it with thoughts on
+
+596
+00:20:39,600 --> 00:20:41,340
+the question of whether method invented or
+
+597
+00:20:41,340 --> 00:20:43,050
+discovered in the book as a whole
+
+598
+00:20:43,080 --> 00:20:44,700
+is this really nice connection of thought
+
+599
+00:20:44,700 --> 00:20:46,464
+provoking paradoxical things brings
+
+600
+00:20:46,589 --> 00:20:48,960
+from philosophy to math and physics you
+
+601
+00:20:48,960 --> 00:20:50,400
+can of course find all the details
+
+602
+00:20:50,400 --> 00:20:51,270
+in the description
+
+603
+00:20:55,036 --> 00:20:55,095
+mm
+
+604
+00:21:01,559 --> 00:21:02,011
+mm mm
+
+605
+00:21:03,734 --> 00:21:03,781
+mm
+
