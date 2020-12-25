@@ -14298,9 +14298,7 @@ a.anchor-link {
 <span class="kn">from</span> <span class="nn">babel</span> <span class="kn">import</span> <span class="n">Locale</span>
 <span class="kn">import</span> <span class="nn">imgkit</span>
 <span class="kn">import</span> <span class="nn">warnings</span>
-
-<span class="o">%</span><span class="k">load_ext</span> autoreload
-<span class="o">%</span><span class="k">autoreload</span> 2
+<span class="kn">import</span> <span class="nn">urllib</span>
 </pre></div>
 
      </div>
@@ -14358,7 +14356,7 @@ a.anchor-link {
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
 <pre>  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
                                  Dload  Upload   Total   Spent    Left  Speed
-100  286k  100  286k    0     0   608k      0 --:--:-- --:--:-- --:--:--  608k
+100  286k  100  286k    0     0   872k      0 --:--:-- --:--:-- --:--:--  872k
 </pre>
 </div>
 </div>
@@ -14395,7 +14393,7 @@ a.anchor-link {
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
 <pre>  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
                                  Dload  Upload   Total   Spent    Left  Speed
-100 48171  100 48171    0     0   210k      0 --:--:-- --:--:-- --:--:--  210k
+100 48171  100 48171    0     0   207k      0 --:--:-- --:--:-- --:--:--  207k
 </pre>
 </div>
 </div>
@@ -14430,7 +14428,7 @@ a.anchor-link {
 
 
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
-<pre>--2020-12-25 13:33:20--  https://raw.githubusercontent.com/owid/covid-19-data/master/public/data/excess_mortality/excess_mortality.csv
+<pre>--2020-12-25 14:20:06--  https://raw.githubusercontent.com/owid/covid-19-data/master/public/data/excess_mortality/excess_mortality.csv
 Распознаётся raw.githubusercontent.com (raw.githubusercontent.com)… 151.101.36.133
 Подключение к raw.githubusercontent.com (raw.githubusercontent.com)|151.101.36.133|:443... соединение установлено.
 HTTP-запрос отправлен. Ожидание ответа… 200 OK
@@ -14439,7 +14437,7 @@ HTTP-запрос отправлен. Ожидание ответа… 200 OK
 
 excess_mortality.cs 100%[===================&gt;] 286,02K  --.-KB/s    за 0,1s    
 
-2020-12-25 13:33:20 (2,02 MB/s) - «excess_mortality.csv» сохранён [292888/292888]
+2020-12-25 14:20:06 (2,02 MB/s) - «excess_mortality.csv» сохранён [292888/292888]
 
 </pre>
 </div>
@@ -14475,16 +14473,16 @@ excess_mortality.cs 100%[===================&gt;] 286,02K  --.-KB/s    за 0,1s
 
 
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
-<pre>--2020-12-25 13:33:20--  https://raw.githubusercontent.com/owid/covid-19-data/master/public/data/latest/owid-covid-latest.csv
+<pre>--2020-12-25 14:20:06--  https://raw.githubusercontent.com/owid/covid-19-data/master/public/data/latest/owid-covid-latest.csv
 Распознаётся raw.githubusercontent.com (raw.githubusercontent.com)… 151.101.36.133
 Подключение к raw.githubusercontent.com (raw.githubusercontent.com)|151.101.36.133|:443... соединение установлено.
 HTTP-запрос отправлен. Ожидание ответа… 200 OK
 Длина: 48171 (47K) [text/plain]
 Сохранение в: «owid-covid-latest.csv»
 
-owid-covid-latest.c 100%[===================&gt;]  47,04K  --.-KB/s    за 0,05s   
+owid-covid-latest.c 100%[===================&gt;]  47,04K  --.-KB/s    за 0,04s   
 
-2020-12-25 13:33:20 (963 KB/s) - «owid-covid-latest.csv» сохранён [48171/48171]
+2020-12-25 14:20:07 (1,03 MB/s) - «owid-covid-latest.csv» сохранён [48171/48171]
 
 </pre>
 </div>
@@ -15632,6 +15630,16 @@ Done
             <span class="n">plot_and_report</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">country</span><span class="p">)</span>
         <span class="k">except</span><span class="p">:</span>
             <span class="nb">print</span><span class="p">(</span><span class="n">country</span><span class="p">)</span>
+
+<span class="k">if</span> <span class="kc">False</span><span class="p">:</span>   
+    <span class="n">html</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+    <span class="k">for</span> <span class="n">country</span> <span class="ow">in</span> <span class="n">selected</span><span class="p">:</span>
+        <span class="n">url</span> <span class="o">=</span> <span class="n">urllib</span><span class="o">.</span><span class="n">parse</span><span class="o">.</span><span class="n">quote</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{country}</span><span class="s1">.png&#39;</span><span class="p">)</span>
+        <span class="n">url</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;https://normalized2.github.io/covid/excess_mortality/images/</span><span class="si">{url}</span><span class="s2">&quot;</span>
+
+        <span class="n">html</span> <span class="o">+=</span> <span class="sa">f</span><span class="s1">&#39;&lt;a href=&quot;</span><span class="si">{url}</span><span class="s1">&quot;&gt;</span><span class="si">{country}</span><span class="s1">&lt;/a&gt; &lt;br /&gt;</span><span class="se">\n</span><span class="s1">&#39;</span>
+
+    <span class="n">display</span><span class="p">(</span><span class="n">HTML</span><span class="p">(</span><span class="n">html</span><span class="p">))</span>
 </pre></div>
 
      </div>
@@ -16040,42 +16048,40 @@ Scotland Population data is not available
 <p><strong>excess</strong> - превышение смертей относительно среднего числа смертей за 2015-2019 года, за доступное число недель</p>
 <p><strong>excess per population</strong> - превышение смертности, превышение числа смертей относительно численности населения, за доступное число недель</p>
 <p><strong>deaths avg per population</strong> - средняя смертность за 2015-2019 года, за доступное число недель</p>
-<h2 id="&#1044;&#1083;&#1103;-&#1086;&#1088;&#1080;&#1077;&#1085;&#1090;&#1080;&#1088;&#1086;&#1074;&#1072;&#1085;&#1080;&#1103;:">&#1044;&#1083;&#1103; &#1086;&#1088;&#1080;&#1077;&#1085;&#1090;&#1080;&#1088;&#1086;&#1074;&#1072;&#1085;&#1080;&#1103;:<a class="anchor-link" href="#&#1044;&#1083;&#1103;-&#1086;&#1088;&#1080;&#1077;&#1085;&#1090;&#1080;&#1088;&#1086;&#1074;&#1072;&#1085;&#1080;&#1103;:">&#182;</a></h2><p>Допустим, средния продолжительность жизни 100 лет. И предположим в устойчивой популяции раждается столько же сколько умирает.
-Тогда средняя смертность будет в среднем 1/100, умирает 10 человек на каждую 1000.
-(В Литве  14 на тысячу, США 7 на тысячу)</p>
-<p>Что означает прервышение смертности (относительно  среднего числа смертей за 2015-2019 года) на 0.15, (как в США без учета ноября и декабря)
-Это значит, что вместо 10 человек в год на тысячу умерло на 15% больше, то есть 11,5.</p>
-<p>То есть если судить лишь по своему окружению по знакомым то акое увеличение смертности можно и не заметить. Особенно детям. Взрослым будет заметней, в соответствии с возрастным <a href="https://static.dw.com/image/52430882_7.png">распределением</a> летальности.
-Например среди московской епархии за 2020 год умерло <a href="https://www.interfax.ru/russia/742777">почти в три раза больше</a> чем в прошлом.</p>
-<p>С другой стороны если в год в среднем умирало 2,5 миллиона человек, то увеличение смертности на 15% означает, что умерло на 375 тысяч больше.</p>
-<p>Так же нужно учитывать, что данных по превышению смертности за последние несколько недель нету, они запаздывают.<br>
-<a href="https://glav.su/files/messages/2020/12/17/5910800_162bb2d9e90cbe92a319fbf1ecfc019c.png">https://glav.su/files/messages/2020/12/17/5910800_162bb2d9e90cbe92a319fbf1ecfc019c.png</a><br>
-<a href="https://glav.su/files/messages/2020/12/16/5910443_82b473598f3d40691d9f7015ce36f9f9.png">https://glav.su/files/messages/2020/12/16/5910443_82b473598f3d40691d9f7015ce36f9f9.png</a><br>
-Данные за январь-октябрь 2020 в основном за счет первой волны в марте-апреле, примерно два месяца.
-А так как ноябрь-декабрь-январь-февраль будет нелегким, то можножно предположить (в зависимости от страны), что текущие оценки по превышению смертность к марту удвоятся или утроятся. За сезон 2020-03 - 2021-02.<br>
-А старики умершие в 2020, врядли умрут в 2021, 2022, 2023...</p>
+<h2 id="&#1044;&#1083;&#1103;-&#1086;&#1088;&#1080;&#1077;&#1085;&#1090;&#1080;&#1088;&#1086;&#1074;&#1072;&#1085;&#1080;&#1103;:">&#1044;&#1083;&#1103; &#1086;&#1088;&#1080;&#1077;&#1085;&#1090;&#1080;&#1088;&#1086;&#1074;&#1072;&#1085;&#1080;&#1103;:<a class="anchor-link" href="#&#1044;&#1083;&#1103;-&#1086;&#1088;&#1080;&#1077;&#1085;&#1090;&#1080;&#1088;&#1086;&#1074;&#1072;&#1085;&#1080;&#1103;:">&#182;</a></h2><p>Допустим, средняя продолжительность жизни составляет 100 лет.
+И предположим, что в устойчивой популяции рождается столько же сколько умирает. Тогда смертность будет в среднем 1 из 100, умирает 10 человек на каждую 1000.<br>
+В Литве примерно  14 на тысячу, в США примерно 7 на тысячу. См. соотв. рис. выше.</p>
+<p>Что означает, что превышение смертности в США равно 0.15 (относительно среднего числа смертей за 2015-2019 года)? Это значит, что вместо 10 человек в год на тысячу умерло на 15% больше. То есть 11,5.<br>
+И если судить субъективно только по своему окружению и по знакомым, то такое увеличение смертности практически незаметно.
+Особенно среди детей и молодых.<br>
+В соответствии с возрастным <a href="https://static.dw.com/image/52430882_7.png">распределением</a> летальности.<br>
+Например, среди московской епархии за 2020 год умерло <a href="https://www.interfax.ru/russia/742777">почти в три раза больше</a> чем в прошлом.</p>
+<p>С другой стороны если в среднем за год умирало 2,5 миллиона человек, то увеличение смертности на 15% означает на 375 тысяч больше умерло. Не мало.
+Так же нужно учитывать запаздывание данных о превышении смертности на несколько недель.
+Ср <a href="https://glav.su/files/messages/2020/12/17/5910800_162bb2d9e90cbe92a319fbf1ecfc019c.png">рис 1</a> с <a href="https://glav.su/files/messages/2020/12/16/5910443_82b473598f3d40691d9f7015ce36f9f9.png">рис 2</a></p>
+<p>Средняя смертность за январь-октябрь 2020 складывается в основном за счет первой волны в марте-апреле, примерно два месяца. А так как ноябрь-декабрь-январь-февраль будет нелегким, то можно предположить (в зависимости от страны), что текущие оценки по превышению смертность к марту удвоятся или утроятся. За сезон 2020-03 - 2021-02.</p>
+<p>Средняя смертность за январь-октябрь 2020 складывается в основном за счет первой волны в марте-апреле, примерно два месяца. А так как ноябрь-декабрь-январь-февраль будет нелегким, то можно предположить (в зависимости от страны), что текущие оценки по превышению смертность к марту удвоятся или утроятся. За сезон 2020-03 - 2021-02.</p>
 <p>Как видно, данные о смертности можно использовать в двух вариантах:</p>
-<p><strong>"Ерунда, вместо 10 человек умерло всего лишь на 1,5 человека больше, обычный грипп"</strong></p>
-<p>В этом варианте не учитывается</p>
+<p>"Ерунда, вместо 10 человек умерло всего лишь на 1,5 человека больше, обычный грипп"
+В этом варианте не учитывается</p>
 <ul>
-<li>запаздование данных о смертности</li>
+<li>запаздывание данных о смертности</li>
 <li>перспектива второй волны</li>
-<li>в отсутвия принятых мер, смертность бы увеличилась в разы, с коллапсом медицины.</li>
+<li>в отсутствия принятых мер, смертность бы увеличилась в разы, с коллапсом медицины.</li>
 </ul>
-<p><strong>"Вау, умерло на 375 тысяч больше"</strong></p>
+<p>"Вау, умерло на 375 тысяч больше"</p>
 <ul>
-<li>на фоне 2,5 миллионов умирающих ежегодно пока немного. Особенно среди окружения детей, подростков, молодых.</li>
+<li>но на фоне 2,5 миллионов умирающих ежегодно пока немного. Особенно среди окружения детей, подростков, молодых.</li>
+<li>Как это не цинично, но старики умершие в 2020 году, вряд ли умрут в 2021, 2022, 2023.</li>
 </ul>
-<p>Третий вариант, переболеем все за 12 месяцев без вакцины.
-Если принять во внимание, что данные о летальности около 2-4%, а в Москве, например, <a href="https://mosgorzdrav.ru/ru-RU/news/default/card/5028.html">2,2% -4,4%</a>. Предположим, что за 12 месяцев переболеют 50%, тогда к фоновому уровню смертности 1 из 100 добавится еще 1-2 из 100, и превышение смертности достигнет 100-200%, в среднем за эти 12 месяцев.</p>
-<p>Существенная циркуляция в обществе первого варианта приводит большим рискам, что получится третий. Насколько потеряет экономика судить не берусь.
-А если поинмать опасность и не пренебрегать ею, то возможно удастся не доводить до существенных потерь. А при быстрой ликвидации выспышки, и как следствие снятия мер, экономика начала бы уже востанавливаться.</p>
+<p>Третий вариант, переболеем все за 12 месяцев без вакцины. Если принять во внимание, что данные о летальности около 2-4%, а в Москве, например, <a href="https://mosgorzdrav.ru/ru-RU/news/default/card/5028.html">2,2% -4,4%</a>. Предположим, что за 12 месяцев переболеют 50%, тогда к фоновому уровню смертности 1 из 100 добавится еще 1-2 из 100, и превышение смертности достигнет 100-200%, в среднем за эти 12 месяцев.</p>
+<p>Существенная циркуляция в обществе первого варианта приводит большим рискам, что получится третий. Насколько потеряет экономика судить не берусь. А если понимать опасность и не пренебрегать ею, то возможно удастся не доводить до существенных потерь. А при быстрой ликвидации вспышки, и как следствие снятия мер, экономика начала бы уже восстанавливаться.</p>
 
 </div>
 </div>
 <div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h1 id="Source-of-data:-Our-World-in-Data">Source of data: Our World in Data<a class="anchor-link" href="#Source-of-data:-Our-World-in-Data">&#182;</a></h1><p>Как сказать "Спасибо"<br>
+<h1 id="Source-of-data:-Our-World-in-Data">Source of data: Our World in Data<a class="anchor-link" href="#Source-of-data:-Our-World-in-Data">&#182;</a></h1><p>Как сказать "Спасибо" источнику данных<br>
 <a href="https://ourworldindata.org/donate">https://ourworldindata.org/donate</a></p>
 
 </div>
